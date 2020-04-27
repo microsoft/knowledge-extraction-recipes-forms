@@ -4,7 +4,7 @@
 
 <img src="Project_Preparation/Decision_Guidance/repo_images/form-recognizer-demo-sample2.png" align="right" alt="" width="250"/>
 
-![Knowledge Extraction Recipes python build](https://github.com/shanepeckham/knowledge-extraction-recipes-forms/workflows/Knowledge%20Extraction%20Recipes%20python%20build/badge.svg)
+![Knowledge Extraction Recipes](https://github.com/microsoft/knowledge-extraction-recipes-forms/workflows/Knowledge%20Extraction%20Recipes/badge.svg)
 ![Lint and Test Charts](https://github.com/shanepeckham/knowledge-extraction-recipes-forms/workflows/Lint%20and%20Test%20Charts/badge.svg)
 
 Retrieving information from documents and forms has long been a challenge, and even now at the time of writing, 
