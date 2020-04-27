@@ -1,0 +1,17 @@
+applicationinsights==0.11.7
+flask==1.0.2
+flask_cors==3.0.7
+flask_restful==0.3.7
+flask_restful_swagger_2==0.35
+pytest
+pytest-cov
+pytest-mock
+azure-common==1.1.23
+azure-storage==0.36.0
+azure-storage-blob==2.1.0
+azure-storage-common==2.1.0
+azure-storage-nspkg==3.1.0
+numpy
+pillow
+matplotlib
+python-dotenv

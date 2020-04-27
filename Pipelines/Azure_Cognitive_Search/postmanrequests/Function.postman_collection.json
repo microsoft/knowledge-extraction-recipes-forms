@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "1a1915a9-5f89-493d-bfda-7019ac821535",
+		"name": "Function",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AzureFunction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\": [\r\n        {\r\n            \"recordId\": \"a1\",\r\n            \"data\":\r\n            {\r\n               \"text\":\"This is a test call with some custom terms including Microsoft, Windows , Windows 10 , Azure,AI , More Personal computing\"\r\n            }\r\n        }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "https://YOURFUNCTIONNAME.azurewebsites.net/api/CustomListExtract?code=YOURFUNCTIONCODE",
+					"protocol": "https",
+					"host": [
+						"YOURFUNCTIONNAME",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"CustomListExtract"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "YOURFUNCTIONCODE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LocalFunciton",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\": [\r\n        {\r\n            \"recordId\": \"a1\",\r\n            \"data\":\r\n            {\r\n               \"text\":\"This is a test call with some custom terms including Microsoft, Windows , Windows 10 , Azure,AI , More Personal computing\"\r\n            }\r\n        }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/CustomListExtract",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"CustomListExtract"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

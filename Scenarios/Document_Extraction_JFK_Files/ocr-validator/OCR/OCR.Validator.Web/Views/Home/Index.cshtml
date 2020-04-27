@@ -1,0 +1,30 @@
+﻿@model DebugInformationViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <h1 class="display-4">Welcome</h1>
+    <p>Use this portal to validate Azure Search OCR technology.</p>
+</div>
+
+<hr />
+
+<p>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-info" aria-expanded="false" aria-controls="collapse-info">
+        Environment Information
+    </button>
+</p>
+<div class="collapse" id="collapse-info">
+    <div>
+        <h4>Azure Search</h4>
+        <p>Service Name: @Model.AzureSearchServiceName</p>
+        <p>Index Name: @Model.AzureSearchIndexName</p>
+        <p>Indexer Name: @Model.AzureSearchIndexerName</p>
+    </div>
+    <div>
+        <h4>Blob Storage</h4>
+        <p>Account Name: @Model.AzureBlobAccountName</p>
+        <p>Container Name: @Model.AzureBlobContainerName</p>
+    </div>
+</div>

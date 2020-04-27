@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "forms.formsrecognizer" . }}
+  labels:
+    app: {{ template "forms.name" . }}
+    chart: {{ template "forms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: formsrecognizer
+spec:
+  type: {{ .Values.formsRecognizer.service.type }}
+  ports: 
+    - port: {{ .Values.formsRecognizer.service.port }}
+      targetPort: fr-http
+      protocol: TCP
+      name: {{ template "forms.formsrecognizer" . }}
+  selector:
+    app: {{ template "forms.name" . }}
+    release: {{ .Release.Name }}
+    component: formsrecognizer

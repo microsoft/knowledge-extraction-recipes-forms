@@ -1,0 +1,49 @@
+computerVision:
+  replicas: 1
+  image:
+    repository: containerpreview.azurecr.io/microsoft/cognitive-services-recognize-text
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5000
+  apiKey: [Computer Vision Api Key]
+  endpointUri: [Computer Vision Endpoint Uri]
+
+formsRecognizer:
+  replicas: 1
+  httpTimeout: "300"
+  image:
+    repository: containerpreview.azurecr.io/microsoft/cognitive-services-form-recognizer
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: LoadBalancer
+    port: 80
+  apiKey: [Form Recognizer Api Key]
+  endpointUri: [Form Recognizer Endpoint Uri]
+
+imageCredentials:
+  registry: containerpreview.azurecr.io
+  username: [User Id from Form Recognizer Beta Invite]
+  password: [Password from Form Recognizer Beta Invite]
+
+storage:
+  key: [Key of the storage to use]
+  name: [Name of the storage to use]
+
+resources:
+  computerVision:
+    requests:
+      cpu: 2
+      memory: 4Gi
+    limits:
+      cpu: 4
+      memory: 8Gi  
+  formsRecognizer:
+    requests:
+      cpu: 2
+      memory: 4Gi
+    limits:
+      cpu: 4
+      memory: 8Gi  

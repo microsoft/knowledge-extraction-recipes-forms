@@ -1,0 +1,114 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ template "forms.formsrecognizer" . }}
+  labels:
+    app: {{ template "forms.name" . }}
+    chart: {{ template "forms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: formsrecognizer
+spec:
+  replicas: {{ .Values.formsRecognizer.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "forms.name" . }}
+      release: {{ .Release.Name }}
+      component: formsrecognizer
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: {{ template "forms.name" . }}
+        release: {{ .Release.Name }}
+        component: formsrecognizer
+        aadpodidbinding: {{ template "forms.formsrecognizer" . }}
+    spec:
+      volumes:
+        - name: formsrecognizer-config
+          secret:
+            secretName: {{ template "forms.formsrecognizer" . }}
+      containers:
+      - name: computervision
+        image: "{{ .Values.computerVision.image.repository }}:{{ .Values.computerVision.image.tag }}"
+        imagePullPolicy: {{ .Values.computerVision.image.pullPolicy }}
+        env:
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:4000
+          - name: eula
+            value: accept
+          - name: billing
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.computervision" . }}
+                key: computerVisionEndpointUri
+          - name: apikey
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.computervision" . }}
+                key: computerVisionApiKey
+        volumeMounts:
+          - mountPath: /input
+            name: input
+          - mountPath: /output
+            name: output
+        ports:
+          - name: cv-http 
+            containerPort: 4000
+        resources:
+{{ toYaml .Values.resources.computerVision | indent 10 }}    
+      - name: formsrecognizer
+        image: "{{ .Values.formsRecognizer.image.repository }}:{{ .Values.formsRecognizer.image.tag }}"
+        imagePullPolicy: {{ .Values.formsRecognizer.image.pullPolicy }}
+        env:
+          - name: FormRecognizer__ComputerVisionEndpointUri
+            value: http://localhost:4000
+          - name: eula
+            value: accept
+          - name: FormRecognizer__SyncProcessTaskCancelLimitInSecs
+            value: !!string {{ .Values.formsRecognizer.httpTimeout }}
+          - name: billing
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.formsrecognizer" . }}
+                key: formsRecognizerEndpointUri
+          - name: apikey
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.formsrecognizer" . }}
+                key: formsRecognizerApiKey
+          - name: FormRecognizer__ComputerVisionApiKey
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.computervision" . }}
+                key: computerVisionApiKey
+        volumeMounts:
+          - mountPath: /input
+            name: input
+          - mountPath: /output
+            name: output
+          - name: supervisord
+            mountPath: /etc/supervisor/conf.d/supervisord.conf
+            subPath: supervisord.conf
+        ports:
+          - name: fr-http
+            containerPort: 5000
+        resources:
+{{ toYaml .Values.resources.formsRecognizer | indent 10 }}
+      volumes:
+        - name: input
+          azureFile:
+            secretName: {{ template "forms.storage" . }}
+            shareName: form-recognizer-v1-input
+            readOnly: false
+        - name: output
+          azureFile:
+            secretName: {{ template "forms.storage" . }}
+            shareName: form-recognizer-v1-output
+            readOnly: false
+        - name: supervisord
+          configMap:
+            name: supervisord-config
+      imagePullSecrets:
+        - name: containerpreview-acr
+      restartPolicy: Always

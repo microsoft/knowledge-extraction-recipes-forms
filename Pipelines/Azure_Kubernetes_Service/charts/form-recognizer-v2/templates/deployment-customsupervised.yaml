@@ -1,0 +1,106 @@
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: {{ template "forms.customsupervised" . }}
+  labels:
+    app: {{ template "forms.name" . }}
+    chart: {{ template "forms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: customsupervised
+spec:
+  replicas: {{ .Values.customSupervised.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "forms.name" . }}
+      release: {{ .Release.Name }}
+      component: customsupervised
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: {{ template "forms.name" . }}
+        release: {{ .Release.Name }}
+        component: customsupervised
+    spec:
+      volumes:
+        - name: customsupervised-config
+          secret:
+            secretName: {{ template "forms.customsupervised" . }}
+      containers:
+      - name: readlayout
+        image: "{{ .Values.readLayout.image.repository }}:{{ .Values.readLayout.image.tag }}"
+        imagePullPolicy: {{ .Values.readLayout.image.pullPolicy }}
+        args:
+          - eula=accept
+        env:
+          - name: eula
+            value: accept
+          - name: CORS__AllowedOrigins
+            value: '*'
+          - name: billing
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.customsupervised" . }}
+                key: customSupervisedEndpointUri
+          - name: apikey
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.customsupervised" . }}
+                key: customSupervisedApiKey
+        ports:
+        - containerPort: 5000
+          name: rl-http
+        resources:
+{{ toYaml .Values.resources.readLayout | indent 10 }}          
+      - name: customsupervised
+        image: "{{ .Values.customSupervised.image.repository }}:{{ .Values.customSupervised.image.tag }}"
+        imagePullPolicy: {{ .Values.customSupervised.image.pullPolicy }}
+        args:
+          - eula=accept
+        env:
+          - name: CORS__AllowedOrigins
+            value: '*'
+          - name: billing
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.customsupervised" . }}
+                key: customSupervisedEndpointUri
+          - name: apikey
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.customsupervised" . }}
+                key: customSupervisedApiKey
+          - name: CustomFormRecognizer__ComputerVisionApiKey
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "forms.customsupervised" . }}
+                key: customSupervisedApiKey
+          - name: Kestrel__Endpoints__Http__Url
+            value: "http://0.0.0.0:80"
+          - name: CustomFormRecognizer__ComputerVisionEndpointUri
+            value: "http://localhost:5000/formrecognizer/v2.0-preview/readLayout/asyncAnalyze"
+        volumeMounts:
+          - mountPath: /input
+            name: input
+          - mountPath: /output
+            name: output
+        ports:
+          - containerPort: 80
+            name: cs-http
+        resources:
+{{ toYaml .Values.resources.customSupervised | indent 10 }}
+      volumes:
+        - name: input
+          azureFile:
+            secretName: {{ template "forms.storage" . }}
+            shareName: form-recognizer-v2-input
+            readOnly: false
+        - name: output
+          azureFile:
+            secretName: {{ template "forms.storage" . }}
+            shareName: form-recognizer-v2-output
+            readOnly: false
+      imagePullSecrets:
+        - name: containerpreview-acr
+      restartPolicy: Always

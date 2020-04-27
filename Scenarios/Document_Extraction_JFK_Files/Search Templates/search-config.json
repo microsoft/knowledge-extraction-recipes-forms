@@ -1,0 +1,48 @@
+{
+  "search_service_name": "test search",
+  "api": "<<put api key here>>",
+  "index_name": "test_index",
+  "indexer_name": "test_indexer",
+  "skillset_name": "custom_skillset",
+  "data_source_name": "datasource",
+  "skills": [{
+      "name": "custom skill",
+      "description": "This skillset enriches a document",
+      "uri": "FQDN of custom skill endpoint",
+      "input_name": "text",
+      "timeout": "PT90S",
+      "batchSize": 1,
+      "source": "/document/merged_content",
+      "fields": [{
+          "name": "field 1"
+        },
+        {
+          "name": "field 2",
+          "type": "Edm.Boolean"
+        },
+        {
+          "name": "field 3"
+        }
+      ]
+    },
+    {
+      "name": "another custom skill",
+      "description": "This skillset enriches a document",
+      "uri": "FQDN of custom skill endpoint",
+      "input_name": "text",
+      "timeout": "PT90S",
+      "batchSize": 1,
+      "source": "/document/merged_content",
+      "fields": [{
+          "name": "field 1"
+        },
+        {
+          "name": "field 2"
+        },
+        {
+          "name": "field 3"
+        }
+      ]
+    }  
+  ]
+}

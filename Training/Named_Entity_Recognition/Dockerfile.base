@@ -1,0 +1,6 @@
+FROM python:3.6.8-slim-jessie
+RUN apt-get update -y
+RUN apt-get install -y python-pip python-dev build-essential
+ADD requirements.txt /
+RUN pip install -r requirements.txt
+RUN python -m spacy download en_core_web_sm

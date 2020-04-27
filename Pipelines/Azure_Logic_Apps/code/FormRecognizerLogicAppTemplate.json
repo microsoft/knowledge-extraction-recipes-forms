@@ -1,0 +1,725 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Analyze_Form": {
+                "inputs": {
+                    "body": "@body('Get_blob_content')",
+                    "headers": {
+                        "Content-type": "application/pdf"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['formrecognizer']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/custom/models/@{encodeURIComponent(body('Get_Model')?['modelId'])}/analyze"
+                },
+                "runAfter": {
+                    "Get_blob_content": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Compose": {
+                "inputs": "@body('Get_Model')?['modelId']",
+                "runAfter": {
+                    "Get_Model": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Compose"
+            },
+            "Create_blob": {
+                "inputs": {
+                    "body": "@outputs('Compose')",
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob_1']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/datasets/default/files",
+                    "queries": {
+                        "folderPath": "/model",
+                        "name": "@{outputs('Compose')}",
+                        "queryParametersSingleEncoded": true
+                    }
+                },
+                "runAfter": {
+                    "Compose": [
+                        "Succeeded"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "type": "ApiConnection"
+            },
+            "Get_Model": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['formrecognizer']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/custom/models/@{encodeURIComponent(body('Train_Model')?['modelId'])}"
+                },
+                "runAfter": {
+                    "Train_Model": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Get_blob_content": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob_1']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent('JTJmdGVzdCUyZkludm9pY2VfNi5wZGY='))}/content",
+                    "queries": {
+                        "inferContentType": true
+                    }
+                },
+                "metadata": {
+                    "JTJmdGVzdCUyZkludm9pY2VfNi5wZGY=": "/test/Invoice_6.pdf"
+                },
+                "runAfter": {
+                    "Create_blob": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Parse_JSON": {
+                "inputs": {
+                    "content": "@body('Analyze_Form')",
+                    "schema": {
+                        "properties": {
+                            "content": {
+                                "properties": {
+                                    "errors": {
+                                        "type": "array"
+                                    },
+                                    "pages": {
+                                        "items": {
+                                            "properties": {
+                                                "clusterId": {
+                                                    "type": "integer"
+                                                },
+                                                "height": {
+                                                    "type": "integer"
+                                                },
+                                                "keyValuePairs": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "key": {
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "boundingBox": {
+                                                                            "type": "array"
+                                                                        },
+                                                                        "text": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "text",
+                                                                        "boundingBox"
+                                                                    ],
+                                                                    "type": "object"
+                                                                },
+                                                                "type": "array"
+                                                            },
+                                                            "value": {
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "boundingBox": {
+                                                                            "items": {
+                                                                                "type": "number"
+                                                                            },
+                                                                            "type": "array"
+                                                                        },
+                                                                        "confidence": {
+                                                                            "type": "number"
+                                                                        },
+                                                                        "text": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "text",
+                                                                        "boundingBox",
+                                                                        "confidence"
+                                                                    ],
+                                                                    "type": "object"
+                                                                },
+                                                                "type": "array"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "key",
+                                                            "value"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "number": {
+                                                    "type": "integer"
+                                                },
+                                                "tables": {
+                                                    "items": {
+                                                        "properties": {
+                                                            "columns": {
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "entries": {
+                                                                            "items": {
+                                                                                "items": {
+                                                                                    "properties": {
+                                                                                        "boundingBox": {
+                                                                                            "items": {
+                                                                                                "type": "number"
+                                                                                            },
+                                                                                            "type": "array"
+                                                                                        },
+                                                                                        "confidence": {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "text": {
+                                                                                            "type": "string"
+                                                                                        }
+                                                                                    },
+                                                                                    "required": [
+                                                                                        "text",
+                                                                                        "boundingBox",
+                                                                                        "confidence"
+                                                                                    ],
+                                                                                    "type": "object"
+                                                                                },
+                                                                                "type": "array"
+                                                                            },
+                                                                            "type": "array"
+                                                                        },
+                                                                        "header": {
+                                                                            "items": {
+                                                                                "properties": {
+                                                                                    "boundingBox": {
+                                                                                        "items": {
+                                                                                            "type": "number"
+                                                                                        },
+                                                                                        "type": "array"
+                                                                                    },
+                                                                                    "text": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "required": [
+                                                                                    "text",
+                                                                                    "boundingBox"
+                                                                                ],
+                                                                                "type": "object"
+                                                                            },
+                                                                            "type": "array"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "header",
+                                                                        "entries"
+                                                                    ],
+                                                                    "type": "object"
+                                                                },
+                                                                "type": "array"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "id",
+                                                            "columns"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "width": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "number",
+                                                "height",
+                                                "width",
+                                                "clusterId",
+                                                "keyValuePairs",
+                                                "tables"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "schema": {
+                                "properties": {
+                                    "items": {
+                                        "properties": {
+                                            "properties": {
+                                                "properties": {
+                                                    "clusterId": {
+                                                        "properties": {
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "height": {
+                                                        "properties": {
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "keyValuePairs": {
+                                                        "properties": {
+                                                            "items": {
+                                                                "properties": {
+                                                                    "properties": {
+                                                                        "properties": {
+                                                                            "key": {
+                                                                                "properties": {
+                                                                                    "items": {
+                                                                                        "properties": {
+                                                                                            "properties": {
+                                                                                                "properties": {
+                                                                                                    "boundingBox": {
+                                                                                                        "properties": {
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    },
+                                                                                                    "text": {
+                                                                                                        "properties": {
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    }
+                                                                                                },
+                                                                                                "type": "object"
+                                                                                            },
+                                                                                            "required": {
+                                                                                                "items": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "type": "array"
+                                                                                            },
+                                                                                            "type": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "type": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "value": {
+                                                                                "properties": {
+                                                                                    "items": {
+                                                                                        "properties": {
+                                                                                            "properties": {
+                                                                                                "properties": {
+                                                                                                    "boundingBox": {
+                                                                                                        "properties": {
+                                                                                                            "items": {
+                                                                                                                "properties": {
+                                                                                                                    "type": {
+                                                                                                                        "type": "string"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "type": "object"
+                                                                                                            },
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    },
+                                                                                                    "confidence": {
+                                                                                                        "properties": {
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    },
+                                                                                                    "text": {
+                                                                                                        "properties": {
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    }
+                                                                                                },
+                                                                                                "type": "object"
+                                                                                            },
+                                                                                            "required": {
+                                                                                                "items": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "type": "array"
+                                                                                            },
+                                                                                            "type": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "type": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    },
+                                                                    "required": {
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": "array"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "number": {
+                                                        "properties": {
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "tables": {
+                                                        "properties": {
+                                                            "items": {
+                                                                "properties": {
+                                                                    "properties": {
+                                                                        "properties": {
+                                                                            "columns": {
+                                                                                "properties": {
+                                                                                    "items": {
+                                                                                        "properties": {
+                                                                                            "properties": {
+                                                                                                "properties": {
+                                                                                                    "entries": {
+                                                                                                        "properties": {
+                                                                                                            "items": {
+                                                                                                                "properties": {
+                                                                                                                    "items": {
+                                                                                                                        "properties": {
+                                                                                                                            "properties": {
+                                                                                                                                "properties": {
+                                                                                                                                    "boundingBox": {
+                                                                                                                                        "properties": {
+                                                                                                                                            "items": {
+                                                                                                                                                "properties": {
+                                                                                                                                                    "type": {
+                                                                                                                                                        "type": "string"
+                                                                                                                                                    }
+                                                                                                                                                },
+                                                                                                                                                "type": "object"
+                                                                                                                                            },
+                                                                                                                                            "type": {
+                                                                                                                                                "type": "string"
+                                                                                                                                            }
+                                                                                                                                        },
+                                                                                                                                        "type": "object"
+                                                                                                                                    },
+                                                                                                                                    "confidence": {
+                                                                                                                                        "properties": {
+                                                                                                                                            "type": {
+                                                                                                                                                "type": "string"
+                                                                                                                                            }
+                                                                                                                                        },
+                                                                                                                                        "type": "object"
+                                                                                                                                    },
+                                                                                                                                    "text": {
+                                                                                                                                        "properties": {
+                                                                                                                                            "type": {
+                                                                                                                                                "type": "string"
+                                                                                                                                            }
+                                                                                                                                        },
+                                                                                                                                        "type": "object"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "type": "object"
+                                                                                                                            },
+                                                                                                                            "required": {
+                                                                                                                                "items": {
+                                                                                                                                    "type": "string"
+                                                                                                                                },
+                                                                                                                                "type": "array"
+                                                                                                                            },
+                                                                                                                            "type": {
+                                                                                                                                "type": "string"
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "type": "object"
+                                                                                                                    },
+                                                                                                                    "type": {
+                                                                                                                        "type": "string"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "type": "object"
+                                                                                                            },
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    },
+                                                                                                    "header": {
+                                                                                                        "properties": {
+                                                                                                            "items": {
+                                                                                                                "properties": {
+                                                                                                                    "properties": {
+                                                                                                                        "properties": {
+                                                                                                                            "boundingBox": {
+                                                                                                                                "properties": {
+                                                                                                                                    "items": {
+                                                                                                                                        "properties": {
+                                                                                                                                            "type": {
+                                                                                                                                                "type": "string"
+                                                                                                                                            }
+                                                                                                                                        },
+                                                                                                                                        "type": "object"
+                                                                                                                                    },
+                                                                                                                                    "type": {
+                                                                                                                                        "type": "string"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "type": "object"
+                                                                                                                            },
+                                                                                                                            "text": {
+                                                                                                                                "properties": {
+                                                                                                                                    "type": {
+                                                                                                                                        "type": "string"
+                                                                                                                                    }
+                                                                                                                                },
+                                                                                                                                "type": "object"
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "type": "object"
+                                                                                                                    },
+                                                                                                                    "required": {
+                                                                                                                        "items": {
+                                                                                                                            "type": "string"
+                                                                                                                        },
+                                                                                                                        "type": "array"
+                                                                                                                    },
+                                                                                                                    "type": {
+                                                                                                                        "type": "string"
+                                                                                                                    }
+                                                                                                                },
+                                                                                                                "type": "object"
+                                                                                                            },
+                                                                                                            "type": {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "type": "object"
+                                                                                                    }
+                                                                                                },
+                                                                                                "type": "object"
+                                                                                            },
+                                                                                            "required": {
+                                                                                                "items": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "type": "array"
+                                                                                            },
+                                                                                            "type": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        },
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "type": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "id": {
+                                                                                "properties": {
+                                                                                    "type": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    },
+                                                                    "required": {
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": "array"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "width": {
+                                                        "properties": {
+                                                            "type": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "required": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "Analyze_Form": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            },
+            "Train_Model": {
+                "inputs": {
+                    "body": {
+                        "source": "https://oneweek2019stg.blob.core.windows.net/train"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['formrecognizer']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/custom/train"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_blob_is_added_or_modified_(properties_only)": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob_1']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/datasets/default/triggers/batch/onupdatedfile",
+                    "queries": {
+                        "folderId": "JTJmdHJhaW4=",
+                        "maxFileCount": 10
+                    }
+                },
+                "metadata": {
+                    "JTJmdHJhaW4=": "/train"
+                },
+                "recurrence": {
+                    "frequency": "Minute",
+                    "interval": 1
+                },
+                "splitOn": "@triggerBody()",
+                "type": "ApiConnection"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "azureblob_1": {
+                    "connectionId": "<Your connectionId>",
+                    "connectionName": "<Your connectionName>",
+                    "id": "<Your id>"
+                },
+                "formrecognizer": {
+                    "connectionId": "<Your connectionId>",
+                    "connectionName": "<Your connectionName>",
+                    "id": "<Your id>"
+                }
+            }
+        }
+    }
+}

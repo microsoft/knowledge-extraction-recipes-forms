@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supervisord-config
+data:
+  supervisord.conf: |
+    [supervisord]
+    environment=TELEMETRY_TYPE=%(ENV_TELEMETRY_TYPE)s,STATSD_HOST=%(ENV_STATSD_HOST)s,STATSD_MODE=%(ENV_STATSD_MODE)s,FLUENTD_HOST=%(ENV_FLUENTD_HOST)s
+
+    [program:gunicorn]
+    environment=SERVICE_NAME="forms"
+    directory=/usr/local/lib/python3.5/dist-packages/form_understanding
+    command=/usr/local/bin/gunicorn -w 2 --worker-class=gthread --worker-tmp-dir /dev/shm --threads 32 -t 300 app:app -b localhost:10001
+    autostart=true
+    autorestart=true
+    stderr_logfile=/tmp/msformsgunicorn.err.log
+    stderr_logfile_maxbytes=1MB
+    stderr_logfile_backups=0
+    stdout_logfile=/tmp/msformsgunicorn.out.log
+    stdout_logfile_maxbytes=1MB
+    stdout_logfile_backups=0

@@ -1,0 +1,35 @@
+﻿@model DocumentsUploadViewModel
+@{
+    ViewData["Title"] = "Upload Page";
+}
+
+<div>
+    <h1 class="display-4">Upload Files</h1>
+    <p>Upload your documents using the form below.</p>
+</div>
+
+<div class="row">
+    <section>
+        <form method="post" enctype="multipart/form-data" asp-controller="Upload" asp-action="FileUpload">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="CaseID">Case ID:</label>
+                    <input type="text" id="CaseID" name="CaseID" />
+                </div>
+                <div class="col-md-12">
+                    <label for="PDFFile">Expected PDF File:</label>
+                    <input type="file" id="PDFFile" name="PDFFile" accept=".pdf" />
+                </div>
+                <div class="col-md-12">
+                    <label for="ImageFile">Actual Image File:</label>
+                    <input type="file" id="ImageFile" name="ImageFile" accept="image/*" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" />
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

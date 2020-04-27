@@ -1,0 +1,81 @@
+{
+  "luis_schema_version": "4.0.0",
+  "versionId": "0.1",
+  "name": "OneWeekKEEmailLuis",
+  "desc": "For detecting email intent based on subject",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "intents": [
+    {
+      "name": "None"
+    },
+    {
+      "name": "Quote Request"
+    },
+    {
+      "name": "Where is my order"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [],
+  "model_features": [],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "i'd like a quote",
+      "intent": "Quote Request",
+      "entities": []
+    },
+    {
+      "text": "new business quote",
+      "intent": "Quote Request",
+      "entities": []
+    },
+    {
+      "text": "order delivery date",
+      "intent": "Where is my order",
+      "entities": []
+    },
+    {
+      "text": "order status",
+      "intent": "Where is my order",
+      "entities": []
+    },
+    {
+      "text": "order tracking",
+      "intent": "Where is my order",
+      "entities": []
+    },
+    {
+      "text": "price estimate",
+      "intent": "Quote Request",
+      "entities": []
+    },
+    {
+      "text": "pricing details",
+      "intent": "Quote Request",
+      "entities": []
+    },
+    {
+      "text": "quote request",
+      "intent": "Quote Request",
+      "entities": []
+    },
+    {
+      "text": "when will my order be delivered",
+      "intent": "Where is my order",
+      "entities": []
+    },
+    {
+      "text": "where is my order",
+      "intent": "Where is my order",
+      "entities": []
+    }
+  ],
+  "settings": []
+}

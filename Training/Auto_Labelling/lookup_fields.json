@@ -1,0 +1,28 @@
+{
+    "types":{
+        "Total": "money",
+        "Delivery": "money",
+        "Date": "date",
+        "Name": "text",
+        "AddressLine1": "address",
+        "AddressCity": "city",
+        "AddressPostalCode": "postalCode",
+        "AddressCountry": "country",
+        "Article1": "text",
+        "Article1Price": "money"
+    },
+
+    "keys":{
+            "Total amount": ["Total"],
+            "Delivery amount": ["Delivery"],
+            "Date": ["Date"],
+            "Name": ["Name"],
+            "Address line 1": ["AddressLine1"],
+            "Address line 2": ["AddressCity", "AddressPostalCode"],
+            "Address country": ["AddressCountry"],
+            "Item name": ["Article"],
+            "Item price": ["ArticlePrice"]
+        }
+    
+}
+

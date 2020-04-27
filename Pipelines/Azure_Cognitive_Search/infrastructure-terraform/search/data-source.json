@@ -1,0 +1,10 @@
+{
+    "name": "cases-blob-datasource",
+    "type": "azureblob",
+    "credentials": {
+        "connectionString": "DefaultEndpointsProtocol=https;AccountName=;AccountKey=;EndpointSuffix=core.windows.net"
+    },
+    "container": {
+        "name": "cases"
+    }
+}

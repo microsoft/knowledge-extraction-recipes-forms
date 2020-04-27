@@ -1,0 +1,8 @@
+apiVersion: v1
+appVersion: "1.0"
+description: Microsoft Form Recognizer V2 on Kubernetes
+maintainers:
+- email: dparys@microsoft.com
+  name: Dariusz Parys
+name: form-recognizer-v2
+version: "1.0"

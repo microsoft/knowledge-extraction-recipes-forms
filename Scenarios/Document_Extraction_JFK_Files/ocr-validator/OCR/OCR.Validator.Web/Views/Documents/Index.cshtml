@@ -1,0 +1,40 @@
+﻿@model IEnumerable<OCR.Validator.Web.Models.DocumentViewModel>
+
+
+@if (Model.Count() > 0)
+{
+    <p>
+        <a asp-action="DeleteAll">Delete All</a>
+    </p>
+    <p>
+        Count: @Model.Count()
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CaseId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CaseId)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.CaseId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.CaseId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data :(</p>
+}

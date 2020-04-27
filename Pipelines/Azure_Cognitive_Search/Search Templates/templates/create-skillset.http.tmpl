@@ -1,0 +1,148 @@
+PUT https://{{ search_service_name }}.search.windows.net/skillsets/{{ skillset_name }}?api-version=2017-11-11-Preview
+api-key: {{ api }}
+Content-Type: application/json
+
+{
+  "name": "{{ skillset_name }}",
+  "description": "Creates a custom skillset comprising of builtin and custom enrichers",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.EntityRecognitionSkill",
+      "name": "BuiltIn NER",
+      "description": null,
+      "context": "/document",
+      "categories": [
+        "Person",
+        "Quantity",
+        "Organization",
+        "URL",
+        "Email",
+        "Location",
+        "DateTime"
+      ],
+      "defaultLanguageCode": "en",
+      "minimumPrecision": null,
+      "includeTypelessEntities": null,
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/merged_content"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "organizations",
+          "targetName": "organizations"
+        },
+        {
+          "name": "locations",
+          "targetName": "locations"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+      "name": "Key Phrase Extraction",
+      "description": null,
+      "context": "/document",
+      "defaultLanguageCode": "en",
+      "maxKeyPhraseCount": null,
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/merged_content"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "keyPhrases",
+          "targetName": "keyphrases"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+      "name": "Text Merge",
+      "description": null,
+      "context": "/document",
+      "insertPreTag": " ",
+      "insertPostTag": " ",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/content"
+        },
+        {
+          "name": "itemsToInsert",
+          "source": "/document/normalized_images/*/text"
+        },
+        {
+          "name": "offsets",
+          "source": "/document/normalized_images/*/contentOffset"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mergedText",
+          "targetName": "merged_content"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+      "name": "OCR",
+      "description": null,
+      "context": "/document/normalized_images/*",
+      "textExtractionAlgorithm": "printed",
+      "lineEnding": "Space",
+      "defaultLanguageCode": "en",
+      "detectOrientation": true,
+      "inputs": [
+        {
+          "name": "image",
+          "source": "/document/normalized_images/*"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "targetName": "text"
+        },
+        {
+          "name": "layoutText",
+          "targetName": "layoutText"
+        }
+      ]
+    }, {% for skill in skills %}  {% set skill_name = skill["name"] %}
+    {
+        "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+        "name": "{{ skill_name }}",
+        "description": "{{ skill["description"] }}",
+        "uri": "{{ skill["uri"] }}",
+        "batchSize": {{ skill["batchSize"] }},
+        "timeout": "{{ skill["timeout"] }}",
+        "context": "/document",
+        "inputs": [
+          {
+            "name": "{{ skill["input_name"] }}",
+            "source": "{{ skill["source"] }}"
+          }
+        ],
+        "outputs": [  {% for field in skill["fields"] %}
+          {
+            "name": "{{ field["name"] }}",
+            "targetName": "{{ skill_name + "_" + field["name"] }}"
+          }{%- if not loop.last -%},{%- endif %}
+        {%- endfor %}
+        ]
+    }{%- if not loop.last -%},{%- endif %}
+    {%- endfor %}
+  ],
+  "cognitiveServices": {
+    "@odata.type": "#Microsoft.Azure.Search.CognitiveServicesByKey",
+    "description": "/subscriptions/58eadcc1-71bf-4547-bd13-7f68a6042a0f/resourceGroups/TradeFinanceProject/providers/Microsoft.CognitiveServices/accounts/tradefinance",
+    "key": "0a89e142bec440d7886ea68fbe3fa634"
+  }
+}
+
+###

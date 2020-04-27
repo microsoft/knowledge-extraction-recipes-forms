@@ -1,0 +1,75 @@
+POST https://{{ search_service_name }}.search.windows.net/indexers?api-version=2017-11-11-Preview
+Content-Type: application/json
+api-key: {{ api }}
+
+{
+  "name": "{{ indexer_name }}",
+  "description": "Create an index for a batch of documents using {{ skillset_name }}",
+  "dataSourceName": "{{ data_source_name }}",
+  "skillsetName": "{{ skillset_name }}",
+  "targetIndexName": "{{ index_name }}",
+  "disabled": null,
+  "schedule": null,
+  "parameters": {
+    "batchSize": 10,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "base64EncodeKeys": false,
+    "configuration": {
+      "imageAction": "generateNormalizedImages",
+      "dataToExtract": "contentAndMetadata"
+    }
+  },
+  "fieldMappings": [
+    {
+      "sourceFieldName": "metadata_storage_path",
+      "targetFieldName": "metadata_storage_path",
+      "mappingFunction": {
+        "name": "base64Encode",
+        "parameters": null
+      }
+    }
+  ],
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/organizations",
+      "targetFieldName": "organizations",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/locations",
+      "targetFieldName": "locations",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/keyphrases",
+      "targetFieldName": "keyphrases",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/merged_content",
+      "targetFieldName": "merged_content",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/normalized_images/*/text",
+      "targetFieldName": "text",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/normalized_images/*/layoutText",
+      "targetFieldName": "layoutText",
+      "mappingFunction": null
+    }, {% for skill in skills %} {% set skill_name = skill["name"] %}   {% for field in skill["fields"] %}
+    {
+      "sourceFieldName": "/document/{{ skill_name + "_" + field["name"] }}",
+      "targetFieldName": "{{ skill_name + "_" + field["name"] }}",
+      "mappingFunction": null
+    }{%- if not loop.last -%},{%- endif %}
+    {%- endfor %}
+    {%- if not loop.last -%},{%- endif %}
+    {%- endfor %}
+  ]
+}
+
+###

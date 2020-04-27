@@ -1,0 +1,55 @@
+customSupervised:
+  replicas: 1
+  image:
+    repository: containerpreview.azurecr.io/microsoft/cognitive-services-form-recognizer-custom-supervised
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: LoadBalancer
+    port: 5016
+  apiKey:
+  endpointUri:
+
+readLayout:
+  replicas: 1
+  image:
+    repository: containerpreview.azurecr.io/microsoft/cognitive-services-form-recognizer-readlayout
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 7005
+  apiKey:
+  endpointUri:
+
+imageCredentials:
+  registry:
+  username:
+  password:
+
+storage:
+  key:
+  name:
+
+resources:
+  readLayout:
+    requests:
+      cpu: 2
+      memory: 4Gi
+    limits:
+      cpu: 4
+      memory: 8Gi  
+  customSupervisedSampleux:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 2Gi
+  customSupervised:
+    requests:
+      cpu: 2
+      memory: 4Gi
+    limits:
+      cpu: 4
+      memory: 8Gi  

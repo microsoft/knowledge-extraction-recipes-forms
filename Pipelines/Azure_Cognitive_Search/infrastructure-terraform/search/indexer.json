@@ -1,0 +1,60 @@
+{
+    "name": "cases-blob-indexer",
+    "description": "",
+    "dataSourceName": "cases-blob-datasource",
+    "skillsetName": "cases-skillset",
+    "targetIndexName": "cases-index",
+    "disabled": null,
+    "schedule": null,
+    "parameters": {
+        "batchSize": null,
+        "maxFailedItems": null,
+        "maxFailedItemsPerBatch": null,
+        "base64EncodeKeys": false,
+        "configuration": {
+            "imageAction": "generateNormalizedImages",
+            "dataToExtract": "contentAndMetadata",
+            "parsingMode": "default"
+        }
+    },
+    "fieldMappings": [
+        {
+            "sourceFieldName": "metadata_storage_name",
+            "targetFieldName": "id",
+            "mappingFunction": {
+                "name": "base64Encode",
+                "parameters" : { "useHttpServerUtilityUrlTokenEncode" : false }
+            }
+        }
+    ],
+    "outputFieldMappings": [
+        {
+            "sourceFieldName": "/document/merged_content/People",
+            "targetFieldName": "People"
+        },
+        {
+            "sourceFieldName": "/document/merged_content/Organizations",
+            "targetFieldName": "Organizations"
+        },
+        {
+            "sourceFieldName": "/document/merged_content/Locations",
+            "targetFieldName": "Locations"
+        },
+        {
+            "sourceFieldName": "/document/merged_content/Keyphrases",
+            "targetFieldName": "Keyphrases"
+        },
+        {
+            "sourceFieldName": "/document/merged_content",
+            "targetFieldName": "merged_content"
+        },
+        {
+            "sourceFieldName": "/document/normalized_images/*/text",
+            "targetFieldName": "text"
+        },
+        {
+            "sourceFieldName": "/document/normalized_images/*/layoutText",
+            "targetFieldName": "layoutText"
+        }
+    ]
+}

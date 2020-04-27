@@ -1,0 +1,358 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Detect_Language": {
+                "inputs": {
+                    "body": {
+                        "text": "@variables('EmailBody')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['cognitiveservicestextanalytics']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/text/analytics/v2.1/languages"
+                },
+                "runAfter": {
+                    "Initialize_variable_Sentiment": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Detect_Sentiment": {
+                "inputs": {
+                    "body": {
+                        "text": "@variables('EmailBody')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['cognitiveservicestextanalytics']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/text/analytics/v2.1/sentiment"
+                },
+                "runAfter": {
+                    "For_each_Entities": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Email_Subject_Intent": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['luis']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/luis/v2.0/apps/@{encodeURIComponent('ae79a018-c371-4c98-ae2a-2dd91c4c8dbd')}/",
+                    "queries": {
+                        "q": "@triggerBody()?['subject']",
+                        "verbose": true,
+                        "versionId": "0.1"
+                    }
+                },
+                "runAfter": {
+                    "Initialize_variable_EmailBody": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Entities": {
+                "inputs": {
+                    "body": {
+                        "text": "@variables('EmailBody')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['cognitiveservicestextanalytics']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/text/analytics/v2.1/entities"
+                },
+                "runAfter": {
+                    "For_each_Key_Phrases": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "For_each_Entities": {
+                "actions": {
+                    "Append_to_string_variable_Entities": {
+                        "inputs": {
+                            "name": "Entities",
+                            "value": "@{items('For_each_Entities')?['name']}, "
+                        },
+                        "runAfter": {},
+                        "type": "AppendToStringVariable"
+                    }
+                },
+                "foreach": "@body('Entities')?['entities']",
+                "runAfter": {
+                    "Initialize_variable_Entities": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Foreach"
+            },
+            "For_each_Key_Phrases": {
+                "actions": {
+                    "Append_to_string_variable": {
+                        "inputs": {
+                            "name": "Key Phrases",
+                            "value": "@{items('For_each_Key_Phrases')}, "
+                        },
+                        "runAfter": {},
+                        "type": "AppendToStringVariable"
+                    }
+                },
+                "foreach": "@body('Key_Phrases')?['keyPhrases']",
+                "runAfter": {
+                    "Initialize_variable_Key_Phrases": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Foreach"
+            },
+            "For_each_Language": {
+                "actions": {
+                    "Append_to_string_variable_Language": {
+                        "inputs": {
+                            "name": "Language",
+                            "value": "@{items('For_each_Language')}, "
+                        },
+                        "runAfter": {},
+                        "type": "AppendToStringVariable"
+                    }
+                },
+                "foreach": "@body('Detect_Language')?['detectedLanguages']",
+                "runAfter": {
+                    "Initialize_variable_Language": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Foreach"
+            },
+            "Html_to_text": {
+                "inputs": {
+                    "body": "<p>@{triggerBody()?['body']}</p>",
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['conversionservice']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/html2text"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            },
+            "Initialize_variable_EmailBody": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "EmailBody",
+                            "type": "String",
+                            "value": "@body('Html_to_text')"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Html_to_text": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_Entities": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Entities",
+                            "type": "String"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Entities": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_Key_Phrases": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Key Phrases",
+                            "type": "String"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Key_Phrases": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_Language": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Language",
+                            "type": "String"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Detect_Language": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_Sentiment": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Sentiment",
+                            "type": "Float",
+                            "value": "@body('Detect_Sentiment')?['score']"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Detect_Sentiment": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Key_Phrases": {
+                "inputs": {
+                    "body": {
+                        "text": "@variables('EmailBody')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['cognitiveservicestextanalytics']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/text/analytics/v2.1/keyPhrases"
+                },
+                "runAfter": {
+                    "Email_Subject_Intent": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Send_an_email_(V2)": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>You email has been analysed .....<br>\n<br>\nIntent: @{body('Email_Subject_Intent')?['topScoringIntent']?['intent']}<br>\n<br>\nEntities: @{variables('Entities')}<br>\n<br>\nKey Phrases: @{variables('Key Phrases')}<br>\n<br>\nSentiment: @{variables('Sentiment')}<br>\n<br>\nLanguage: @{variables('Language')}</p>",
+                        "Subject": "RE: @{triggerBody()?['subject']}",
+                        "To": "@triggerBody()?['from']"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "For_each_Language": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_new_email_arrives_(V3)": {
+                "inputs": {
+                    "fetch": {
+                        "method": "get",
+                        "pathTemplate": {
+                            "template": "/v3/Mail/OnNewEmail"
+                        },
+                        "queries": {
+                            "fetchOnlyWithAttachment": false,
+                            "folderPath": "Inbox",
+                            "importance": "Any",
+                            "includeAttachments": false,
+                            "subjectFilter": "Table53"
+                        }
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "subscribe": {
+                        "body": {
+                            "NotificationUrl": "@{listCallbackUrl()}"
+                        },
+                        "method": "post",
+                        "pathTemplate": {
+                            "template": "/GraphMailSubscriptionPoke/$subscriptions"
+                        },
+                        "queries": {
+                            "fetchOnlyWithAttachment": false,
+                            "folderPath": "Inbox",
+                            "importance": "Any"
+                        }
+                    }
+                },
+                "splitOn": "@triggerBody()?['value']",
+                "type": "ApiConnectionNotification"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "cognitiveservicestextanalytics": {
+                    "connectionId": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/resourceGroups/OneWeek/providers/Microsoft.Web/connections/cognitiveservicestextanalytics",
+                    "connectionName": "cognitiveservicestextanalytics",
+                    "id": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/providers/Microsoft.Web/locations/centralus/managedApis/cognitiveservicestextanalytics"
+                },
+                "conversionservice": {
+                    "connectionId": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/resourceGroups/OneWeek/providers/Microsoft.Web/connections/conversionservice",
+                    "connectionName": "conversionservice",
+                    "id": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/providers/Microsoft.Web/locations/centralus/managedApis/conversionservice"
+                },
+                "luis": {
+                    "connectionId": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/resourceGroups/OneWeek/providers/Microsoft.Web/connections/luis",
+                    "connectionName": "luis",
+                    "id": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/providers/Microsoft.Web/locations/centralus/managedApis/luis"
+                },
+                "office365": {
+                    "connectionId": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/resourceGroups/OneWeek/providers/Microsoft.Web/connections/office365",
+                    "connectionName": "office365",
+                    "id": "/subscriptions/1fcbb1ab-1178-46fc-8c5d-f0e20b65610d/providers/Microsoft.Web/locations/centralus/managedApis/office365"
+                }
+            }
+        }
+    }
+}
