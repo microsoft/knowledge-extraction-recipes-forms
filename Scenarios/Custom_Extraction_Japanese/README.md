@@ -55,10 +55,10 @@ To create an image of an uncompleted form:
 1. Open the form in Excel
 <img src="images/form-markup-open-form-in-excel-ja.JPG" width="400">
 
-1. Export the form as a PDF
+2. Export the form as a PDF
 <img src="images/form-markup-export-form-as-pdf.png" width="400">
 
-1. Convert the PDF to an image (jpg or png)
+3. Convert the PDF to an image (jpg or png)
 
     - Use an image conversion tool:
       - [PDF Miner](https://github.com/pdfminer/pdfminer.six)
@@ -129,13 +129,13 @@ In VoTT, click the Export button - this will create a `json` file with all of th
 1. Create Azure Data Lake Storage Gen2 to store fragment images (e.g. dlsjpform001) and application images* (e.g. dlsjpform002). *application image: actual form image which you want to extract text from.
 <img src="images/create-adls.jpg" width="500">
 
-1. Create blobs to store fragment images of printed Japanese (e.g. dlsjpform001/fragments-all/PrintedJP) and digits (e.g. dlsjpform001/fragments-all/Digits).
+2. Create blobs to store fragment images of printed Japanese (e.g. dlsjpform001/fragments-all/PrintedJP) and digits (e.g. dlsjpform001/fragments-all/Digits).
 <img src="images/create-blob-fragment.jpg" width="500">
 
-1. Create a blob to store application images (e.g. dlsjpform002/medicalexpense).
+3. Create a blob to store application images (e.g. dlsjpform002/medicalexpense).
 <img src="images/create-blob-application.jpg" width="500">
 
-1. Set the variables in Python script  - storage account names, storage access keys, container names, and vott json info (lastVisitedAssetId and path).
+4. Set the variables in Python script  - storage account names, storage access keys, container names, and vott json info (lastVisitedAssetId and path).
 
 #### How to process images
 
@@ -164,11 +164,11 @@ Saving all fragment images correctly is confirmed by receiving callback for prog
 1. On the Azure Portal, create a Logic App.
 <img src="images/create-logic-app-portal.jpg" width="400">
 
-1. Select "Edit"
+2. Select "Edit"
 <img src="images/edit-logic-app-portal.jpg" width="400">
 
 
-1. Select "Blank Logic App" on Logic Apps Designer
+3. Select "Blank Logic App" on Logic Apps Designer
 <img src="images/select-blank-logic-app-portal.jpg" width="400">
 
 #### Create a Blob Storage trigger
@@ -178,18 +178,18 @@ Saving all fragment images correctly is confirmed by receiving callback for prog
 1. Select "Get blob content using path" as 2nd step on Logic Apps Designer and set the blob path.
 <img src="images/create-logic-app-designer-2.jpg" width="500">
 
-1. Select "Optical Character Recognition (OCR) to Text" as 3rd step on Logic Apps Designer and set the image source and content.
+2. Select "Optical Character Recognition (OCR) to Text" as 3rd step on Logic Apps Designer and set the image source and content.
 <img src="images/create-logic-app-designer-3.jpg" width="500">
 
-1. Select "Create or update document" as 4th step on Logic Apps Designer. Fistly set Connection Name and select the DocumentDB Account (e.g. cosmos-fragments) created in advance. Next, set the Database ID (e.g.fragmentdb), Collection ID (e.g. ocr-result), Document, and Partition key value.
+3. Select "Create or update document" as 4th step on Logic Apps Designer. Fistly set Connection Name and select the DocumentDB Account (e.g. cosmos-fragments) created in advance. Next, set the Database ID (e.g.fragmentdb), Collection ID (e.g. ocr-result), Document, and Partition key value.
 <img src="images/create-logic-app-designer-4.jpg" width="500">
 
-1. Click "Save" at the top left of Logic Apps Designerand. Now it's ready to run the Logic App!
+4. Click "Save" at the top left of Logic Apps Designerand. Now it's ready to run the Logic App!
 
 #### Run the Logic App
 1. Run the python script to make fragment images.
 
-1. Start running the Logic App once the fragment images are coming to blob.
+2. Start running the Logic App once the fragment images are coming to blob.
 
-1. Store the output in Cosmos DB. You can see the output which is extracted with OCR!
+3. Store the output in Cosmos DB. You can see the output which is extracted with OCR!
 <img src="images/store-output-logic-app.jpg" width="500">
