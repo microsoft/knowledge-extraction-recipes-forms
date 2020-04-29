@@ -6,7 +6,7 @@ The definition of the required variables are defined in `variables.tf`
 
 In order to deploy the execute
 
-```
+```bash
 terraform init
 
 terraform apply
