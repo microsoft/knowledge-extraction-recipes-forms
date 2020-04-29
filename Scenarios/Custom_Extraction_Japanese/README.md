@@ -157,7 +157,7 @@ Saving all fragment images correctly is confirmed by receiving callback for prog
 1. Create an Azure Cosmos DB account (e.g. cosmos-fragments-all).
 <img src="images/create-cosmosdb-portal.jpg" width="400">
 
-1. Select Data Explorer from the left navigation on the Cosmos DB account page, and then add New Container.
+2. Select Data Explorer from the left navigation on the Cosmos DB account page, and then add New Container.
 <img src="images/create-cosmosdb-container-portal.jpg" width="400">
 
 #### Create a Logic App
@@ -175,16 +175,16 @@ Saving all fragment images correctly is confirmed by receiving callback for prog
 1. Select "When a blob is added or modified (properties only)" as 1st step on Logic Apps Designer and set the container which fragment images (printed Japanese) are stored.
 <img src="images/create-logic-app-designer-1.jpg" width="500">
 
-1. Select "Get blob content using path" as 2nd step on Logic Apps Designer and set the blob path.
+2. Select "Get blob content using path" as 2nd step on Logic Apps Designer and set the blob path.
 <img src="images/create-logic-app-designer-2.jpg" width="500">
 
-2. Select "Optical Character Recognition (OCR) to Text" as 3rd step on Logic Apps Designer and set the image source and content.
+3. Select "Optical Character Recognition (OCR) to Text" as 3rd step on Logic Apps Designer and set the image source and content.
 <img src="images/create-logic-app-designer-3.jpg" width="500">
 
-3. Select "Create or update document" as 4th step on Logic Apps Designer. Fistly set Connection Name and select the DocumentDB Account (e.g. cosmos-fragments) created in advance. Next, set the Database ID (e.g.fragmentdb), Collection ID (e.g. ocr-result), Document, and Partition key value.
+4. Select "Create or update document" as 4th step on Logic Apps Designer. Fistly set Connection Name and select the DocumentDB Account (e.g. cosmos-fragments) created in advance. Next, set the Database ID (e.g.fragmentdb), Collection ID (e.g. ocr-result), Document, and Partition key value.
 <img src="images/create-logic-app-designer-4.jpg" width="500">
 
-4. Click "Save" at the top left of Logic Apps Designerand. Now it's ready to run the Logic App!
+5. Click "Save" at the top left of Logic Apps Designerand. Now it's ready to run the Logic App!
 
 #### Run the Logic App
 1. Run the python script to make fragment images.
