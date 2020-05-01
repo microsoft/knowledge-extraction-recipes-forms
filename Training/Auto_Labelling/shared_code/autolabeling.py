@@ -127,6 +127,7 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
 
                     for i in range(len(gt_processed)):
                         
+                        found = False
                         for p in range(min(len(data['analyzeResult']['readResults']), max_pages)): 
                             
                             for line in data['analyzeResult']['readResults'][p]['lines']:
