@@ -180,15 +180,15 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
 
                     # Keeping track of the values we have already found
                     matching_gt_value = " ".join(val for val in gt_processed)
-                    try:
+                    if matching_gt_value in found_fields:
                         found_fields[matching_gt_value] += 1
-                    except:
+                    else:
                         found_fields[matching_gt_value] = 1
                     if len(gt_processed) > 1:
                         for val in gt_processed:
-                            try:
+                            if val in found_fields:
                                 found_fields[val] += 1
-                            except:
+                            else:
                                 found_fields[val] = 1
                 
                     keys, found_keys = build_keys_json_object(keys, filename,
