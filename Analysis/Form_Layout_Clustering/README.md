@@ -5,9 +5,9 @@ Python code along with the notebooks under this directory can be used to speed u
 There is a work in progress to extract this code and the overall approach as a separate UI tool to make the labelling efforts even easier and faster - however until it's implemented and published please add any related suggestions, issues or PRs into current repo.
 
 ### Table of content:
-1. [Getting started](#1.-Getting-started)
-2. [Approach in a nutshell](#2.-Approach-in-a-nutshell)  
-<!-- 3. [Detailed steps](#3.-Detailed-steps)    -->
+1. [Getting started](#1-Getting-started)
+2. [Approach in a nutshell](#2-Approach-in-a-nutshell)  
+<!-- 3. [Detailed steps](#3-Detailed-steps)    -->
 
 ### 1. Getting started
 
