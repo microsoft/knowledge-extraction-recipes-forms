@@ -1,0 +1,12 @@
+pandas
+numpy
+sklearn
+python-Levenshtein
+fuzzywuzzy
+pytesseract
+pillow
+PyPDF2
+pdf2image
+pickle
+multiprocess
+ipyplot
