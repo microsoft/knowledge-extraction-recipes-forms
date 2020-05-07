@@ -77,7 +77,7 @@ def pdf_to_images(
 
 def image_to_text(
         image,
-        resize_max_size=2800,
+        resize_max_size=None,
         fix_orientation=True,
         return_image=False,
         hocr=False,
@@ -165,14 +165,15 @@ def image_to_text(
             # I was getting weird error and replacing slashes helped so:
             output_file = output_file.replace(
                 "\\", "/").replace("\\", "/")
-            with open(output_file, 'wb') as file_object:
-                if hocr:
+            if hocr:
+                with open(output_file, 'wb') as file_object:
                     file_object.write(data)
-                else:
-                    # Save dict data into the JSON file.
+            else:
+                # Save dict data into the JSON file                
+                with open(output_file, 'w') as file_object:
                     json.dump(data, file_object)
-                if verbose == 2:
-                    print("Saved OCR to output file:", output_file)
+            if verbose == 2:
+                print("Saved OCR to output file:", output_file)
         elif save_output:
             if verbose == 2:
                 print(("Saving output was requested but output file path was not provided.\n"  # NOQA E501

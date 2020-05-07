@@ -19,17 +19,14 @@ def ocr_loader(json_path):
         string:
             OCR text output
     """
-    try:
-        json_path = json_path.replace('\\', '/')
-        with open(json_path, "rb") as file:
-            loaded_json = json.load(file)
-            if type(loaded_json) is list:
-                result = loaded_json
-            else:
-                result = loaded_json['text']
-            return " ".join(result)
-    except FileNotFoundError as e:
-        return ""
+    json_path = json_path.replace('\\', '/')
+    with open(json_path, "r") as file:
+        loaded_json = json.load(file)
+        if type(loaded_json) is list:
+            result = loaded_json
+        else:
+            result = loaded_json['text']
+        return " ".join(result)
 
 
 def read_ocr_from_json(df):
@@ -218,7 +215,7 @@ def create_dataframe_from_files(
     })
 
     df['FileName'] = df[column_map[file_ext]].apply(
-        lambda x: os.path.basename(x).split('.')[0].split('_')[0])
+        lambda x: os.path.basename(x).split('.')[0])  #.split('_')[0]
 
     return _create_dataframe(
         df, data_dir,
