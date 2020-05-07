@@ -82,6 +82,7 @@ in this repository using diverse approaches.
 | Pre-Processing | [Scan skewness](Pre_Processing/Skewness/README.md) | Illustrates testing and correcting skewness
 | Pre-Processing | [Projection](Pre_Processing/Projection/README.md) | Illustrates hot to identify document skew and location of text lines
 | Pre-Processing     | [Optical Mark Recognition](Pre_Processing/Optical_Mark_Recognition/README.md) | Illustrates some techniqes to determine if a checkbox exists and how to extract it
+| Training | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
 | Training | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recogniser model correlation
 | Training | [Dataset representativeness](Training/Representativeness/README.md) | Illustrates how test how to test the train and test datasets for representativeness
 | Training | [Named Entity Recognition](Training/README.md#named-entity-recognition) | Illustrates how NER can be trained used to identify and extract entities on a form
