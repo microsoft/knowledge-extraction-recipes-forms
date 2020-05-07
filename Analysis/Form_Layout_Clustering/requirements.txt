@@ -7,6 +7,5 @@ pytesseract
 pillow
 PyPDF2
 pdf2image
-pickle
 multiprocess
 ipyplot
