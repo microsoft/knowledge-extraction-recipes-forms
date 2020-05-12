@@ -9,4 +9,13 @@ The included functionality:
 * Turn into grayscale
 * Binarization
 
+The [form_boxes.py](form_boxes.py) module contains methods for handling forms with boxes for individual characters.
+
+The included functionality:
+
+* Form alignment based on the orientation of the boxes
+* Background cleaning
+* Conversion into grayscale
+* Field detection and outlining
+
 Back to the [Pre-Processing section](../README.md)
