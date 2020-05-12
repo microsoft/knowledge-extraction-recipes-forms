@@ -9,7 +9,9 @@ The included functionality:
 * Turn into grayscale
 * Binarization
 
-The [form_boxes.py](form_boxes.py) module contains methods for handling forms with boxes for individual characters.
+## Removing boxes around text
+
+The [form_boxes.py](form_boxes.py) module contains methods for handling forms with boxes to retrieve the individual characters. For a related technique see the accelerator [Projection to correct image skew and identify text lines](../Projection/README.md#Projection-to-correct-image-skew-and-identify-text-lines)
 
 The included functionality:
 

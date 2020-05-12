@@ -183,7 +183,7 @@ def build_keys_json_object(keys, blobname, anchor_key, found_keys, ocr_text, ocr
     return keys, found_keys
 
 
-def find_anchor_keys_in_invoice(df_gt, filename, data):
+def find_anchor_keys_in_form(df_gt, filename, data, anchor_keys, pass_number):
     """
     This function exists as part of the auto-labelling process for the supervised
     training
@@ -191,6 +191,8 @@ def find_anchor_keys_in_invoice(df_gt, filename, data):
     :param df_gt: The ground truth dataframe
     :param filename: The name of the file that we are processing
     :param data: The OCR for the record in question
+    :param pass_number: An int that represents the pass number
+    :param anchor_keys: The fields we want to extract - passed in from the ENV file
     :return: A json object with the fields and corresponding bounding boxes
     """
 
@@ -200,8 +202,8 @@ def find_anchor_keys_in_invoice(df_gt, filename, data):
         i = 0
         keys[filename] = []
         found_keys = []
-        anchor_keys = ['InvoiceNumber', 'InvoiceDate', 'NetValue', 'TaxValue', 'TotalAmount',
-                       'InvoiceCurrency', 'PurchaseOrder']
+        # Your anchor_keys (key_field_names) should like like the sample list below
+        #anchor_keys = ['InvoiceNumber', 'InvoiceDate', 'NetValue', 'TaxValue', 'TotalAmount']
 
         df_vendor_gt = df_gt[df_gt['FILENAME'] == str(filename[:len(filename) - 13])]
         # TODO Page 0 only at the moment - may need to be changed
@@ -215,78 +217,85 @@ def find_anchor_keys_in_invoice(df_gt, filename, data):
             if len(df_vendor_gt[anchor_key]) == 0:
                 continue
 
-            for lines in data['analyzeResult']['readResults'][0]['lines']:
-                # We operate at the lowest level where we can
-                for words in lines['words']:
+            for pages in data['analyzeResult']['readResults']:  # Added page
 
-                    ocr_clean_word = ''
-                    ocr_clean_line = ''
-                    gt_clean = ''
+                page = pages['page']
+                height = pages['height']
+                width = pages['width']
+                for lines in pages['lines']:
+                    # for lines in data['analyzeResult']['readResults'][0]['lines']:
+                    # We operate at the lowest level where we can
+                    for words in lines['words']:
 
-                    if anchor_key == 'NetValue':
-                        # Here we add a trailing 0 as the ground truth as a string
-                        df_vendor_gt = add_trailing_zero(df_vendor_gt, anchor_key)
+                        ocr_clean_word = ''
+                        ocr_clean_line = ''
+                        gt_clean = ''
 
-                    if anchor_key == 'TotalAmount':
-                        # Here we add a trailing 0 as the ground truth as a string
-                        df_vendor_gt = add_trailing_zero(df_vendor_gt, anchor_key)
+                        if anchor_key == 'NetValue':
+                            # Handle your formatting value here
+                            ocr_clean_word = ''
 
-                    if anchor_key == 'InvoiceDate':
-                        gt_clean = date_format(
-                            str(df_vendor_gt[anchor_key].iloc[0]).encode('ascii', 'ignore').decode(
-                                'ascii'))
+                        if anchor_key == 'TotalAmount':
+                            # Handle your formatting value here
+                            ocr_clean_word = ''
 
-                        ocr_clean_word = handle_date_format_num_word_num(words['text'])
-                        # Apply to one level up as well
-                        ocr_clean_line = handle_date_format_num_word_num(lines['text'])
+                        if anchor_key == 'InvoiceDate':
+                            # Handle your date formatting here
+                            gt_clean = date_format(
+                                str(df_vendor_gt[anchor_key].iloc[0]).encode('ascii', 'ignore').decode(
+                                    'ascii'))
 
-                        # This can fail if out string is not a date due to some unhandled format
-                        try:
-                            ocr_clean_word = date_format(ocr_clean_word)
-                            ocr_clean_line = date_format(ocr_clean_line)
-                        except Exception:
-                            continue
+                            ocr_clean_word = handle_date_format_num_word_num(words['text'])
+                            # Apply to one level up as well
+                            ocr_clean_line = handle_date_format_num_word_num(lines['text'])
 
-                    # Now we clean out all punctuation for exact matching - word level
-                    if len(ocr_clean_line) == 0:
-                        ocr_clean_line = strip_lower_remove_punctuation(
+                            # This can fail if out string is not a date due to some unhandled format
+                            try:
+                                ocr_clean_word = date_format(ocr_clean_word)
+                                ocr_clean_line = date_format(ocr_clean_line)
+                            except Exception:
+                                continue
+
+                        # Now we clean out all punctuation for exact matching - word level
+                        if len(ocr_clean_line) == 0:
+                            ocr_clean_line = strip_lower_remove_punctuation(
                             lines['text'].encode('ascii', 'ignore').decode('ascii'))
-                    else:
-                        ocr_clean_line = strip_lower_remove_punctuation(
-                            ocr_clean_line.encode('ascii', 'ignore').decode('ascii'))
+                        else:
+                            ocr_clean_line = strip_lower_remove_punctuation(
+                                ocr_clean_line.encode('ascii', 'ignore').decode('ascii'))
 
-                    # Now we clean out all punctuation for exact matching - line level
-                    if len(ocr_clean_word) == 0:
-                        ocr_clean_word = strip_lower_remove_punctuation(
-                            words['text'].encode('ascii', 'ignore').decode('ascii'))
-                    else:
-                        ocr_clean_word = strip_lower_remove_punctuation(
-                            ocr_clean_word.encode('ascii', 'ignore').decode('ascii'))
+                        # Now we clean out all punctuation for exact matching - line level
+                        if len(ocr_clean_word) == 0:
+                            ocr_clean_word = strip_lower_remove_punctuation(
+                                words['text'].encode('ascii', 'ignore').decode('ascii'))
+                        else:
+                            ocr_clean_word = strip_lower_remove_punctuation(
+                                ocr_clean_word.encode('ascii', 'ignore').decode('ascii'))
 
-                    gt_clean = strip_lower_remove_punctuation(
-                        str(df_vendor_gt[anchor_key].iloc[0]).encode('ascii', 'ignore').decode('ascii'))
+                        gt_clean = strip_lower_remove_punctuation(
+                            str(df_vendor_gt[anchor_key].iloc[0]).encode('ascii', 'ignore').decode('ascii'))
 
-                    gt_clean = gt_clean.replace(" ", "")
-                    ocr_clean_word = ocr_clean_word.replace(" ", "")
-                    ocr_clean_line = ocr_clean_line.replace(" ", "")
+                        gt_clean = gt_clean.replace(" ", "")
+                        ocr_clean_word = ocr_clean_word.replace(" ", "")
+                        ocr_clean_line = ocr_clean_line.replace(" ", "")
 
-                    if len(gt_clean) > 0:
-                        if gt_clean == ocr_clean_word:
-                            keys, found_keys = build_keys_json_object(keys, filename,
-                                                                      anchor_key, found_keys,
-                                                                      words['text'],
-                                                                      words['boundingBox'],
-                                                                      page,
-                                                                      height,
-                                                                      width)
-                        elif gt_clean == ocr_clean_line:
-                            keys, found_keys = build_keys_json_object(keys, filename,
-                                                                      anchor_key, found_keys,
-                                                                      lines['text'],
-                                                                      lines['boundingBox'],
-                                                                      page,
-                                                                      height,
-                                                                      width)
+                        if len(gt_clean) > 0:
+                            if gt_clean == ocr_clean_word:
+                                keys, found_keys = build_keys_json_object(keys, filename,
+                                                                        anchor_key, found_keys,
+                                                                        words['text'],
+                                                                        words['boundingBox'],
+                                                                        page,
+                                                                        height,
+                                                                        width)
+                            elif (gt_clean == ocr_clean_line) and (pass_number == 2):
+                                keys, found_keys = build_keys_json_object(keys, filename,
+                                                                        anchor_key, found_keys,
+                                                                        lines['text'],
+                                                                        lines['boundingBox'],
+                                                                        page,
+                                                                        height,
+                                                                        width)
         i += 1
 
     except Exception as e:

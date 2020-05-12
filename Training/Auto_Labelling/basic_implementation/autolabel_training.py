@@ -316,6 +316,7 @@ def create_training_files_for_document(
         ground_truth_df,
         extraction_file_name,
         ocr_data,
+        key_field_names,
         pass_number)
 
     print(f"key_field_data {len(key_field_data)} {key_field_data}")
