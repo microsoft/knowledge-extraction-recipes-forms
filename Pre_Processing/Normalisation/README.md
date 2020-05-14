@@ -11,7 +11,7 @@ The included functionality:
 
 ## Removing boxes around text
 
-The [form_boxes.py](form_boxes.py) module contains methods for handling forms with boxes to retrieve the individual characters. For a related technique see the accelerator [Projection to correct image skew and identify text lines](../Projection/README.md#Projection-to-correct-image-skew-and-identify-text-lines)
+The [form_boxes.py](form_boxes.py) module contains methods for handling forms with boxes to retrieve the individual characters. This is useful when you have an form where the handwriting overlaps with the box surrounding it causing the OCR to misread the characters. For a related technique see the accelerator [Projection to correct image skew and identify text lines](../Projection/README.md#Projection-to-correct-image-skew-and-identify-text-lines)
 
 The included functionality:
 

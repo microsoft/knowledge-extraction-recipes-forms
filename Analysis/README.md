@@ -49,7 +49,11 @@ If only a few form layouts exist from which to extract information, then this is
 This could be a vendor logo on an invoice, a background colour on a scanned document, or a table or word that exists in a particular location. By identifying a specific document type, more options become available to process that document. It could be
 a declaritive rules based approach or data driven.
 
-Have a look at the code accelerator [Search based classification](Attribute_Search_Classification/README.md) for a simple but effective search based approach.
+Our goal is to automate the identification of the correct model trained for the form layout as there is a 1:1 correlation between the Form Recognizer model and the respective form layout.
+
+Have a look at the code accelerator [Search based classification](Attribute_Search_Classification/README.md) for a simple but effective search based approach on text features.
+
+Alternatively have a look at the code accelerator [Form Layout Clustering](Form_Layout_Clustering/README.md) for a clustering approach based on text features.
 
 ### The data
 

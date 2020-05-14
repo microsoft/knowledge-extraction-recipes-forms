@@ -7,7 +7,7 @@
 ![Knowledge Extraction Recipes](https://github.com/microsoft/knowledge-extraction-recipes-forms/workflows/Knowledge%20Extraction%20Recipes/badge.svg)
 ![Lint and Test Charts](https://github.com/shanepeckham/knowledge-extraction-recipes-forms/workflows/Lint%20and%20Test%20Charts/badge.svg)
 
-Retrieving information from documents and forms has long been a challenge, and even now at the time of writing, 
+Retrieving information from documents and forms has long been a challenge, and even now at the time of writing,
 organisations are still handling significant amounts of paper forms that need to be scanned, classified and mined
 for specific information to enable downstream automation and efficiencies. Automating this extraction and applying
 intelligence is in fact a fundamental step toward digital transformation that organisations are still struggling
@@ -80,7 +80,8 @@ in this repository using diverse approaches.
 | Pre-Processing | [Image Channel Normalisation](Pre_Processing/Normalisation/preprocess_document.ipynb) | Illustrates interactive normalisation, binarization and greyscale conversion
 | Pre-Processing | [Conversion](Training/Auto_Labelling/README.md#conversion) | Converting documents between various formats such as TIF to PDF, JPG to PDF etc
 | Pre-Processing | [Scan skewness](Pre_Processing/Skewness/README.md) | Illustrates testing and correcting skewness
-| Pre-Processing | [Projection](Pre_Processing/Projection/README.md) | Illustrates hot to identify document skew and location of text lines
+| Pre-Processing | [Projection](Pre_Processing/Projection/README.md) | Illustrates how to identify document skew and location of text lines
+| Pre-Processing | [Removing Boxes](Pre_Processing/Normalisation/README.md##Removing-boxes-around-text) | Illustrates how to identify and remove boxes around text
 | Pre-Processing     | [Optical Mark Recognition](Pre_Processing/Optical_Mark_Recognition/README.md) | Illustrates some techniqes to determine if a checkbox exists and how to extract it
 | Training | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
 | Training | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recogniser model correlation
@@ -205,9 +206,9 @@ to easily read and write your data in Azure storage services such as blob storag
 * Deploying the trained machine learning model as a web service to [**Azure Container Instance**](https://azure.microsoft.com/en-us/services/container-instances/) for deveopment and test,  or for low scale, CPU-based workloads.
 * Deploying the trained machine learning model as a web service to [**Azure Kubernetes Service**](https://azure.microsoft.com/en-us/services/kubernetes-service/) for high-scale production deployments and provides autoscaling, and fast response times.
 
-To successfully run these notebooks, you will need an [**Azure subscription**](https://azure.microsoft.com/en-us/)
+To successfully run these code accelerators, you will need an [**Azure subscription**](https://azure.microsoft.com/en-us/)
 or can [**try Azure for free**](https://azure.microsoft.com/en-us/free/). There may be other Azure services or products
-used in the notebooks. Introduction and/or reference of those will be provided in the notebooks themselves.
+used in the code. Introduction and/or reference of those will be provided in the code themselves.
 
 ## Contributing
 
