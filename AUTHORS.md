@@ -50,5 +50,5 @@ To contributors: please add your name to the list when you submit a patch to the
    * Documentation
 * **[Sergii Baidachnyi](https://github.com/sbaidachni)**
    * Azure Machine Learning Pipelines
-* **[Tomi Paananen]()**
-   * The code that makes people weep with joy
+* **[Tomi Paananen](https://github.com/tompaana)**
+   * "The code that makes people weep with joy"
