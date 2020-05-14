@@ -2,7 +2,9 @@
 
 This document describes how to implement the autolabelling process for the Supervised version of Forms Recognizer. By using an autolabelling approach we are able to reduce but not remove the need for a *human-in-the-loop*. It is strongly recommended that manual labelling still takes place for poorly performing models, but the need for manual labelling should be significantly reduced.
 
-Note, no specialist skills are required for labelling, and thus with a little training and a disciplined and rigourous approach, poorly perfoming models due to autolabelling failures can be quickly rectified.
+Note, no specialist skills are required for labelling, and thus with a little training and a disciplined and rigourous approach, poorly perfoming models due to autolabelling failures can be quickly rectified.What we have seen from real project implementations is that Auto-Labelling will produce high accuracy for most of the layout types/models, the poorly performing models will typically be due to mixed layouts, poor quality scans and noise such as messy handwriting overlapping over other text.
+
+To amend the labels or indeed add new ones, or correct an Auto-labelled model please refer to the [Form Recognizer Sample Labelling Tool](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool)
 
 The result is that we can obtain the high accuracy scores of a supervised approach but also benefit from the ability to automate training at scale that is typically available in an unsupervised approach.
 

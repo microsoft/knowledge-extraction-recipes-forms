@@ -41,4 +41,6 @@ Have a look at the code accelerator [Attribute Search Classification](attribute_
 
 <img src="../../Project_Preparation/Decision_Guidance/repo_images/Ranking.png" align="center" alt="" width="500"/>
 
+For an alternate approach have a look at the code accelerator [Form Layout Clustering](Form_Layout_Clustering/README.md) for a clustering approach based on text features.
+
 Back to the [Analysis section](../README.md)
