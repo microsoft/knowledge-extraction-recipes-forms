@@ -1,8 +1,8 @@
 # Projection to correct image skew and identify text lines
 
-We use a technique called 'projection' to identify document skew and location of text lines. This technique can be generalised to identify the locations of objects such as letters and boxes. For a related technique to remove individual characters from textboxes see [Removing boxes around text](../Normalisation/README.md##Removing-boxes-around-text)
+We use a technique called 'projection' to identify document skew and the location of text lines. This technique can be generalised to identify the locations of objects such as letters and boxes. For a related technique to identify individual characters within textboxes see [Removing boxes around text](../Normalisation/README.md##Removing-boxes-around-text)
 
-Note, that the simplest method of identifying the location of text and skew angle is by using Azure OCR. Azure OCR will provide accurate bounding boxes around lines and words, it also provides the skew angle without having to correct for skew. We provide this example as sometimes we need to process documents before an OCR step. For example, we need to remove noise from a document section before OCR. Projection is one technique that can be used to identify the location of form objects before OCR.
+Note, the simplest method of identifying the location of text and skew angle is by using Azure OCR. Azure OCR will provide accurate bounding boxes around lines and words, it also provides the skew angle without having to correct for skew. We provide this example as sometimes we need to process documents before an OCR step. For example, we need to remove noise from a document section before OCR. Projection is one technique that can be used to identify the location of form objects before OCR.
 
 This [example](./skew_line_detection_projection.py) takes the following image, identifies the skew, rotates the image and then identifies the location of the text rows:
 
