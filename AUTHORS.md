@@ -16,13 +16,13 @@ They have admin access to the repo and provide support reviewing issues and pull
 Contributors  (sorted alphabetically)
 -------------------------------------
 
-[Full List of Contributors](https://github.com/Microsoft/ComputerVision/graphs/contributors) Note, this project has been migrated from two prior repositories so not all contributors are present in the current graph.
+[Full List of Contributors](https://github.com/microsoft/knowledge-extraction-recipes-forms/graphs/contributors) Note, this project has been migrated from two prior repositories so not all contributors are present in the current graph.
 
 To contributors: please add your name to the list when you submit a patch to the project.
 
 * **[Alessandro Jannuzzi]()**
    * Documentation
-* **[Alex Hocking)](https://github.com/alexhock)**
+* **[Alex Hocking](https://github.com/alexhock)**
    * Auto-labelling and Projection
 * **[Ayaka Hara](https://github.com/aykhara)**
    *  Japanese form extraction
