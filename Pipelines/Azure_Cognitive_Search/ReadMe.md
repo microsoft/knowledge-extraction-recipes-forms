@@ -24,7 +24,7 @@ In below you will create a data flow that uses cognitive skills to enrich your b
 
 Since this is an AI training on top of Microsoft Azure Services, before we start you need: complete trainings and preperation on:
 
-* [Hands on WorkShop for Cognitive Search](https://github.com/ikivanc/LearnAI-Cognitive-Search/blob/master/readmeWorkshop.md)
+* [Hands on WorkShop for Cognitive Search](https://github.com/Azure-Samples/azure-search-knowledge-mining)
 
 ## Custom Skill for a Custom List Generator in Azure Cognitive Search
 
