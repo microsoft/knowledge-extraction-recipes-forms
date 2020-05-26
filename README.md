@@ -103,7 +103,7 @@ The [Pipelines](Pipelines/README.md) section contains some example patterns and 
 
  Scenario | Description |
 | -------- | ----------- |
-| [Azure Cognitive Search](Pipelines/Azure_Cognitive_Search/README.md)| Sample pipeline using Azure Cognitive Search
+| [Azure Cognitive Search](Pipelines/Azure_Cognitive_Search/ReadMe.md)| Sample pipeline using Azure Cognitive Search
 | [Azure Kubernetes Service](Pipelines/Azure_Kubernetes_Service/README.md)| Sample pipeline using Azure Kubernetes Service
 | [Azure Machine Learning](Pipelines/Azure_Machine_Learning/README.md)| Sample pipeline using Azure Machine Learning
 | [Azure Logic Apps](Pipelines/Azure_Logic_Apps/README.md)| Sample pipeline using Azure Logic Apps
