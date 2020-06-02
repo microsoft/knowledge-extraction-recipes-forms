@@ -133,10 +133,11 @@ def pre_process_gt(key_field, gt):
     """
 
     # TODO add logic here for multi-page fields
+    """
     if key_field in Config.MULTI_PAGE_FIELDS.split():
         if not isinstance(gt, str):
             gt = "{:.2f}".format(gt)
-
+    """
     if not isinstance(gt, str):
         gt = str(gt)
 
@@ -250,11 +251,16 @@ def get_issuer_histogram(issuer_results, key_fields, ground_truth_df):
                         results[key_field][1] += 1
 
             if key_found is False:
+
+                # TODO add multi-field logic here
+                """
+                
                 if key_field in Config.MULTI_PAGE_FIELDS.split():
                     gt_value = get_gt_value(key_field, issuer_key, ground_truth_df)
                     if gt_value == 0:
                         results[key_field][0] += 1
                         results[key_field][1] += 1
+                """
 
     return results
 
@@ -319,7 +325,7 @@ def get_issuer_confidence_results(issuer_results, key_fields):
     return results
 
 
-def print_results(issuer_id, key_fields, issuer_results, output_file_name, ground_truth_df):
+def print_results(issuer_id, key_fields, issuer_results, output_file_name, ground_truth_df, local_directory):
     """
     Retrieve and print the summary results of a vendor
     :param issuer_id: The issuer identifier
@@ -331,7 +337,7 @@ def print_results(issuer_id, key_fields, issuer_results, output_file_name, groun
     # TODO add the fields to be evaluated here e.g.
     FormNumberAccuracy = 0
 
-    with open(os.path.join(Config.LOCAL_WORKING_DIR + output_file_name), "w") as output:
+    with open(os.path.join(local_directory + output_file_name), "w") as output:
 
         results = get_issuer_histogram(issuer_results, key_fields, ground_truth_df)
 
@@ -397,7 +403,7 @@ def print_results(issuer_id, key_fields, issuer_results, output_file_name, groun
         output.write("\n")
 
         output.close()
-        print('Wrote file', os.path.join(Config.LOCAL_WORKING_DIR + output_file_name))
+        print('Wrote file', os.path.join(local_directory + output_file_name))
 
     return agg_accuracy, FormNumberAccuracy
 
@@ -500,7 +506,7 @@ def main():
                 # TODO amend thus function to process all your fields
                 accuracy, FormNumberAccuracy = print_results(Config.RUN_FOR_SINGLE_ISSUER,
                                                              key_fields, issuer_results,
-                                                             output_file_name, ground_truth_df)
+                                                             output_file_name, ground_truth_df, rf)
 
                 print(accuracy, i)
                 overall_accuracy += accuracy

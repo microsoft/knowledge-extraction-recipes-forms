@@ -425,7 +425,8 @@ def find_anchor_keys_in_form(anchor_keys, df_gt, filename, data, pass_number):
     OCR and the Ground Truth and match.
 
     We do both a word pass and a higher line level pass as we can get better results for some forms
-    depending on the layout
+    depending on the layout. This is now demo code, see the full implementation here:
+    https://github.com/microsoft/knowledge-extraction-recipes-forms/tree/master/Training/Auto_Labelling
 
     :param df_gt: The ground truth dataframe
     :param filename: The name of the file that we are processing
@@ -433,112 +434,126 @@ def find_anchor_keys_in_form(anchor_keys, df_gt, filename, data, pass_number):
     :param pass_number: An int that represents the pass number
     :return: A json object with the fields and corresponding bounding boxes
     """
-
     try:
-
         keys = {}
         i = 0
         keys[filename] = []
         found_keys = []
         # TODO add your unique file identifier here
-        df_issuer_gt = df_gt[df_gt['Your file name'] == str(filename[:len(filename) - 13])]
+        df_issuer_gt = df_gt[df_gt['FILENAME'] == str(filename[:len(filename) - 9])]
 
         # Now we loop through the anchor_keys to see if we can find them
         for anchor_key in anchor_keys:
+            found_key = False
+
+            no_strip = False
+            anchor_key = anchor_key.strip()
             # Let's make sure the ground truth is indeed populated
             if len(df_issuer_gt[anchor_key]) == 0:
                 continue
 
             for pages in data['analyzeResult']['readResults']:  # Added page
+                if found_key:
+                    break
 
                 page = pages['page']
                 height = pages['height']
                 width = pages['width']
                 for lines in pages['lines']:
+                    if found_key:
+                        break
 
                     # We operate at the lowest level where we can
                     for words in lines['words']:
+                        if found_key:
+                            break
 
                         ocr_clean_word = ''
                         ocr_clean_line = ''
                         gt_clean = ''
 
-                        # TODO Add your Ground Truth value formatting here e.g.
-                        if anchor_key == 'FormDate':  # TODO this is your field you want to extract
-                            gt_clean = 'Normalise your Ground Truth field value'
+                        if anchor_key == 'BILL_TO':
+                            # TODO add your custom formatting here - for the demo we just add text typical to the
+                            # TODO invoice format. In reality you would use a classification approach from your master
+                            # TODO record to identify vendors and bill to parties
+                            # TODO See https://github.com/microsoft/knowledge-extraction-recipes-forms/blob/master/Analysis/Attribute_Search_Classification/README.md
+                            gt_clean = 'Invoice for:' + str(df_issuer_gt[anchor_key].iloc[0])
+                            gt_clean = strip_lower_remove_punctuation(
+                                gt_clean.encode('ascii', 'ignore').decode('ascii'))
 
-                            ocr_clean_word = handle_date_format_num_word_num(words['text'])
-                            # Apply to one level up as well
-                            ocr_clean_line = handle_date_format_num_word_num(lines['text'])
-                            # This can fail if out string is not a date due to some unhandled format
-                            try:
-                                # TODO add your custom field formatting here to both line and word
-                                ocr_clean_word = 'Your custom formatting_function()'
-                                ocr_clean_line = 'Your custom formatting_function()'
+                        if anchor_key == 'TOTAL':
+                            # TODO add custom total formatting here
+                            gt_clean = df_issuer_gt[anchor_key].iloc[0]
+                            ocr_clean_word = words['text'].replace(",", "")
+                            ocr_clean_line = lines['text'].replace(",", "")
+                            no_strip = True
 
-                                if len(ocr_clean_line) == 0:
-                                    ocr_clean_line = lines['text']
-                                    ocr_clean_word = words['text']
+                        if not no_strip:
 
-                                    # TODO try to fix some common errors add yours
-                                    candidate_dates = ocr_clean_line.split("/")
-                                    for candidate_date in candidate_dates:
-                                        candidate_date = candidate_date.replace(" ", "")
-                                        candidate_date = date_format(candidate_date)
+                            # Now we clean out all punctuation for exact matching - word level
+                            if len(ocr_clean_line) == 0:
+                                ocr_clean_line = strip_lower_remove_punctuation(
+                                    lines['text'].encode('ascii', 'ignore').decode('ascii'))
+                            else:
+                                ocr_clean_line = strip_lower_remove_punctuation(
+                                    ocr_clean_line.encode('ascii', 'ignore').decode('ascii'))
 
-                                if len(candidate_date) > 0:
-                                    candidate_word = ocr_clean_word.replace("/", "")
-                                    candidate_word = candidate_word.replace(" ", "")
-                                    candidate_word = strip_lower_remove_punctuation(candidate_word)
-                                    candidate_word = candidate_word.replace(" ", "")
-                                    if (candidate_word in candidate_date) and (len(candidate_word) > 0):
-                                        ocr_clean_word = candidate_date
+                            # Now we clean out all punctuation for exact matching - line level
+                            if len(ocr_clean_word) == 0:
+                                ocr_clean_word = strip_lower_remove_punctuation(
+                                    words['text'].encode('ascii', 'ignore').decode('ascii'))
+                            else:
+                                ocr_clean_word = strip_lower_remove_punctuation(
+                                    ocr_clean_word.encode('ascii', 'ignore').decode('ascii'))
 
-                            except Exception as date_error:
-                                print('Date handling error', ocr_clean_word, ocr_clean_line, date_error)
-                                continue
+                            if len(gt_clean) == 0:
+                                gt_clean = strip_lower_remove_punctuation(
+                                    str(df_issuer_gt[anchor_key].iloc[0]).encode('ascii', 'ignore').decode('ascii'))
 
-                        # Now we clean out all punctuation for exact matching - word level
-                        if len(ocr_clean_line) == 0:
-                            ocr_clean_line = strip_lower_remove_punctuation(
-                                lines['text'].encode('ascii', 'ignore').decode('ascii'))
-                        else:
-                            ocr_clean_line = strip_lower_remove_punctuation(
-                                ocr_clean_line.encode('ascii', 'ignore').decode('ascii'))
-
-                        # Now we clean out all punctuation for exact matching - line level
-                        if len(ocr_clean_word) == 0:
-                            ocr_clean_word = strip_lower_remove_punctuation(
-                                words['text'].encode('ascii', 'ignore').decode('ascii'))
-                        else:
-                            ocr_clean_word = strip_lower_remove_punctuation(
-                                ocr_clean_word.encode('ascii', 'ignore').decode('ascii'))
-
-                        gt_clean = strip_lower_remove_punctuation(
-                            str(df_issuer_gt[anchor_key].iloc[0]).encode('ascii', 'ignore').decode('ascii'))
-
-                        gt_clean = gt_clean.replace(" ", "")
-                        ocr_clean_word = ocr_clean_word.replace(" ", "")
-                        ocr_clean_line = ocr_clean_line.replace(" ", "")
+                            gt_clean = gt_clean.replace(" ", "")
+                            ocr_clean_word = ocr_clean_word.replace(" ", "")
+                            ocr_clean_line = ocr_clean_line.replace(" ", "")
 
                         if len(gt_clean) > 0:
                             if gt_clean == ocr_clean_word:
+                                print('Matched', gt_clean, ocr_clean_word, anchor_key, filename)
+                                ocr_orig_word = words['text']
+
                                 keys, found_keys = build_keys_json_object(keys, filename,
                                                                           anchor_key, found_keys,
-                                                                          words['text'],
+                                                                          ocr_orig_word,
                                                                           words['boundingBox'],
                                                                           page,
                                                                           height,
                                                                           width)
+                                found_key = True
+
 
                             elif (gt_clean == ocr_clean_line) and (pass_number == 2):
+                                print('Matched', gt_clean, ocr_clean_line, anchor_key, pass_number, filename)
+                                ocr_orig_line = lines['text']
                                 keys, found_keys = build_keys_json_object(keys, filename,
                                                                           anchor_key, found_keys,
-                                                                          lines['text'],
+                                                                          ocr_orig_line,
                                                                           lines['boundingBox'],
                                                                           page,
                                                                           height,
                                                                           width)
+                                found_key = True
+
+                            #  TODO catch all here
+                            elif (gt_clean in ocr_clean_line) and ((anchor_key == 'BILL_TO_ZIP') or
+                                anchor_key == 'VENDOR_ZIP'):
+                                ocr_orig_line = lines['text']
+                                keys, found_keys = build_keys_json_object(keys, filename,
+                                                                          anchor_key, found_keys,
+                                                                          ocr_orig_line,
+                                                                          lines['boundingBox'],
+                                                                          page,
+                                                                          height,
+                                                                          width)
+                                found_key = True
+
 
         i += 1
 

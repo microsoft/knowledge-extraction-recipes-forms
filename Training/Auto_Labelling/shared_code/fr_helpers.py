@@ -5,6 +5,7 @@ import time
 from . import utils
 from . import formatting
 
+
 def train_model(region, subscription_key, training_data_blob_sas_url, doctype, use_label_file=True):
 
     """Trains a document with the Form Recognizer supervised model"""
@@ -49,6 +50,7 @@ def train_model(region, subscription_key, training_data_blob_sas_url, doctype, u
         logging.error(f"Error training model : {e}")
     
     return None
+
 
 def get_prediction(region, subscription_key, blob_sas_url, model_id, predict_type):
 
@@ -109,6 +111,7 @@ def get_prediction(region, subscription_key, blob_sas_url, model_id, predict_typ
             logging.error(f"Prediction is invalid: {e}")
                 
     return prediction
+
 
 def batch_predictions(blobs, model_id, storage_url, container, sas, region, subscription_key):
     

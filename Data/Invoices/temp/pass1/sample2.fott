@@ -1,0 +1,68 @@
+{
+    "sourceConnection": {
+        "providerOptions": {
+            "encrypted": "eyJjaXBoZXJ0ZXh0IjoiZGYwZTI1ODIwMWQ0YmZhMDgzYjVmMmFjMDFjZGUzZDZjZjNkN2E3NTlkMDA3MzdlZjQ0OGYyOTk1ZmRmYTQxNmZiMjdhM2FlYTExYWZjMWY1NzFmMmZhMWM2NTc0YTQ4NDQ2Njc1ZmIxMTcwOTI4ZTc3Njg5MjA0ZjZlYjk4ZjQ0ODk5MzIyMDA3NThhNWJhNmRmYTVlYWQwNmIyOGRlNWZjOGQ1NDk5MDI3NTRiYjFkYWY4OWI5ZDcwNTU1ZDFmOTgxZGJjYmY1Mzk4YjRkN2Y2ZWM2OTkzYmJmOGMxODU0ZWQ5YTBkNmNhZjg5OTQ0NzQ5NTQxZjRjNjY0Yjg1OTdlZWYzZDgwZjk0ZmM3MTYzYjU1NWUxOWFmZTRmNTRjZjJhZTcyOWE2NTEwMzA3NjgwNzViN2E2ZmRjN2Q0NzRhYzQ4ZjhmMDAwYjY5MTg4N2NiMWM1YzhkYTY2M2QyNjMxOGRmMWEzYTg0OGRmNjAyY2I0MWVlYjE2NDFlZWIwMTdkM2IzNGRhNDZkNjY0OTNiN2MwZTg5NGJjYzM2YjkiLCJpdiI6ImRjNGQ3ODViMDA3MDE2MjcxNTk3OWNlYTM3NDIzMGVhIn0="
+        },
+        "id": "ceQNzsCAP",
+        "name": "autolabelv1train",
+        "providerType": "azureBlobStorage"
+    },
+    "apiKey": {
+        "encrypted": "eyJjaXBoZXJ0ZXh0IjoiNDQwNDcxZjQxZmYyZDQ3NDAzZjIwYzdjNDhiZmJkZWEwOTFiZjI0N2M4YzhjNzFhZmU4YWQ2YzVmNWQ5NTdjYjA0MmE3MWJlNjljN2RmMTcxYzU5YThiZWYyOWM5OWFlIiwiaXYiOiI1ZTM2ZTRlMzI3ZTI1MzA0M2FlNDEyZTM2YTdjMTZiMSJ9"
+    },
+    "name": "sample2",
+    "apiUriBase": "https://spformsrecognizer.cognitiveservices.azure.com/",
+    "folderPath": "",
+    "securityToken": "sample2 Token",
+    "version": "2.0.0",
+    "id": "dBkGNPP3v",
+    "tags": [],
+    "assets": {
+        "5cb30562c4596a6d84eec8d4c1f81c217e3e7766dc9ec95fe3039b1f43ee0590": {
+            "id": "5cb30562c4596a6d84eec8d4c1f81c217e3e7766dc9ec95fe3039b1f43ee0590",
+            "format": "pdf",
+            "state": 1,
+            "type": 5,
+            "name": "Invoice_1.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_1.pdf?sp=racwdl&st=2020-06-02T08:30:19Z&se=2023-06-03T08:30:00Z&sv=2019-10-10&sr=c&sig=ThBgQZGtbQYhOxtMo6C%2BrA9WJaQXZPOoUnC2ZxNwZrc%3D",
+            "size": null
+        },
+        "88e274a95c737918afb19d8ab004f060b5d7650a4866485c2983adabe9cd272e": {
+            "id": "88e274a95c737918afb19d8ab004f060b5d7650a4866485c2983adabe9cd272e",
+            "format": "pdf",
+            "state": 1,
+            "type": 5,
+            "name": "Invoice_2.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_2.pdf?sp=racwdl&st=2020-06-02T08:30:19Z&se=2023-06-03T08:30:00Z&sv=2019-10-10&sr=c&sig=ThBgQZGtbQYhOxtMo6C%2BrA9WJaQXZPOoUnC2ZxNwZrc%3D",
+            "size": null
+        },
+        "d85b081860462fba319a39efc93be81e2a9c071daad0a391fff6342b00a11faa": {
+            "id": "d85b081860462fba319a39efc93be81e2a9c071daad0a391fff6342b00a11faa",
+            "format": "pdf",
+            "state": 1,
+            "type": 5,
+            "name": "Invoice_3.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_3.pdf?sp=racwdl&st=2020-06-02T08:30:19Z&se=2023-06-03T08:30:00Z&sv=2019-10-10&sr=c&sig=ThBgQZGtbQYhOxtMo6C%2BrA9WJaQXZPOoUnC2ZxNwZrc%3D",
+            "size": null
+        },
+        "100a6fa89446e3cf021c78d50912f952312ce2449310321ecbb795e1d19939a1": {
+            "id": "100a6fa89446e3cf021c78d50912f952312ce2449310321ecbb795e1d19939a1",
+            "format": "pdf",
+            "state": 2,
+            "type": 5,
+            "name": "Invoice_4.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_4.pdf?sp=racwdl&st=2020-06-02T08:30:19Z&se=2023-06-03T08:30:00Z&sv=2019-10-10&sr=c&sig=ThBgQZGtbQYhOxtMo6C%2BrA9WJaQXZPOoUnC2ZxNwZrc%3D",
+            "size": null
+        },
+        "c8110c48c5f8060de36ef63d512c77379791294b8c97eb981691d006f5e5026b": {
+            "id": "c8110c48c5f8060de36ef63d512c77379791294b8c97eb981691d006f5e5026b",
+            "format": "pdf",
+            "state": 2,
+            "type": 5,
+            "name": "Invoice_5.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_5.pdf?sp=racwdl&st=2020-06-02T08:30:19Z&se=2023-06-03T08:30:00Z&sv=2019-10-10&sr=c&sig=ThBgQZGtbQYhOxtMo6C%2BrA9WJaQXZPOoUnC2ZxNwZrc%3D",
+            "size": null
+        }
+    },
+    "lastVisitedAssetId": "5cb30562c4596a6d84eec8d4c1f81c217e3e7766dc9ec95fe3039b1f43ee0590"
+}

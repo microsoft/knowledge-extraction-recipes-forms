@@ -3,6 +3,7 @@ import os
 import random
 import shutil
 import sys
+import time
 from datetime import datetime
 
 import pandas as pd
@@ -10,7 +11,7 @@ from azure.storage.blob import (
     BlockBlobService
 )
 from dotenv import load_dotenv
-from requests import Session
+from requests import get, post
 
 load_dotenv()
 
@@ -77,43 +78,10 @@ def gt_preprocessing(anchor_key, dfGTRow):
     :return: The value extracted
     """
     # TODO add logic here for multi-page fields
-    if anchor_key in Config.MULTI_PAGE_FIELDS.split():
-        gt_key_value = str(dfGTRow.iloc[0][anchor_key]).lower().strip()
-        if not isinstance(gt_key_value, str):
-            gt_key_value = "{:.2f}".format(gt_key_value)
-    else:
-        gt_key_value = str(dfGTRow.iloc[0][anchor_key]).lower().strip()
+
+    gt_key_value = str(dfGTRow.iloc[0][anchor_key]).lower().strip()
 
     return gt_key_value
-
-
-def call_fr(model_id, input_file_name, input_folder_path):
-    """
-    Call Form Recognizer
-    :param model_id: Mode associated with the document
-    :param input_file_name: The file name we are processing
-    :param input_folder_path: The file path we are working with
-    :return: The json response object
-    """
-
-    retry_count = 0
-
-    # TODO simple retry here - amend as needed
-    while retry_count < 5:
-
-        # Call to the Form Recognizer service
-        resp = form_recognizerv2_analyse(Config.TRAINING_END_POINT,
-                                         Config.SUBSCRIPTION_KEY,
-                                         model_id, input_file_name, input_folder_path)
-        # Let's retry if it has failed
-        if 'errors' in resp['analyzeResult']:
-            retry_count += 1
-            print(f'Error in prediction - retry {retry_count}')
-            continue
-
-        break
-
-    return resp
 
 
 def download_input_files_from_blob_storage(
@@ -177,8 +145,11 @@ def process_folder_and_predict(
         ground_truth_df,
         model_id,
         issuer_name,
-        country_code,
-        input_doc_files):
+        input_doc_files,
+        key_field_names,
+        region,
+        subscription_key,
+):
     """
     Iterate through our storage accounts, download, correlate with Ground Truth and invoke downstream
     functions
@@ -188,12 +159,15 @@ def process_folder_and_predict(
     :param ground_truth_df: The dataframe with our ground truth
     :param model_id: The model associated with the files we are predicting
     :param issuer_name: The unique identifier of the form being processed
-    :param input_doc_files : List of files to predict
+    :param input_doc_files: List of files to predict
+    :param key_field_names: The fields we want to extract
+    :param region: The region where Form Recognizer is deployed
+    :param subscription_key: The Form Recognizer key
     :return:
     """
 
     # Let's get the fields we want to extract into a list
-    anchor_keys = Config.ANCHOR_KEYS.split()
+    anchor_keys = [f for f in key_field_names.split(',')]
 
     for input_file_name in input_doc_files:
         fieldcount = 0
@@ -205,11 +179,10 @@ def process_folder_and_predict(
 
             before_call_time = datetime.now().strftime("%H:%M:%S")
 
-            resp = call_fr(
-                model_id,
-                input_file_name,
-                input_folder_path
-            )
+            # Call to the Form Recognizer service
+            resp = form_recognizerv2_analyse(region,
+                                             subscription_key,
+                                             model_id, input_file_name, input_folder_path)
 
             after_call_time = datetime.now().strftime("%H:%M:%S")
 
@@ -217,42 +190,46 @@ def process_folder_and_predict(
             print(f'Searching for GT record {short_file_name}')
 
             # TODO add your file name identifier here from your Ground Truth
-            df_gt_row = ground_truth_df[ground_truth_df['YOUR FILE NAME'] == short_file_name]
-            print(df_gt_row)
-            print(f"----")
+            df_gt_row = ground_truth_df[ground_truth_df['FILENAME'] == short_file_name]
 
             # loop through anchor keys and identify what was extracted by Form Recognizer
             for anchor_key in anchor_keys:
-
+                anchor_key = anchor_key.strip()
                 fields = resp['analyzeResult']['documentResults'][0]['fields']
 
                 if anchor_key in fields:
                     fieldcount += 1
 
                     anchor_key_value = str(fields[anchor_key]['text'])
-                    anchor_key_page_num = str(fields[anchor_key]['pageNumber'])
+                    anchor_key_page_num = str(fields[anchor_key]['page'])
                     confidence = fields[anchor_key]['confidence']
 
-                    anchor_key_value = extract_anchor_key_value(
-                        input_file_name,
-                        anchor_key,
-                        anchor_key_value,
-                        country_code)
+                    if anchor_key == 'TOTAL':
+                        # TODO add custom total formatting here
+                        anchor_key_value = anchor_key_value.replace(",", "")
 
+                    #  TODO add your custom formatting here if required
+                    """
+                    anchor_key_value = extract_anchor_key_value(
+                        anchor_key,
+                        anchor_key_value)
+                    """
                     # TODO add your custom formatting/normalisation of your Ground Truth here
+                    gt_original_value = str(df_gt_row.iloc[0][anchor_key])
                     gt_key_value = gt_preprocessing(anchor_key, df_gt_row)
 
                     # Does the post processed predicted field match the preprocessed ground truth
-                    if anchor_key_value == gt_key_value:
+                    if anchor_key_value.lower().strip() == gt_key_value:
                         field_match_count += 1
 
-                    print(f'{input_file_name} {anchor_key} gt {gt_key_value} read: {anchor_key_value}')
+                    print(f'{input_file_name} {anchor_key} Ground Truth: {gt_key_value.upper()} Extracted:'
+                          f' {anchor_key_value.upper()}')
 
                     actual_accuracy = field_match_count / fieldcount
 
                     # Add key extraction to the output json
                     keys = build_keys_json_object(keys, input_file_name,
-                                                  anchor_key, gt_key_value,
+                                                  anchor_key, gt_original_value.strip(),
                                                   anchor_key_value.strip(),
                                                   confidence,
                                                   issuer_name,
@@ -273,7 +250,68 @@ def process_folder_and_predict(
     return keys
 
 
-def form_recognizerv2_analyse(base_url, subscription_key, model_id, file_name, file_name_path):
+def get_prediction(region, subscription_key, blob_sas_url, model_id, predict_type):
+    """Gets a prediction for a document with the Form Recognizer supervised model"""
+
+    print(f"MODEL ID : {model_id}")
+    headers = {
+        "Content-Type": "application/pdf",
+        "Ocp-Apim-Subscription-Key": subscription_key,
+    }
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models/{model_id}/analyze?includeTextDetails=True"
+    result = None
+    try:
+        f = get(blob_sas_url)
+        resp = post(url=url, data=f.content, headers=headers)
+
+        if resp.status_code == 202:
+            status_url = resp.headers['Operation-Location']
+            print(f"Invoice analyze submitted. Operation Location: {status_url}")
+            headers = {"Ocp-Apim-Subscription-Key": subscription_key}
+            resp = get(url=status_url, headers=headers)
+            print(resp.json())
+            count = 0
+            max_retry = 100
+            while (count < max_retry and (resp.status_code == 200 or resp.status_code == 429) and (
+                    resp.json()['status'] == 'running' or resp.json()['status'] == 'notStarted')):
+                resp = get(url=status_url, headers=headers)
+                time.sleep(1)
+                count += 1
+            print(resp.json()['status'])
+            # print(resp.json())
+            result = resp.json()['analyzeResult']
+        else:
+            print(f"Error during analysis: {str(resp.text)}")
+    except Exception as e:
+        print(f"Error analyzing invoice : {e}")
+
+    prediction = {}
+    if result != None:
+
+        try:
+            prediction['readResults'] = result['readResults']
+
+            if predict_type == 'supervised':
+                prediction['fields'] = []
+                for key in result['documentResults'][0]['fields'].keys():
+                    f = result['documentResults'][0]['fields'][key]
+                    if f != None:
+                        field = {}
+                        field['label'] = key
+                        field['text'] = f['text']
+                        field['confidence'] = f['confidence']
+                        field['boundingBox'] = f['boundingBox']
+                        prediction['fields'].append(field)
+            else:
+                prediction['keyValuePairs'] = result['pageResults'][0]['keyValuePairs']
+
+        except Exception as e:
+            print(f"Prediction is invalid: {e}")
+
+    return prediction
+
+
+def form_recognizerv2_analyse(region, subscription_key, model_id, file_name, file_name_path):
     """
     Analyses a document with the Form Recognizer supervised model
     :param base_url: Prefix url for service
@@ -284,33 +322,28 @@ def form_recognizerv2_analyse(base_url, subscription_key, model_id, file_name, f
     :return: Prediction json response object
     """
 
-    session = Session()
     headers = {
         "Ocp-Apim-Subscription-Key": subscription_key,
+        "Content-Type": "application/pdf"
     }
     print(f'Evaluating against model_id {model_id}')
 
-    # TODO change this baseurl when the service is out of preview
-
-    url = base_url + "/formrecognizer/v2.0-preview/models/" + model_id + \
-          "/asyncAnalyze?includeTextDetails=False"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models/{model_id}/analyze?includeTextDetails=True"
 
     print(f'Predict {file_name} {file_name_path}')
     try:
         files = {'file': (file_name, open(file_name_path + '/' + file_name, 'rb'),
                           'application/pdf', {'Expires': '0'})}
 
-        resp = session.post(url=url, files=files, headers=headers)
-        print(f'resp.status_code {resp.status_code}')
-
+        resp = post(url=url, files=files, headers=headers)
         if resp.status_code == 202:
 
             status_url = resp.headers['Operation-Location']
             headers = {"Ocp-Apim-Subscription-Key": subscription_key}
-            resp = session.get(url=status_url, headers=headers)
+            resp = get(url=status_url, headers=headers)
 
-            while resp.json()['status'] in ['Running']:
-                resp = session.get(url=status_url, headers=headers)
+            while not resp.json()['status'] == 'succeeded':
+                resp = get(url=status_url, headers=headers)
 
             return resp.json()
         else:
@@ -358,7 +391,8 @@ class Config:
     STORAGE_KEY = os.environ.get("STORAGE_KEY")  # The key for the storage account
     KEY_FIELD_NAMES = os.environ.get("KEY_FIELD_NAMES")  # The fields to be extracted e.g. invoicenumber,date,total
     SAS_PREFIX = os.environ.get("SAS_PREFIX")  # First part of storage account
-    SAS = os.environ.get("SAS")  # SAS for storage
+    SAS = os.environ.get("SAS")  # SAS for storage train
+    SAS_TEST = os.environ.get("SAS")  # SAS for storage test
     RUN_FOR_SINGLE_ISSUER = os.environ.get("RUN_FOR_SINGLE_ISSUER")  # If true process only this issuer
     DOC_EXT = os.environ.get("DOC_EXT")
     LANGUAGE_CODE = os.environ.get("LANGUAGE_CODE")  # The language we invoke Read OCR in only en supported now
@@ -372,8 +406,9 @@ class Config:
     MODEL_ID = os.environ.get("MODEL_ID")  # Run for a single model
     MODEL_LOOKUP = os.environ.get("MODEL_LOOKUP")  # The issuer to modelId lookup
     TRAIN_TEST = os.environ.get("TRAIN_TEST")  # Suffixes train or test to container name
-    SAMPLE_NUMBER = int(os.environ.get("SAMPLE_NUMBER"))  # Sample number of files for prediction
-    ANCHOR_KEYS = os.environ.get("ANCHOR_KEYS")  # The fields we want to extract
+    SAMPLE_NUMBER = os.environ.get("SAMPLE_NUMBER")  # Sample number of files for prediction
+    KEY_FIELD_NAMES = os.environ.get("KEY_FIELD_NAMES")  # The fields we want to extract
+    REGION = os.environ.get("REGION")  # The region Form Recognizer and OCR are deployed
 
 
 def main():
@@ -427,17 +462,17 @@ def main():
         # Download the files to predict locally
         input_doc_files = download_input_files_from_blob_storage(
             block_blob_service, container.name, vendor_folder_path, Config.DOC_EXT,
-            Config.SAMPLE_NUMBER)
+            int(Config.SAMPLE_NUMBER))
 
         keys = process_folder_and_predict(
             keys,
             vendor_folder_path,
-            Config.LANGUAGE_CODE,
             ground_truth_df,
             model_id,
             issuer_name,
-            Config.COUNTRY_CODE,
-            input_doc_files
+            input_doc_files,
+            Config.KEY_FIELD_NAMES,
+            Config.REGION
         )
 
         # Let's clean up to save space

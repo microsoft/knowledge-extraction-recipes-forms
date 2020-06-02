@@ -1,0 +1,132 @@
+{
+    "sourceConnection": {
+        "providerOptions": {
+            "encrypted": "eyJjaXBoZXJ0ZXh0IjoiZTM2Y2E5MGVlMjgxOTc1ZjcyZDQwY2UwMjc4NjgyZTMyYTMzNGI3OGUxMmIyZjY0YjJlNzExYmQyYmMwNTMzNzRhYWY1MmYzYWYzNmIwZjU0YTJmMTNlMTVhMGIzYjdmNWQ0ZDBmMWQyNzIyNjdhYTIzZTRlYzc4MWVhMzI2YTNjMzUzNjIyNWJiMzUzOWU1NjcwMGI4ZjcyMjA4MjAzYzdiM2NlNzcwNTk4NTZkNzQ0NWFhOTRmYTg1MjQ4ZjRhYzMyYzFmYzgwNzc5NDU0YTcwMjY1YjZhNmVmM2EyNjE1MGYxZTUyZGYwMzMyNTM2MzM2YzliZTI1Yzg0NzU3NTMwNmJiZmJlMWU5MDBhNDgwNzZkYjQ3MTEyN2UyNzRiYTJhN2FmNzM0MzQwN2EyZDFjYmY4YTY3Zjk2YzdjMWI0NGZkOTgxYzljMDJmNThmYjE4NWQzNDE0YjcyNzFmNTk5MmQ0YzU0ZjdkYzMxZWQ3OTI5MzYxZDY0YzFjNmEwYTQ4YTZjMmQ1YjJkZDVmYzM4ZjdiMWRkNjM3NjJkOTI3NjU3YzI0NTk0YWU2YjFiNDdkNjg0NTcwYzg3NjBkOCIsIml2IjoiMGU3YWE4NmZkNzgxZGE4MGQ3OTIyYjMxYTVjYjBiMDkifQ=="
+        },
+        "id": "W_TGGYxzT",
+        "name": "sample",
+        "providerType": "azureBlobStorage"
+    },
+    "apiKey": {
+        "encrypted": "eyJjaXBoZXJ0ZXh0IjoiMGMwZGE1OTgyZGRhY2MyNTI4YjlhZmJhNjJkOTIwZDM4MDgzYTgwOTlhZDRkZWY4YmM3ZDJiMTU3OTIwM2QyNDhhMmIxZTc4NjgwYzFmNWE1YjQ2ZTE2NzhhZmJhZDYzIiwiaXYiOiI5NWNjMWIxMDYyZDY3YjU5NDIzMzkzZWE0M2VmNjljNCJ9"
+    },
+    "name": "sample7",
+    "apiUriBase": "https://spformsrecognizer.cognitiveservices.azure.com/",
+    "folderPath": "",
+    "securityToken": "sample7 Token",
+    "version": "2.0.0",
+    "id": "XwLcTYLfx",
+    "tags": [
+        {
+            "name": "INVOICE_NUM",
+            "color": "#CC543A",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "INVOICE_DATE",
+            "color": "#7BA23F",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "VENDOR",
+            "color": "#58B2DC",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "BILL_TO",
+            "color": "#FFB11B",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "CURRENCY",
+            "color": "#2E5C6E",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "VAT_ID",
+            "color": "#A96360",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "BILL_TO_ZIP",
+            "color": "#D7C4BB",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 2
+        },
+        {
+            "name": "TOTAL",
+            "color": "#8F77B5",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 1
+        },
+        {
+            "name": "VENDOR_ZIP",
+            "color": "#EEA9A9",
+            "type": "string",
+            "format": "not-specified",
+            "documentCount": 1
+        }
+    ],
+    "assets": {
+        "6f81500df735a45546de8aa48b061dcf138242c2e98f4380338c34f74f26c0b2": {
+            "id": "6f81500df735a45546de8aa48b061dcf138242c2e98f4380338c34f74f26c0b2",
+            "format": "pdf",
+            "state": 1,
+            "type": 5,
+            "name": "Invoice_1.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_1.pdf?sp=racwdl&st=2020-06-02T08:59:03Z&se=2022-06-03T08:59:00Z&sv=2019-10-10&sr=c&sig=DBhVh2GCuqVdhBt0%2Fsg6%2FQ4%2FFQ4JcaJqL5W3pQWmV%2Fk%3D",
+            "size": null
+        },
+        "079bdcd38a4e7955d20e3d0e76bd5cfa129000318b8d22326650ecc32e7578d1": {
+            "id": "079bdcd38a4e7955d20e3d0e76bd5cfa129000318b8d22326650ecc32e7578d1",
+            "format": "pdf",
+            "state": 2,
+            "type": 5,
+            "name": "Invoice_2.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_2.pdf?sp=racwdl&st=2020-06-02T08:59:03Z&se=2022-06-03T08:59:00Z&sv=2019-10-10&sr=c&sig=DBhVh2GCuqVdhBt0%2Fsg6%2FQ4%2FFQ4JcaJqL5W3pQWmV%2Fk%3D",
+            "size": null
+        },
+        "c1cf9a77aa980c040b0cdd699c10d086c3592036f16612b8b1419095fab7eb6a": {
+            "id": "c1cf9a77aa980c040b0cdd699c10d086c3592036f16612b8b1419095fab7eb6a",
+            "format": "pdf",
+            "state": 1,
+            "type": 5,
+            "name": "Invoice_3.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_3.pdf?sp=racwdl&st=2020-06-02T08:59:03Z&se=2022-06-03T08:59:00Z&sv=2019-10-10&sr=c&sig=DBhVh2GCuqVdhBt0%2Fsg6%2FQ4%2FFQ4JcaJqL5W3pQWmV%2Fk%3D",
+            "size": null
+        },
+        "1cdf1c59869078d5c5ba024aae9582f0675bcfb7c7352728ea17a44fca97eb05": {
+            "id": "1cdf1c59869078d5c5ba024aae9582f0675bcfb7c7352728ea17a44fca97eb05",
+            "format": "pdf",
+            "state": 1,
+            "type": 5,
+            "name": "Invoice_4.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_4.pdf?sp=racwdl&st=2020-06-02T08:59:03Z&se=2022-06-03T08:59:00Z&sv=2019-10-10&sr=c&sig=DBhVh2GCuqVdhBt0%2Fsg6%2FQ4%2FFQ4JcaJqL5W3pQWmV%2Fk%3D",
+            "size": null
+        },
+        "b67396e94938a9d986551fc40dc347a21dc9749994b011ea455b92ab00473039": {
+            "id": "b67396e94938a9d986551fc40dc347a21dc9749994b011ea455b92ab00473039",
+            "format": "pdf",
+            "state": 2,
+            "type": 5,
+            "name": "Invoice_5.pdf",
+            "path": "https://spformsrecognizer.blob.core.windows.net/autolabelv1train/Invoice_5.pdf?sp=racwdl&st=2020-06-02T08:59:03Z&se=2022-06-03T08:59:00Z&sv=2019-10-10&sr=c&sig=DBhVh2GCuqVdhBt0%2Fsg6%2FQ4%2FFQ4JcaJqL5W3pQWmV%2Fk%3D",
+            "size": null
+        }
+    },
+    "lastVisitedAssetId": "1cdf1c59869078d5c5ba024aae9582f0675bcfb7c7352728ea17a44fca97eb05"
+}

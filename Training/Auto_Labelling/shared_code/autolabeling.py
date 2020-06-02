@@ -1,10 +1,10 @@
 import logging
-import os
-import json
-import pandas as pd
+
 import numpy as np
-from . import utils
+
 from . import formatting
+from . import utils
+
 
 def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_path, file_header='FileID'):
     """
@@ -69,16 +69,15 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
 
                 occurence = 0
 
-                for p in range(min(len(data['analyzeResult']['readResults']), max_pages)): 
+                for p in range(min(len(data['analyzeResult']['readResults']), max_pages)):
 
                     for i in range(len(data['analyzeResult']['readResults'][p]['lines'])):
 
                         line = data['analyzeResult']['readResults'][p]['lines'][i]
                         if i < len(data['analyzeResult']['readResults'][p]['lines']) - 1:
-                            next_line = data['analyzeResult']['readResults'][p]['lines'][i+1]
+                            next_line = data['analyzeResult']['readResults'][p]['lines'][i + 1]
                         else:
                             next_line = ""
-
 
                         # Checking match for concatenated columns
                         # At line level if there's more than 1 column
@@ -90,16 +89,17 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
 
                         if match == True:
                             gt_value = " ".join(v for v in gt_processed)
-                            logging.info(f"MATCH FOR {anchor_key}: '{gt_value}' (GT) and '{text}' (document) - bbox {bbox}")
+                            logging.info(
+                                f"MATCH FOR {anchor_key}: '{gt_value}' (GT) and '{text}' (document) - bbox {bbox}")
 
                             # We only add 0.5 because each occurence appears twice: once in the line and once in the next line
-                            occurence += 0.5       
+                            occurence += 0.5
 
                             # If we already have found the field n times, we're looking for the (n+1)th occurence
                             try:
                                 if found_fields[gt_value] >= occurence:
                                     n = found_fields[gt_value]
-                                    logging.warning(f"Searching for occurence #{n+1}")
+                                    logging.warning(f"Searching for occurence #{n + 1}")
                                 else:
                                     final_bbox = bbox
                                     final_text = text
@@ -126,24 +126,25 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
                     occurence = 0
 
                     for i in range(len(gt_processed)):
-                        
+
                         found = False
-                        for p in range(min(len(data['analyzeResult']['readResults']), max_pages)): 
-                            
+                        for p in range(min(len(data['analyzeResult']['readResults']), max_pages)):
+
                             for line in data['analyzeResult']['readResults'][p]['lines']:
                                 match, text, bbox = match_bbox(line, "", [gt_processed[i]], [compare_methods[i]])
-                                
+
                                 if match == True:
 
-                                    logging.info(f"MATCH FOR {columns[i]}: '{gt_processed[i]}' (GT) and '{line['text']}' (document) - bbox {bbox}")
-                                    
+                                    logging.info(
+                                        f"MATCH FOR {columns[i]}: '{gt_processed[i]}' (GT) and '{line['text']}' (document) - bbox {bbox}")
+
                                     occurence += 1
-                                    
+
                                     # If we already have found the field n times, we're looking for the (n+1)th occurence
                                     try:
                                         if found_fields[gt_processed[i]] >= occurence:
                                             n = found_fields[gt_processed[i]]
-                                            logging.warning(f"Searching for occurence #{n+1}")
+                                            logging.warning(f"Searching for occurence #{n + 1}")
                                         else:
                                             matching_bbox = bbox
                                             matching_text = text
@@ -162,7 +163,7 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
                             if found == True:
                                 break
 
-                        if(found == True):
+                        if (found == True):
                             final_text = final_text + matching_text + ' '
                             if final_bbox == '':
                                 final_bbox = matching_bbox
@@ -190,14 +191,14 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
                                 found_fields[val] += 1
                             else:
                                 found_fields[val] = 1
-                
+
                     keys, found_keys = build_keys_json_object(keys, filename,
-                                                                        anchor_key, found_keys,
-                                                                        final_text,
-                                                                        final_bbox,
-                                                                        page,
-                                                                        height,
-                                                                        width)
+                                                              anchor_key, found_keys,
+                                                              final_text,
+                                                              final_bbox,
+                                                              page,
+                                                              height,
+                                                              width)
 
                     i += 1
     except Exception as e:
@@ -206,7 +207,7 @@ def find_anchor_keys_in_invoice(df_gt, filename, data, key_field_names, lookup_p
     return keys
 
 
-def map_columns(key_name, lookup_path = "./lookup_fields.json"):
+def map_columns(key_name, lookup_path="./lookup_fields.json"):
     lookup_fields = utils.get_lookup_fields(lookup_path)
     columns = []
     try:
@@ -216,7 +217,8 @@ def map_columns(key_name, lookup_path = "./lookup_fields.json"):
         logging.error(f"Error looking up columns for field {key_name}: {e}")
     return columns
 
-def lookup_compare(column_name, lookup_path = "./lookup_fields.json"):
+
+def lookup_compare(column_name, lookup_path="./lookup_fields.json"):
     lookup_fields = utils.get_lookup_fields(lookup_path)
     compare_method = ""
     try:
@@ -226,28 +228,30 @@ def lookup_compare(column_name, lookup_path = "./lookup_fields.json"):
         logging.error(f"Error looking up compare method for field {column_name}: {e}")
     return compare_method
 
-def match_bbox(line, next_line, gt_processed, compare_methods, wordlevel = True):
 
+def match_bbox(line, next_line, gt_processed, compare_methods, wordlevel=True):
     compare_value = formatting.remove_trailing_spaces(" ".join(val for val in gt_processed))
 
     matching_text = ''
     matching_bbox = ''
     processed_text = formatting.remove_trailing_spaces(formatting.format_subfields(line['text'], compare_methods))
-    
+
     # Match at line level
     if compare_value == processed_text:
         return True, line['text'], line['boundingBox']
 
     # Checking the next line as well
     if next_line != "":
-        processed_text = formatting.remove_trailing_spaces(formatting.format_subfields(next_line['text'], compare_methods))
+        processed_text = formatting.remove_trailing_spaces(
+            formatting.format_subfields(next_line['text'], compare_methods))
         if compare_value == processed_text:
             return True, next_line['text'], next_line['boundingBox']
         lines_text = line['text'] + " " + next_line['text']
         processed_text = formatting.remove_trailing_spaces(formatting.format_subfields(lines_text, compare_methods))
         if compare_value == processed_text:
-            return True, line['text'] + ' ' + next_line['text'], adjust_bbox(line['boundingBox'], next_line['boundingBox'])
-    
+            return True, line['text'] + ' ' + next_line['text'], adjust_bbox(line['boundingBox'],
+                                                                             next_line['boundingBox'])
+
     # Match at word level
     if wordlevel == True:
         if compare_value in processed_text:
@@ -257,22 +261,22 @@ def match_bbox(line, next_line, gt_processed, compare_methods, wordlevel = True)
             lines_words = line['words']
             if next_line != "":
                 lines_words += next_line['words']
-            for word in lines_words:       
+            for word in lines_words:
                 word_processed = formatting.normalize(word['text'], compare_methods[0])
                 if compare_value == word_processed:
                     return True, word['text'], word['boundingBox']
                 elif word_processed in compare_value:
                     matching_text += word['text'] + " "
-                    if(matching_bbox == ""):
+                    if (matching_bbox == ""):
                         matching_bbox = word['boundingBox']
                     else:
                         old_bbox = matching_bbox
                         matching_bbox = adjust_bbox(old_bbox, word['boundingBox'])
-            if(matching_text != ""):
+            if (matching_text != ""):
                 return True, matching_text, matching_bbox
         else:
             # Checking if the value is present but formatted differently
-            sub_text = formatting.find_subtext(line['text'],compare_methods[0])
+            sub_text = formatting.find_subtext(line['text'], compare_methods[0])
             sub_text_processed = formatting.normalize(sub_text, compare_methods[0])
             sub_words = sub_text.split(" ")
             matching_text = ""
@@ -282,15 +286,15 @@ def match_bbox(line, next_line, gt_processed, compare_methods, wordlevel = True)
                 for word in line['words']:
                     if word['text'] in sub_words:
                         matching_text += word['text'] + " "
-                        if(matching_bbox == ""):
+                        if (matching_bbox == ""):
                             matching_bbox = word['boundingBox']
                         else:
                             old_bbox = matching_bbox
                             matching_bbox = adjust_bbox(old_bbox, word['boundingBox'])
                 return True, matching_text, matching_bbox
 
-
     return False, "", ""
+
 
 def adjust_bbox(o_bbox, w_bbox):
     try:
@@ -314,6 +318,7 @@ def adjust_bbox(o_bbox, w_bbox):
     except Exception as e:
         logging.error(f"Error adjusting bbox: {e}")
         return o_bbox
+
 
 def create_label_file(file_name, key_fields, key_field_details):
     """
@@ -339,7 +344,7 @@ def create_label_file(file_name, key_fields, key_field_details):
             field_bounding_box = field_detail['BoundingBox']
             field_value = field_detail[key_field]
 
-            #field_values = [field_value]  # if more than one bounding box.
+            # field_values = [field_value]  # if more than one bounding box.
 
             field = get_field_template(key_field)
 
@@ -360,12 +365,12 @@ def create_label_file(file_name, key_fields, key_field_details):
 
 
 def analyze_labels(gt_path, file_path, analyze_result, key_field_names, lookup_path):
-
     gt_df = None
     try:
-        if(type(gt_path).__name__ == "str"):
+        if (type(gt_path).__name__ == "str"):
             gt_df = utils.load_excel(gt_path)
-        else: gt_df = gt_path
+        else:
+            gt_df = gt_path
 
         logging.info("Ground truth loaded.")
     except Exception as e:
@@ -397,8 +402,8 @@ def analyze_labels(gt_path, file_path, analyze_result, key_field_names, lookup_p
 
     return None, None
 
-def get_key_field_data(key_field, key_field_details):
 
+def get_key_field_data(key_field, key_field_details):
     try:
         for field in key_field_details:
             if key_field in field:
@@ -407,6 +412,7 @@ def get_key_field_data(key_field, key_field_details):
         logging.error(f"Error getting key field '{key_field}' data: {e}")
 
     return None
+
 
 def get_label_file_template(doc_name):
     template = None
@@ -419,6 +425,7 @@ def get_label_file_template(doc_name):
         logging.error(f"Error getting label file template: {e}")
     return template
 
+
 def get_field_template(field_name):
     return {
         "label": field_name,
@@ -426,12 +433,14 @@ def get_field_template(field_name):
         "value": []
     }
 
+
 def get_value_template(value, page, region):
     v = {}
     v['page'] = page
     v['text'] = value
     v["boundingBoxes"] = [region]
     return v
+
 
 def convert_bbox_to_polygon(bounding_box, width, height):
     """
@@ -450,6 +459,7 @@ def convert_bbox_to_polygon(bounding_box, width, height):
     except Exception as e:
         logging.error(f"Could not convert bbox to polygon: {e}")
         return None
+
 
 def build_keys_json_object(keys, blobname, anchor_key, found_keys, ocr_text, ocr_boundingbox,
                            page, height, width):

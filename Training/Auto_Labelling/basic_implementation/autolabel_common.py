@@ -1,10 +1,12 @@
 import os
 import re
 import string
+
 import sys
 
-from .common import is_phrase_in, compute_partial_ratio, compute_ratio, date_format, fuzzy_digit_matching, \
-    iban_patterns, vat_patterns, handle_date_format_num_word_num
+sys.path.insert(1, '../../common/')
+
+from common.common import date_format, handle_date_format_num_word_num
 
 
 def sum_bounding_box(bbox):
@@ -108,7 +110,6 @@ def find_anchor_key_in_invoice_text(df_vendor_gt, df_ocr, row):
             if len(df_vendor_gt[anchor_key]) == 0:
                 continue
 
-            # print('Checking', row_ocr[1].data_word, dfvendorgt[anchor_key].name, dfvendorgt[anchor_key].iloc[0])
             if anchor_key == 'InvoiceDate':
                 ocr_clean = date_format(row_ocr[1].data_word)
                 gt_clean = date_format(
@@ -140,6 +141,7 @@ def find_anchor_key_in_invoice_text(df_vendor_gt, df_ocr, row):
             'bbox_page': lst_bbox_page}
 
     return data
+
 
 def add_trailing_zero(df_vendor_gt, anchor_key):
     """
@@ -203,7 +205,7 @@ def find_anchor_keys_in_form(df_gt, filename, data, anchor_keys, pass_number):
         keys[filename] = []
         found_keys = []
         # Your anchor_keys (key_field_names) should like like the sample list below
-        #anchor_keys = ['InvoiceNumber', 'InvoiceDate', 'NetValue', 'TaxValue', 'TotalAmount']
+        # anchor_keys = ['InvoiceNumber', 'InvoiceDate', 'NetValue', 'TaxValue', 'TotalAmount']
 
         df_vendor_gt = df_gt[df_gt['FILENAME'] == str(filename[:len(filename) - 13])]
         # TODO Page 0 only at the moment - may need to be changed
@@ -259,7 +261,7 @@ def find_anchor_keys_in_form(df_gt, filename, data, anchor_keys, pass_number):
                         # Now we clean out all punctuation for exact matching - word level
                         if len(ocr_clean_line) == 0:
                             ocr_clean_line = strip_lower_remove_punctuation(
-                            lines['text'].encode('ascii', 'ignore').decode('ascii'))
+                                lines['text'].encode('ascii', 'ignore').decode('ascii'))
                         else:
                             ocr_clean_line = strip_lower_remove_punctuation(
                                 ocr_clean_line.encode('ascii', 'ignore').decode('ascii'))
@@ -282,20 +284,20 @@ def find_anchor_keys_in_form(df_gt, filename, data, anchor_keys, pass_number):
                         if len(gt_clean) > 0:
                             if gt_clean == ocr_clean_word:
                                 keys, found_keys = build_keys_json_object(keys, filename,
-                                                                        anchor_key, found_keys,
-                                                                        words['text'],
-                                                                        words['boundingBox'],
-                                                                        page,
-                                                                        height,
-                                                                        width)
+                                                                          anchor_key, found_keys,
+                                                                          words['text'],
+                                                                          words['boundingBox'],
+                                                                          page,
+                                                                          height,
+                                                                          width)
                             elif (gt_clean == ocr_clean_line) and (pass_number == 2):
                                 keys, found_keys = build_keys_json_object(keys, filename,
-                                                                        anchor_key, found_keys,
-                                                                        lines['text'],
-                                                                        lines['boundingBox'],
-                                                                        page,
-                                                                        height,
-                                                                        width)
+                                                                          anchor_key, found_keys,
+                                                                          lines['text'],
+                                                                          lines['boundingBox'],
+                                                                          page,
+                                                                          height,
+                                                                          width)
         i += 1
 
     except Exception as e:

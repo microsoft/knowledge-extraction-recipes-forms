@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import sys
+import time
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -12,9 +13,10 @@ from azure.storage.blob import (
     ContainerPermissions
 )
 from dotenv import load_dotenv
-from requests import Session
+from requests import get, post
 
-from .common import find_anchor_keys_in_form
+sys.path.insert(1, '../../common/')
+from common.common import find_anchor_keys_in_form
 
 load_dotenv()
 
@@ -48,38 +50,57 @@ def get_label_file_template(doc_name):
     :return: The header for the label.json file
     """
     return {
-        "version": "v1.0",
-        "docName": doc_name,
+        "document": doc_name,
         "labels": []
     }
 
 
-def get_field_template(field_name, field_value, field_values):
+def get_field_template(field_name):
     """
 
     :param field_name: Key identified and labelled
-    :param field_value: The value of the labelled key
-    :param field_values: If we have multiple values - not used for now
     :return:
     """
     return {
-        "fieldKey": field_name,
-        "fieldValue": field_value,
-        "fieldValues": field_values,
-        "regions": []
+        "label": field_name,
+        "key": None,
+        # "value": field_value,
+        # "values": field_values,
+        "value": []
     }
 
 
-def get_region(page_number, polygon):
+def get_region(page_number, polygon, text):
     """
 
     :param page_number: OCR page number
     :param polygon: The VOTT polygon value for the field
     :return: The populated json attributes
     """
+    bounding_boxes = []
+    bounding_boxes.append(polygon)
     return {
-        "pageNumber": page_number,
-        "polygon": polygon
+        "page": page_number,
+        "text": text,
+        "boundingBoxes": bounding_boxes
+    }
+
+
+def create_fields_json_file(key_fields):
+    """
+    This creates the fields.json file used by the labelling tool
+    TODO Needs type values added
+    :param key_fields: Our key fields from the config
+    :return: The json object
+    """
+    fields = []
+
+    for key_field in key_fields:
+        field_value = {'fieldKey': key_field, 'fieldType': "string", 'fieldFormat': "not-specified"}
+        fields.append(field_value)
+
+    return {
+        "fields": fields
     }
 
 
@@ -129,7 +150,11 @@ def create_label_file(file_name, key_fields, key_field_details):
     # create label file
     label_file = get_label_file_template(file_name)
     keys = {}
-    multi_page_fields = Config.MULTI_PAGE_FIELDS.split(',')
+
+    if Config.MULTI_PAGE_FIELDS is not None:
+        multi_page_fields = Config.MULTI_PAGE_FIELDS.split(',')
+    else:
+        multi_page_fields = ''
 
     # Let's get the number of unique fields extracted
     fields_extracted = []
@@ -137,8 +162,9 @@ def create_label_file(file_name, key_fields, key_field_details):
 
     # Initialise and Build
     for key_field in key_fields:
+        key_field = key_field.strip()
         for field in key_field_details:
-            if key_field in field:
+            if key_field.strip() in field:
                 if key_field in keys:
                     keys[key_field].append(field)
                 else:
@@ -157,6 +183,7 @@ def create_label_file(file_name, key_fields, key_field_details):
 
     # Add key field values to the label file
     for key_field, _ in keys.items():
+        key_field = key_field.strip()
         fields_extracted.append(key_field)
 
         # Take the last value for multi-page - totals values are best taken from the end of the last
@@ -181,15 +208,15 @@ def create_label_file(file_name, key_fields, key_field_details):
         field_value = field_detail[key_field]
 
         field_values = [field_value]  # if more than one bounding box.
-        field = get_field_template(key_field, field_value, field_values)
+        field = get_field_template(key_field)
 
         # Convert to percentage coordinates
         polygon = convert_bbox_to_polygon(field_bounding_box, float(width), float(height))
 
-        region = get_region(page, polygon)
+        region = get_region(page, polygon, field_value)
 
         # Add the key region to the field
-        field['regions'].append(region)
+        field['value'].append(region)
 
         # Add the field to the doc template - each field is a 'label'
         label_file['labels'].append(field)
@@ -200,7 +227,7 @@ def create_label_file(file_name, key_fields, key_field_details):
     return label_file, unique_fields_extracted
 
 
-def form_recognizerv2_train(base_url, subscription_key, training_data_blob_sas_url, prefix=None,
+def form_recognizerv2_train(region, subscription_key, training_data_blob_sas_url, prefix=None,
                             includeSubFolders=False,
                             useLabelFile=True):
     """
@@ -214,8 +241,6 @@ def form_recognizerv2_train(base_url, subscription_key, training_data_blob_sas_u
     :return: The modelId and accuracy etc
     """
 
-    # We use session affinity for async calls on a container, remove session if not needed
-    session = Session()
     """Trains a document with the Form Recognizer supervised model """
 
     headers = {
@@ -223,7 +248,7 @@ def form_recognizerv2_train(base_url, subscription_key, training_data_blob_sas_u
         "Content-Type": "application/json",
         "Ocp-Apim-Subscription-Key": subscription_key,
     }
-    url = base_url + "/formrecognizer/v2.0-preview/asyncTrain"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models"
 
     print('url', url)
     print('subscription_key', subscription_key)
@@ -238,30 +263,31 @@ def form_recognizerv2_train(base_url, subscription_key, training_data_blob_sas_u
         "useLabelFile": useLabelFile}
 
     try:
-        resp = session.post(url=url, json=body, headers=headers)
-        print(resp.status_code)
-        if resp.status_code == 202:
+        resp = post(url=url, json=body, headers=headers)
 
-            print("Model analyse submitted. %s" % resp.headers['Operation-Location'])
-            status_url = resp.headers['Operation-Location']
+        if resp.status_code == 201:
+            status_url = resp.headers['Location']
+            print(f"Model analyse submitted. Operation Location: {status_url}")
             headers = {"Ocp-Apim-Subscription-Key": subscription_key}
-            resp = session.get(url=status_url, headers=headers)
-
-            # Sticky session async call - change if not needed
-            while resp.json()['status'] == 'Running':
-                resp = session.get(url=status_url, headers=headers)
-
+            resp = get(url=status_url, headers=headers)
+            count = 0
+            max_retry = 500
+            while (count < max_retry and resp.status_code == 200 and (
+                    resp.json()['modelInfo']['status'] == 'running' or resp.json()['modelInfo'][
+                'status'] == 'creating')):
+                resp = get(url=status_url, headers=headers)
+                time.sleep(0.5)
+                count += 1
             return resp.json()
         else:
-            print("Error training {}".format(resp.text))
+            print(f"Error training: {str(resp.text)}")
     except Exception as e:
-        print("POST train model failed:\n%s" % str(e))
-        exc_type, _, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print('Error', e, exc_type, fname, exc_tb.tb_lineno)
+        print(f"Error training model : {e}")
+
+    return None
 
 
-def call_ocr(file_path, file_name, language_code):
+def call_ocr(file_path, file_name, language_code, region, subscription_key):
     """
     Let's only call OCR if we need to
     :param file_path: Path to file to OCR
@@ -269,26 +295,46 @@ def call_ocr(file_path, file_name, language_code):
     :return: The json response of the OCR
     """
 
-    analyze_result_response = None
-
-    # We use session affinity for async container calls, remove if using managed service
-    session = Session()
-
     headers = {
-        "Ocp-Apim-Subscription-Key": Config.SUBSCRIPTION_KEY,
+        "Ocp-Apim-Subscription-Key": subscription_key,
+        "Content-Type": "application/pdf"
     }
 
-    try:
-        url = Config.ANALYZE_END_POINT + \
-              '/formrecognizer/v2.0-preview/readLayout/analyze?language=' + language_code.lower() + \
-              '&mode=docMode'
-        print('Calling OCR', file_path, file_name, url)
-        files = {'file': (file_name, open(file_path + '/' + file_name, 'rb'), 'application/pdf', {'Expires': '0'})}
-        resp = session.post(url=url, files=files, headers=headers)
-        analyze_result_response = resp.json()
+    with open(os.path.join(file_path, file_name), 'rb') as ocr_file:
+        file_content = ocr_file.read()
 
+    operation_location = ""
+    print(f"Analyzing file {file_name}...")
+    analyze_result_response = None
+
+    try:
+        url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/layout/analyze"
+        print(url)
+        resp = post(url=url, data=file_content, headers=headers)
+        print(resp, resp.status_code, resp.text)
+        operation_location = resp.headers['Operation-Location']
+        print(f"Analyze Operation Location: {operation_location}")
     except Exception as e:
-        print('Exception readLayout', e)
+        print(f"Error analyzing file: {e}")
+
+    # Getting response result
+    if (operation_location != ""):
+        resp_analyze = get(url=operation_location, headers=headers)
+        analyze_result_response = resp_analyze.json()
+        print(analyze_result_response)
+        count = 0
+        max_retry = 30
+        try:
+            while (count < max_retry and resp_analyze.status_code == 200 and (
+                    analyze_result_response['status'] == 'running' or analyze_result_response[
+                'status'] == 'notStarted')):
+                resp_analyze = get(url=operation_location, headers=headers)
+                analyze_result_response = resp_analyze.json()
+                time.sleep(0.5)
+                count += 1
+            print(f"File {file_name} status: {analyze_result_response['status']}")
+        except Exception as e:
+            print(f"Error analyzing file: {e}")
 
     return analyze_result_response
 
@@ -308,18 +354,16 @@ def create_training_files_for_document(
     :param pass_number: Are we processing word level or both word and line level
     """
 
-    extraction_file_name = file_name + '.ocr.json'
-    print(f"GT value {ground_truth_df['FILENAME'].iloc[0]} {file_name}")
-
+    extraction_file_name = file_name[:-4] + '.ocr.json'
     # Now we go and reverse search the form for the Ground Truth values
     key_field_data = find_anchor_keys_in_form(
-        ground_truth_df,
-        extraction_file_name,
-        ocr_data,
-        key_field_names,
-        pass_number)
+        df_gt=ground_truth_df,
+        filename=extraction_file_name,
+        data=ocr_data,
+        anchor_keys=key_field_names,
+        pass_number=pass_number)
 
-    print(f"key_field_data {len(key_field_data)} {key_field_data}")
+    print(f"key_field_data {len(key_field_data)} {key_field_data} {file_name}")
 
     label_file, unique_fields_extracted = create_label_file(
         file_name,
@@ -330,6 +374,101 @@ def create_training_files_for_document(
     return ocr_data, label_file, unique_fields_extracted
 
 
+def select_best_training_set(pass_level, vendor_folder_path_pass1, vendor_folder_path_pass2, min_labelled_data):
+    """
+    This function will select and cleanup the best training set
+    :param pass_level: The object containing our autolabelled training set
+    :param vendor_folder_path_pass1: First pass folder
+    :param vendor_folder_path_pass2: Second pass folder
+    :return: The best training set
+    """
+    # Now we need to train our two pass models and select the best model
+    # We know that the highest amount of correctly labelled fields will
+    # Yield the best accuracy
+    pass1_max = 0
+    pass2_max = 0
+    pass1_sum = 0
+    pass2_sum = 0
+
+    # Now we get the max field count and average retrieved from the sampled training set
+    for level, file_values in pass_level.items():
+        for file_value in file_values:
+            for i, key_count in enumerate(file_value):
+                if int(level) == 1:
+                    pass1_sum += int(key_count[1])
+                    if int(key_count[1]) > pass1_max:
+                        pass1_max = key_count[1]
+                else:
+                    pass2_sum += int(key_count[1])
+                    if int(key_count[1]) > pass2_max:
+                        pass2_max = key_count[1]
+
+    print(f"Pass 1 max: {pass1_max} sum {pass1_sum / (i + 1)}")
+    print(f"Pass 2 max: {pass2_max} sum {pass2_sum / (i + 1)}")
+
+    # Now we check whether we have enough to train a model - 5 minimum and remove the files
+    # not optimum to our training set. We will check for maximum fields present, if this is
+    # not possible we will take the next best set max - 1
+    reduce_max = 0
+
+    pass1_count, pass2_count, pass1_sum, pass2_sum = \
+        build_valid_training_set(pass_level, pass1_max, pass2_max, reduce_max)
+
+    if (pass1_count < min_labelled_data) and (pass2_count < min_labelled_data):
+        print(f"Reducing max fields due to insufficient well labelled samples")
+        reduce_max = 1
+        pass1_count, pass2_count, pass1_sum, pass2_sum = \
+            build_valid_training_set(pass_level, pass1_max, pass2_max, reduce_max)
+
+        print(f"Pass 1 max: {pass1_max - reduce_max} sum {pass1_sum / (i + 1)}")
+        print(f"Pass 2 max: {pass2_max - reduce_max} sum {pass2_sum / (i + 1)}")
+
+    print(f"Pass 1 count: {pass1_count}")
+    print(f"Pass 2 count: {pass2_count}")
+
+    selected_training_set = None
+
+    # Find the training set with the best labelled fields
+    if pass1_max > pass2_max:
+        # This is the minimum we need to train a model
+        if pass1_count >= min_labelled_data:
+            selected_training_set = vendor_folder_path_pass1
+        else:
+            print(f"Not enough well labelled files in dataset {vendor_folder_path_pass1}")
+    elif pass2_max > pass1_max:
+        # This is the minimum we need to train a model
+        if pass2_count >= min_labelled_data:
+            selected_training_set = vendor_folder_path_pass2
+        else:
+            print(f"Not enough well labelled files in dataset {vendor_folder_path_pass2}")
+    elif pass1_max == pass2_max:
+        if pass1_count > pass2_count:
+            # This is the minimum we need to train a model
+            if pass1_count >= min_labelled_data:
+                selected_training_set = vendor_folder_path_pass1
+            else:
+                print(f"Not enough well labelled files in dataset {vendor_folder_path_pass1}")
+        else:
+            # This is the minimum we need to train a model
+            if pass2_count >= min_labelled_data:
+                selected_training_set = vendor_folder_path_pass2
+            else:
+                print(f"Not enough well labelled files in dataset {vendor_folder_path_pass2}")
+
+    if selected_training_set is not None:
+        # Let's optimise the training set by removing the badly labelled items
+        cleanup_training_set(pass_level, pass1_max, pass2_max,
+                             vendor_folder_path_pass1, vendor_folder_path_pass2, reduce_max)
+    else:
+        # We need to take the best partially labelled dataset
+        if pass1_count > pass2_count:
+            selected_training_set = vendor_folder_path_pass1
+        else:
+            selected_training_set = vendor_folder_path_pass2
+
+    return selected_training_set
+
+
 def process_folder(
         vendor_folder_path_pass1,
         vendor_folder_path_pass2,
@@ -338,7 +477,10 @@ def process_folder(
         language_code,
         ground_truth_df,
         blob_service,
-        container_name):
+        container_name,
+        region,
+        subscription_key
+):
     """
     Iterate through our storage accounts, download,correlate with Ground Truth and invoke downstream
     functions
@@ -352,6 +494,8 @@ def process_folder(
     :param ground_truth_df: Our Ground Truth data frame
     :param blob_service: The Blob Service object
     :param container_name: The storage blob container that we are processing
+    :param region: The region the Cognitive Services are deployed
+    :param subscription_key: The subscription key for the cognitive services
     :return: A dictionary object containing lists of filenames for OCR and labels generated for the pass level
     """
 
@@ -392,7 +536,8 @@ def process_folder(
                 ocr_data = json.load(ocr_file)
 
         if ocr_data is None:
-            analyze_layout_ocr = call_ocr(vendor_folder_path_pass1, input_file_name, language_code)
+            analyze_layout_ocr = call_ocr(vendor_folder_path_pass1, input_file_name, language_code, region,
+                                          subscription_key)
             analyze_layout_ocr_output_file_path = \
                 f"{vendor_folder_path_pass1}/{input_file_name}.ocr.json"
             save_json(analyze_layout_ocr, analyze_layout_ocr_output_file_path)
@@ -406,8 +551,8 @@ def process_folder(
     paths = [vendor_folder_path_pass1, vendor_folder_path_pass2]
     pass_number = 0
 
-    # Let's auto-label both passes
     for pass_path in paths:
+        # Let's auto-label for pass_path in paths:
         pass_number += 1
         pass_level[pass_number] = []
         output_files = []
@@ -420,19 +565,21 @@ def process_folder(
                 ocr_data = json.load(ocr_file)
 
             analyze_layout_ocr, label_file, key_length = create_training_files_for_document(
-                f"{pass_path}/{input_file_name}",
                 input_file_name,
                 key_field_names,
                 ground_truth_df,
                 ocr_data,
-                pass_number
-            )
+                pass_number)
 
             output_files.append([input_file_name, key_length])
 
             # save files
             label_output_file_path = f"{pass_path}/{input_file_name}.labels.json"
             save_json(label_file, label_output_file_path)
+
+            fields_file = create_fields_json_file(key_field_names)
+            fields_output_file_path = f"{pass_path}/fields.json"
+            save_json(fields_file, fields_output_file_path)
 
         # Add to the top level dict data structure
         pass_level[pass_number].append(output_files)
@@ -604,6 +751,9 @@ class Config:
     TRAIN_TEST = os.environ.get("TRAIN_TEST")  # Suffixes train or test to container name
     MULTI_PAGE_FIELDS = os.environ.get("MULTI_PAGE_FIELDS")  # These fields appear over multiple pages
     # and as such are handled differently. Typically totals fields on an invoice
+    REGION = os.environ.get("REGION")  # The region Form Recognizer and OCR are deployed
+    MINIMUM_LABELLED_DATA = os.environ.get("MINIMUM_LABELLED_DATA")  # The minimum number of well labelled samples to
+    #  train on
 
 
 def main():
@@ -674,91 +824,12 @@ def main():
             Config.LANGUAGE_CODE,
             ground_truth_df,
             block_blob_service,
-            container.name)
+            container.name,
+            Config.REGION,
+            Config.SUBSCRIPTION_KEY)
 
-        # Now we need to train our two pass models and select the best model
-        # We know that the highest amount of correctly labelled fields will
-        # Yield the best accuracy
-        pass1_max = 0
-        pass2_max = 0
-        pass1_sum = 0
-        pass2_sum = 0
-
-        # Now we get the max field count and average retrieved from the sampled training set
-        for level, file_values in pass_level.items():
-            for file_value in file_values:
-                for i, key_count in enumerate(file_value):
-                    if int(level) == 1:
-                        pass1_sum += int(key_count[1])
-                        if int(key_count[1]) > pass1_max:
-                            pass1_max = key_count[1]
-                    else:
-                        pass2_sum += int(key_count[1])
-                        if int(key_count[1]) > pass2_max:
-                            pass2_max = key_count[1]
-
-        print(f"Pass 1 max: {pass1_max} sum {pass1_sum / i}")
-        print(f"Pass 2 max: {pass2_max} sum {pass2_sum / i}")
-
-        # Now we check whether we have enough to train a model - 10 minimum and remove the files
-        # not optimum to our training set. We will check for maximum fields present, if this is
-        # not possible we will take the next best set max - 1
-        reduce_max = 0
-
-        pass1_count, pass2_count, pass1_sum, pass2_sum = \
-            build_valid_training_set(pass_level, pass1_max, pass2_max, reduce_max)
-
-        if (pass1_count < 10) and (pass2_count < 10):
-            print(f"Reducing max fields due to insufficient well labelled samples")
-            reduce_max = 1
-            pass1_count, pass2_count, pass1_sum, pass2_sum = \
-                build_valid_training_set(pass_level, pass1_max, pass2_max, reduce_max)
-
-            print(f"Pass 1 max: {pass1_max - reduce_max} sum {pass1_sum / i}")
-            print(f"Pass 2 max: {pass2_max - reduce_max} sum {pass2_sum / i}")
-
-        print(f"Pass 1 count: {pass1_count}")
-        print(f"Pass 2 count: {pass2_count}")
-
-        selected_training_set = None
-
-        # Find the training set with the best labelled fields
-        if pass1_max > pass2_max:
-            # This is the minimum we need to train a model
-            if pass1_count > 10:
-                selected_training_set = vendor_folder_path_pass1
-            else:
-                print(f"Not enough well labelled files in dataset {vendor_folder_path_pass1}")
-        elif pass2_max > pass1_max:
-            # This is the minimum we need to train a model
-            if pass2_count > 10:
-                selected_training_set = vendor_folder_path_pass2
-            else:
-                print(f"Not enough well labelled files in dataset {vendor_folder_path_pass2}")
-        elif pass1_max == pass2_max:
-            if pass1_count > pass2_count:
-                # This is the minimum we need to train a model
-                if pass1_count > 10:
-                    selected_training_set = vendor_folder_path_pass1
-                else:
-                    print(f"Not enough well labelled files in dataset {vendor_folder_path_pass1}")
-            else:
-                # This is the minimum we need to train a model
-                if pass2_count > 10:
-                    selected_training_set = vendor_folder_path_pass2
-                else:
-                    print(f"Not enough well labelled files in dataset {vendor_folder_path_pass2}")
-
-        if selected_training_set is not None:
-            # Let's optimise the training set by removing the badly labelled items
-            cleanup_training_set(pass_level, pass1_max, pass2_max,
-                                 vendor_folder_path_pass1, vendor_folder_path_pass2, reduce_max)
-        else:
-            # We need to take the best partially labelled dataset
-            if pass1_count > pass2_count:
-                selected_training_set = vendor_folder_path_pass1
-            else:
-                selected_training_set = vendor_folder_path_pass2
+        selected_training_set = select_best_training_set(pass_level, vendor_folder_path_pass1, vendor_folder_path_pass2,
+                                                         Config.MINIMUM_LABELLED_DATA)
 
         # Debug data structure
         with open(Config.RUN_FOR_SINGLE_ISSUER + '_pass_level.txt', 'w') as file:
@@ -774,7 +845,7 @@ def main():
 
         # Train the model on the optimised dataset
         sasurl = sas_prefix + container.name + sas
-        train_response = form_recognizerv2_train(Config.TRAINING_END_POINT,
+        train_response = form_recognizerv2_train(Config.REGION,
                                                  Config.SUBSCRIPTION_KEY,
                                                  sasurl)
         print(f"Trained {train_response}")
@@ -785,9 +856,9 @@ def main():
 
         try:
 
-            modelId = train_response['trainResult']['modelId']
+            modelId = train_response['modelInfo']['modelId']
             fieldlen = len(train_response['trainResult']['trainingFields']['fields'])
-            accuracy = train_response['trainResult']['trainingFields']['averageModelAccuracy']
+            accuracy = train_response['trainResult']['averageModelAccuracy']
 
             print(train_response['trainResult']['modelId'])
             lst_vendorId.append(container.name[:9])
