@@ -1,0 +1,44 @@
+{
+    "fields": [
+        {
+            "fieldKey": "INVOICE_NUM",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " INVOICE_DATE",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " VENDOR",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " BILL_TO",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " TOTAL",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " VAT_ID",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " VENDOR_ZIP",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": " BILL_TO_ZIP",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        }
+    ]
+}

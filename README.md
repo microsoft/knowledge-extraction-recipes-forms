@@ -61,6 +61,14 @@ We refer to the *Supervised* version of the Form Recognizer service when the arg
 
 We refer to a form issuer as being the unique source of a form, for example, the vendor of an invoice, or the bank of origin of an application form.
 
+## End to end demos ✨
+
+***NEW*** (▀̿Ĺ̯▀̿ ̿)
+
+| Stage | Scenario | Description |
+| -------- | ----------- | ------|
+| AutoLabelling and Prediction | [AutoLabelling](Demos/AutoLabelDemo.ipynb) | Chains AutoLabelling, Training and Prediction on sample invoices
+
 ## Code accelerators
 
 The following code accelerators serve as starting points to try approaches that are known to work for Knowledge
@@ -209,6 +217,44 @@ to easily read and write your data in Azure storage services such as blob storag
 To successfully run these code accelerators, you will need an [**Azure subscription**](https://azure.microsoft.com/en-us/)
 or can [**try Azure for free**](https://azure.microsoft.com/en-us/free/). There may be other Azure services or products
 used in the code. Introduction and/or reference of those will be provided in the code themselves.
+
+## Contributors ✨
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/aljannuzzi"><img src="https://avatars2.githubusercontent.com/u/12851020?s=460&u=3089e5ef9c5fa5cf63d14b2e688f95c86621fc6c&v=4" width="100px;" alt=""/><br /><sub><b>Alessandro Jannuzzi</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/alexhock"><img src="https://avatars0.githubusercontent.com/u/7644157?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Alex Hocking</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/aykhara"><img src="https://avatars0.githubusercontent.com/u/6184880?s=400&u=2c8b01f032cd8df7ed43f527109556b13958bf11&v=4" width="100px;" alt=""/><br /><sub><b>Ayaka Hara</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/dariuszparys"><img src="https://avatars0.githubusercontent.com/u/104804?s=400&u=846dc242a919fefdd2b25845db193490afca9517&v=4" width="100px;" alt=""/><br /><sub><b>Dariusz Parys</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/ikivanc"><img src="https://avatars3.githubusercontent.com/u/118657?s=400&u=7f2f5703b790c77cd6a57e2264cd0c3024f1820b&v=4" width="100px;" alt=""/><br /><sub><b>Ibrahim Kivanc</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/karolzak"><img src="https://avatars3.githubusercontent.com/u/9843623?s=400&u=8c7397ea797a14ca2585bcd992355f1bba34d4cd&v=4" width="100px;" alt=""/><br /><sub><b>Karol Zak</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Kagigz"><img src="https://avatars1.githubusercontent.com/u/16519462?s=400&u=8d803b66535e90ffb666e4ade83176daa4b3c7a0&v=4" width="100px;" alt=""/><br /><sub><b>Katia Gil Guzman</b></sub></a><br /></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/kritcs18"><img src="https://avatars2.githubusercontent.com/u/6996731?s=400&u=9908ca894db152cf1c6c398c16534e218b127cc9&v=4" width="100px;" alt=""/><br /><sub><b>Krit Kamtuo</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/madossan01"><img src="https://avatars3.githubusercontent.com/u/60100278?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Marcia Dos Santos</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/vapaunic"><img src="https://avatars3.githubusercontent.com/u/15053814?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Nuno Silva</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/ignaciofls"><img src="https://avatars1.githubusercontent.com/u/38979090?s=400&u=a44b744dda432c2eedc57c40c13791c40df44a62&v=4" width="100px;" alt=""/><br /><sub><b>Ignacio Floristan</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/ashepetko"><img src="https://avatars0.githubusercontent.com/u/2492622?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Oleksiy Shepetko</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/omri374"><img src="https://avatars3.githubusercontent.com/u/3776619?s=400&u=992d699096bf9d6dbdd3b80e39bef854342fbd56&v=4" width="100px;" alt=""/><br /><sub><b>Omri Mendels</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/PreteshPatel"><img src="https://avatars2.githubusercontent.com/u/29402241?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Pretesh Patel </b></sub></a><br /></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/rajnemani"><img src="https://avatars2.githubusercontent.com/u/627352?s=400&u=4b3c21db6e65b899c8abff1d6712c390750b5704&v=4" width="100px;" alt=""/><br /><sub><b>Raj Nemani</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/sbaidachni"><img src="https://avatars3.githubusercontent.com/u/10055252?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Sergii Baidachnyi</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/tompaana"><img src="https://avatars3.githubusercontent.com/u/1629215?s=400&u=f074cf8e761ff00d283b096ea3fd1a72f9858aea&v=4" width="100px;" alt=""/><br /><sub><b>Tomi Paananen</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/martinkearn"><img src="https://avatars1.githubusercontent.com/u/2410726?s=400&u=7ba06b30390a50157cb2ff17b909dcaccba9336d&v=4" width="100px;" alt=""/><br /><sub><b>Martin Kearn</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/shanepeckham"><img src="https://avatars1.githubusercontent.com/u/9840775?s=400&u=eedd334991b280967060ba797c9fb5bb6d7ffc0a&v=4" width="100px;" alt=""/><br /><sub><b>Shane Peckham</b></sub></a><br /></td>
+   
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 
 ## Contributing
 

@@ -157,7 +157,7 @@ class Config:
     SAS = os.environ.get("SAS")  # SAS for storage
     RUN_FOR_SINGLE_ISSUER = os.environ.get("RUN_FOR_SINGLE_ISSUER")  # If true process only this vendor
     MOUNT_DIR = os.environ.get("MOUNT_DIR")  # Model mount directory to which to write training files to
-    DOC_EXT = os.environ.get("DOC_EXT")
+    DOC_EXT = os.environ.get("DOC_EXT")  # The extension of the files to process e.g. .tif
     LANGUAGE_CODE = os.environ.get("LANGUAGE_CODE")  # The language we invoke Read OCR in only en supported now
     GROUND_TRUTH_PATH = os.environ.get("GROUND_TRUTH_PATH")  # This is the path to our Ground Truth
     LOCAL_WORKING_DIR = os.environ.get(
