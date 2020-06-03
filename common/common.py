@@ -38,6 +38,21 @@ def extract_ocr_as_textblock(df_ocr):
     return raw_text
 
 
+def get_text_from_ocr(res):
+    """
+    Simply extract the text from OCR
+    :param res: OCR result string
+    :return: The text only
+    """
+    res_string = ''
+    for pages in res['analyzeResult']['readResults']:  # Added page
+        for lines in pages['lines']:
+            for words in lines['words']:
+                res_string += words['text']
+
+    return res_string
+
+
 def strip_lower_remove_punctuation(input_string):
     """
 
