@@ -68,7 +68,7 @@ We refer to a form issuer as being the unique source of a form, for example, the
 | Stage | Scenario | Description |
 | -------- | ----------- | ------|
 | AutoLabelling and Prediction | [AutoLabelling](Demos/AutoLabelDemo.ipynb) | Chains AutoLabelling, Training and Prediction on sample invoices
-| Pre-Processing Remove Boxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb) | Shows how to remove boxes that cause OCR errors
+| Pre-Processing Remove Boxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb) | Shows how to remove boxes that cause OCR errors and find the best image transformation
 
 ## Code accelerators
 
@@ -87,6 +87,7 @@ in this repository using diverse approaches.
 | Analysis | [Understanding the data distribution](Analysis/Distribution/Distribution.ipynb) | Illustrates a simple way to understand the distribution of vendor to invoice frequency
 | Analysis | [Understanding form variation](Analysis/Form_Variation/README.md) | Illustrates how to analyse  whether variation in a single form type exists
 | Pre-Processing | [Image Channel Normalisation](Pre_Processing/Normalisation/preprocess_document.ipynb) | Illustrates interactive normalisation, binarization and greyscale conversion
+| Pre-Processing Remove Boxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb) | Illustrates interactively how to remove boxes that cause OCR errors and find the best image transformation
 | Pre-Processing | [Conversion](Training/Auto_Labelling/README.md#conversion) | Converting documents between various formats such as TIF to PDF, JPG to PDF etc
 | Pre-Processing | [Scan skewness](Pre_Processing/Skewness/README.md) | Illustrates testing and correcting skewness
 | Pre-Processing | [Projection](Pre_Processing/Projection/README.md) | Illustrates how to identify document skew and location of text lines
