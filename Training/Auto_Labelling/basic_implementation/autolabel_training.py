@@ -287,7 +287,7 @@ def form_recognizerv2_train(region, subscription_key, training_data_blob_sas_url
     return None
 
 
-def call_ocr(file_path, file_name, language_code, region, subscription_key):
+def call_ocr(file_path, file_name, language_code, region, subscription_key, content_type):
     """
     Let's only call OCR if we need to
     :param file_path: Path to file to OCR
@@ -297,7 +297,7 @@ def call_ocr(file_path, file_name, language_code, region, subscription_key):
 
     headers = {
         "Ocp-Apim-Subscription-Key": subscription_key,
-        "Content-Type": "application/pdf"
+        "Content-Type": content_type
     }
 
     with open(os.path.join(file_path, file_name), 'rb') as ocr_file:
@@ -311,9 +311,7 @@ def call_ocr(file_path, file_name, language_code, region, subscription_key):
         url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/layout/analyze"
         print(url)
         resp = post(url=url, data=file_content, headers=headers)
-        print(resp, resp.status_code, resp.text)
         operation_location = resp.headers['Operation-Location']
-        print(f"Analyze Operation Location: {operation_location}")
     except Exception as e:
         print(f"Error analyzing file: {e}")
 
@@ -321,7 +319,6 @@ def call_ocr(file_path, file_name, language_code, region, subscription_key):
     if (operation_location != ""):
         resp_analyze = get(url=operation_location, headers=headers)
         analyze_result_response = resp_analyze.json()
-        print(analyze_result_response)
         count = 0
         max_retry = 30
         try:

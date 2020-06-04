@@ -3,13 +3,13 @@ import os
 import re
 import string
 import sys
-from typing import List
-from urllib.parse import quote
+import cv2
+from PIL import Image
+import numpy as np
 
 import moment  # type:ignore
 import pandas as pd  # type:ignore
 from fuzzywuzzy import fuzz, process  # type:ignore
-from requests import get
 
 
 def sum_bounding_box(bbox):
@@ -36,6 +36,21 @@ def extract_ocr_as_textblock(df_ocr):
     raw_text = strip_lower_remove_punctuation(raw_text)
 
     return raw_text
+
+
+def get_text_from_ocr(res):
+    """
+    Simply extract the text from OCR
+    :param res: OCR result string
+    :return: The text only
+    """
+    res_string = ''
+    for pages in res['analyzeResult']['readResults']:  # Added page
+        for lines in pages['lines']:
+            for words in lines['words']:
+                res_string += words['text']
+
+    return res_string
 
 
 def strip_lower_remove_punctuation(input_string):
@@ -543,7 +558,7 @@ def find_anchor_keys_in_form(anchor_keys, df_gt, filename, data, pass_number):
 
                             #  TODO catch all here
                             elif (gt_clean in ocr_clean_line) and ((anchor_key == 'BILL_TO_ZIP') or
-                                anchor_key == 'VENDOR_ZIP'):
+                                                                   anchor_key == 'VENDOR_ZIP'):
                                 ocr_orig_line = lines['text']
                                 keys, found_keys = build_keys_json_object(keys, filename,
                                                                           anchor_key, found_keys,
@@ -553,7 +568,6 @@ def find_anchor_keys_in_form(anchor_keys, df_gt, filename, data, pass_number):
                                                                           height,
                                                                           width)
                                 found_key = True
-
 
         i += 1
 
@@ -727,3 +741,210 @@ def handle_date_format_num_word_num(date_text, country_code):
     new_ocr_date = date_text + country_code
     # TODO implement your custom date formatting
     return new_ocr_date
+
+
+def resize_image(DATA_PATH, file_name, size):
+    """
+    This will resize an image
+    :param DATA_PATH: The path to the files
+    :param file_name: The filename
+    :param size: Size to scale by 200, 300 etc
+    :return: The resized image
+    """
+    roi = cv2.imread(os.path.join(DATA_PATH, file_name))
+    scale_percent = size  # percent of original size
+    width = int(roi.shape[1] * scale_percent / 100)
+    height = int(roi.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    resized = cv2.resize(roi, dim, interpolation=cv2.INTER_AREA)
+
+    return resized
+
+
+def score_and_rank(active_file, GT, result, best_score):
+    """
+    Function used by the remove boxes demo
+    :param active_file: The image file we are assessing
+    :param GT: The ground truth string
+    :param result: The OCR result string
+    :param best_score: The dict containing the scores
+    :return: best_score dict, top_score (sorted best_score)
+    """
+    par_score = compute_partial_ratio(GT, get_text_from_ocr(result))
+    score = compute_ratio(GT, get_text_from_ocr(result))
+    best_score[active_file] = (par_score + score) / 2
+    top_score = sorted(best_score.items(), key=lambda x: x[1], reverse=True)
+
+    print(f"{active_file} Score {(par_score + score) / 2}")
+    print(f"GT: {GT} OCR: {get_text_from_ocr(result)}")
+    print(f"\n-----Best performing images----------")
+    for rank, file in enumerate(top_score):
+        print(f" {rank}: {file[0]} {file[1]}")
+
+    return best_score, top_score
+
+
+def apply_erosion(DATA_PATH, file_name, erosion_size=1):
+    """
+    This function will apply erosion to a file
+    :param DATA_PATH: The path to the files
+    :param file_name: The image we are processing
+    :param erosion_size: The size of the erosion
+    :return: filename - The file is saved to disk
+    """
+    src = cv2.imread(os.path.join(DATA_PATH,  file_name))
+
+    erosion_type = 0
+    erosion_type = cv2.MORPH_RECT
+    element = cv2.getStructuringElement(erosion_type, (2 * erosion_size + 1, 2 * erosion_size + 1),
+                                        (erosion_size, erosion_size))
+    erosion_dst = cv2.erode(src, element)
+    cv2.imwrite(os.path.join(DATA_PATH + file_name[:-4] + str(erosion_size) + '_eroded.jpg'), erosion_dst)
+    return file_name[:-4] + str(erosion_size) + '_eroded.jpg'
+
+
+def apply_dilatation(DATA_PATH, file_name, dilatation_size=1):
+    """
+    This function will apply dilatation to a file
+    :param DATA_PATH: The path to the files
+    :param file_name: The image we are processing
+    :param dilatation_size_size: The size of the dilatation
+    :return: filename - The file is saved to disk
+    """
+    src = cv2.imread(os.path.join(DATA_PATH,  file_name))
+
+    dilatation_type = 0
+
+    dilatation_type = cv2.MORPH_RECT
+    element = cv2.getStructuringElement(dilatation_type, (2*dilatation_size + 1, 2*dilatation_size+1), (dilatation_size, dilatation_size))
+    dilatation_dst = cv2.dilate(src, element)
+    cv2.imwrite(os.path.join(DATA_PATH + file_name[:-4] + str(dilatation_size) + '_dilatation.jpg'), dilatation_dst)
+
+    return file_name[:-4] + str(dilatation_size) + '_dilatation.jpg'
+
+
+def get_projection(image, vert=False):
+    """
+    Applies projection to an image
+    :param image: The image we are assessing
+    :param vert:
+    :return:
+    """
+
+    axis = 1
+    if vert:
+        axis = 0
+
+    # Compute the sums of the rows - the projection
+    # row_sums = sum_rows(image)
+    row_sums = np.sum(image, axis=axis)
+
+    # normalise to 0 to 255
+    max_row = np.max(row_sums)
+    row_sums = (row_sums / max_row) * 255
+    return row_sums
+
+
+def load_image(DATA_PATH, file_name, squarify=False, invert=True):
+    """
+    Loads an image and inverts
+    :param DATA_PATH: The path to the files
+    :param file_name: The image we are processing
+    :param squarify: Extract square coords
+    :param invert: Boolean to invert
+    :return: The image
+    """
+
+    img = cv2.imread(os.path.join(DATA_PATH, file_name), 0)
+
+    if invert:
+        img = 255 - img
+
+    if squarify:
+        h, w = img.shape
+        min_dim = min(h, w)
+        img = img[0:min_dim, 0:min_dim]
+
+    return img
+
+
+def find_runs(sum_rows, level=0):
+    """
+    Identify sequence of rows where the sum is high.
+    This indicates existence of text (where the sum is above level)
+    Do the same for sequences where the sum is low
+    This indicates a line break - the abscence of text
+    """
+    lows = []
+    highs = []
+    num_rows = len(sum_rows)
+    old_low_high = -1
+    curr_run = []
+
+    for pos in range(num_rows):
+
+        if sum_rows[pos] <= level:
+            low_high = 0
+        else:
+            low_high = 1
+
+        if old_low_high == -1:
+            old_low_high = low_high
+            curr_run.append(pos)
+            continue
+
+        if old_low_high != low_high:
+            # new run
+            if old_low_high == 0:
+                lows.append(curr_run)
+            else:
+                highs.append(curr_run)
+
+            old_low_high = low_high
+            curr_run = []
+
+        curr_run.append(pos)
+
+    return lows, highs
+
+
+def analyze_runs(lows):
+    """
+    Analyses projection runs
+    :param lows:
+    :return: start, end, median_width, lmr_low
+    """
+
+    print("lows")
+    lmr_low = []
+    for run in lows:
+        middle_of_run = ((run[-1] - run[0])/2) + run[0]
+        run_width = run[-1] - run[0]
+        lmr_low.append([run[0], middle_of_run, run[-1], run_width])
+
+        print(f"num points: {len(run)}"
+              f" run_width: {run_width}"
+              f" middle pos of run: {middle_of_run}")
+
+    # extract details of each 'low' - start, middle, end, width
+    widths = []
+    num_seqs = len(lmr_low)
+    prev_lmr = None
+    for i in range(num_seqs):
+        lmr = lmr_low[i]
+        if prev_lmr is None:
+            prev_lmr = lmr_low[i]
+            continue
+
+        pl, pm, pr, pw = prev_lmr
+        l, m, r, w = lmr
+
+        widths.append(m-pm)
+        prev_lmr = lmr
+
+    median_width = np.median(widths)
+
+    start = lmr_low[0][1]
+    end = lmr_low[-1][1]
+
+    return start, end, median_width, lmr_low
