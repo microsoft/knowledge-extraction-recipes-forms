@@ -69,6 +69,7 @@ We refer to a form issuer as being the unique source of a form, for example, the
 | -------- | ----------- | ------|
 | AutoLabelling and Prediction | [AutoLabelling](Demos/AutoLabelDemo.ipynb) | Chains AutoLabelling, Training and Prediction on sample invoices
 | Pre-Processing Remove Boxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb) | Shows how to remove boxes that cause OCR errors and find the best image transformation
+| Get Values in CheckBoxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb#Let's-see-if-we-can-find-the-checkboxes) | Detects and gets the value from CheckBoxes
 
 ## Code accelerators
 
@@ -91,8 +92,8 @@ in this repository using diverse approaches.
 | Pre-Processing | [Conversion](Training/Auto_Labelling/README.md#conversion) | Converting documents between various formats such as TIF to PDF, JPG to PDF etc
 | Pre-Processing | [Scan skewness](Pre_Processing/Skewness/README.md) | Illustrates testing and correcting skewness
 | Pre-Processing | [Projection](Pre_Processing/Projection/README.md) | Illustrates how to identify document skew and location of text lines
-| Pre-Processing | [Removing Boxes](Demos/RemoveBoxes.ipynb) | Illustrates how to identify and remove boxes around text that cause OCR errors
-| Pre-Processing     | [Optical Mark Recognition](Pre_Processing/Optical_Mark_Recognition/README.md) | Illustrates some techniqes to determine if a checkbox exists and how to extract it
+| Pre-Processing | [Detect and get CheckBox value](Demos/RemoveBoxes.ipynb#Let's-see-if-we-can-find-the-checkboxes) | Illustrates how to detect and get a CheckBox value
+| Pre-Processing     | [Optical Mark Recognition](Pre_Processing/Optical_Mark_Recognition/README.md) | Illustrates some techniques to determine if a checkbox exists and how to extract it
 | Training | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
 | Training | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recogniser model correlation
 | Training | [Dataset representativeness](Training/Representativeness/README.md) | Illustrates how test how to test the train and test datasets for representativeness
