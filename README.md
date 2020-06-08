@@ -69,7 +69,7 @@ We refer to a form issuer as being the unique source of a form, for example, the
 | -------- | ----------- | ------|
 | AutoLabelling and Prediction | [AutoLabelling](Demos/AutoLabelDemo.ipynb) | Chains AutoLabelling, Training and Prediction on sample invoices
 | Pre-Processing Remove Boxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb) | Shows how to remove boxes that cause OCR errors and find the best image transformation
-| Get Values in CheckBoxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb#Let's-see-if-we-can-find-the-checkboxes) | Detects and gets the value from CheckBoxes
+| Get Values in CheckBoxes  | [Detect and get CheckBox value](Demos/RemoveBoxes.ipynb#Let's-see-if-we-can-find-the-checkboxes) | Detects and gets the value from CheckBoxes
 
 ## Code accelerators
 
