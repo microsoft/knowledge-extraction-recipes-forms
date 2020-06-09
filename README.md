@@ -127,8 +127,7 @@ This section contains some documented common scenarios
 | -------- | ----------- |
 | [CV or Resume Extraction](Scenarios/CV_Resume)| Sample extraction flow for a CV/Resume
 | [Email Extraction](Scenarios/Email_Processing) | Sample extraction from emails
-| [Gelocation Extraction](Scenarios/Geolocation_Data) | Sample extraction for Geolocation
-| [Prebuilt Invoice Model](Scenarios/Prebuilt_Invoice_Model) | Sample extraction for the prebuilt Invoice model
+| [Geolocation Extraction](Scenarios/Geolocation_Data) | Sample extraction for Geolocation
 | [Prebuilt Receipt Model](Scenarios/Prebuilt_Receipt_Model) | Sample extraction for the prebuilt Receipt model
 | [Table extraction with Forms Recognizer](Scenarios/Table_Extraction_FR) | Sample extraction for Tables using Forms Recognizer
 | [Document Extraction detailed example using JFK Files](Scenarios/Document_Extraction_JFK_Files) | Sample extraction for Tables using Form Recognizer
