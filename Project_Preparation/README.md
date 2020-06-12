@@ -24,7 +24,7 @@ During this vital stage of the project, analysis of the viability and representa
 
 ### Pre-Processing
 
-During this step experiments are conducted on the data in attempts to normalise it, denoise it for improved accuracy and inform techniques on how the data can be segmented.
+During this optional step experiments are conducted on the data if required to normalise it, de-noise it for improved accuracy and inform techniques on how the data can be segmented.
 
 **Key Outcomes**:
 

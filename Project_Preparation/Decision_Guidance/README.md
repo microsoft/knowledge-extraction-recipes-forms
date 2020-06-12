@@ -17,9 +17,11 @@ The following serves to provide high level guidance in terms of the types of que
 
 *Do the documents contain handwriting?*
 
-While Form Recognizer can handle handwriting, extracting handwriting only makese sense if it is consistently on a part of the form, otherwise it will be hard for the Form Recognizer models to learn or for a human being to label it.
+While Form Recognizer can handle handwriting, extracting handwriting only makes sense if it is consistently on a part of the form, otherwise it will be hard for the Form Recognizer models to learn or for a human being to label it.
 
 Note, while handwriting can be extracted, it is prone to high rates of error due to the variability in handwriting. There are strategies that can be implemented to address these, such as creating a lookup dictionary of common OCR errors and then attempting to fix them. A simple example is if the letter O is read as a zero in a word, these can be easily fixed if found within a word containing only alphabetical characters on a part of the form that is not expected to contain numbers.
+
+A common problem with handwriting is if the characters are entered in individual boxes and the writing overlaps, that the underlying OCR may misread the characters. The strategy here is to detect and remove the boxes so as to stop them interfering with the handwriting. This is documented in the [RemoveBoxes](Demos/RemoveBoxes.ipynb) accelerator.
 
 If the handwriting is simply adding noise, then pre-processing tasks such as de-noising and normalisation can be attempted to remove the handwriting. This is documented in the [Pre-Processing](../../Pre_Processing/README.md) section.
 
@@ -33,7 +35,7 @@ The following image illustrates some key decision points on deciding on the appr
 
 *Which languages are covered in the documents?*
 
-Form Recognizer currently supports English documents only, but it is worth trying to use this service if the forms predomininantly use [Latin based characters](https://en.wikipedia.org/wiki/Latin_alphabet). If the forms do contain non-Latin based characters, such as a German Umlaut for example, an exercise needs to take place to determine whether these characters influence the context or meaning of the information to be extracted, if they do not then Form Recognizer can be considered.
+Form Recognizer currently supports English documents only, but it is worth trying to use this service if the forms predominantly use [Latin based characters](https://en.wikipedia.org/wiki/Latin_alphabet). If the forms do contain non-Latin based characters, such as a German Umlaut for example, an exercise needs to take place to determine whether these characters influence the context or meaning of the information to be extracted, if they do not then Form Recognizer can be considered.
 
 Strategies to re-instate these characters, if they are deemed important, can be adopted by performing an initial OCR scan of the form, storing the coordinates of the characters of interest and then re-instating them after the Form Recognizer extraction.
 

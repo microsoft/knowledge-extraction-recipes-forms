@@ -303,3 +303,7 @@ Please refer to the following fantastic references for additional material relev
 
 * [MLOps](https://github.com/microsoft/MLOps)
 * [MLOpsPython](https://github.com/Microsoft/MLOpsPython)
+
+### Intelligent Kiosk Demo
+
+* [Intelligent Kiosk](http://aka.ms/intelligentkiosk)
