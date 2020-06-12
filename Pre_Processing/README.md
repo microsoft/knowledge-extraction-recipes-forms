@@ -1,8 +1,9 @@
 # The pre-processing phase
 
-This is another vital stage in the project and the accuracy of the extraction will be largely defined during this stage.
+This is an optional step in the project that needs to be applied if noise or poor quality scans exist that affect the OCR's
+ability to read the underlying text. This will also clearly impact the accuracy of the extraction from the form.
 
-During this step experiments are conducted on the data in attempts to normalise it, denoise it for improved accuracy and inform techniques on how the data can be segmented.
+During this step experiments are conducted on the data in attempts to normalise it, de-noise it for improved accuracy and inform techniques on how the data can be segmented.
 
 **Key Outcomes**:
 
