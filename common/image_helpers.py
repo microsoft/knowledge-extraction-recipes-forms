@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 """
 This script comprises of helper methods that provide utilities to
     - request Azure Cognitive Services OCR text extraction using "asyncBatchAnalyze" service
@@ -16,6 +21,7 @@ import time
 import logging
 
 from common.request_helpers import get_request,post_request
+
 
 def get_OCR_results(uri, post_headers, get_headers, image):
     """

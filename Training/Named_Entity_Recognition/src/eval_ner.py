@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 import spacy
 from spacy.scorer import Scorer
 from spacy.gold import GoldParse

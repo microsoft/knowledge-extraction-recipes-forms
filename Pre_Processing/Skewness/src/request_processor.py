@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 import logging
 import common.storage_helpers as storage_helpers
 import common.image_helpers as image_helpers
