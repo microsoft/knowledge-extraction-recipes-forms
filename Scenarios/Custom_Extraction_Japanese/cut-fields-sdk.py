@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 """Fragment input image || 入力画像をフラグメント化する
 Fragment input image according to coordinates definition definied on VoTT and UWP-FormDef
 after rectifing the image.

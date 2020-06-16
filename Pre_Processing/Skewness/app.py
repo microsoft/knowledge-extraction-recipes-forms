@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
 
 import logging
 import os

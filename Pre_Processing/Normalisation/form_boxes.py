@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 # Module with routines for preparing forms with individual character boxes for recognition using Form Recognizer.
 #
 # Main methods:

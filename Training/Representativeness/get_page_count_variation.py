@@ -1,8 +1,11 @@
-import getopt
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 import json
 import os
 import shutil
-import sys
 from datetime import datetime, timedelta
 
 from azure.storage.blob import (
