@@ -1,0 +1,15 @@
+{
+	"name": "Python Durable Functions Preview",
+	"image": "anthonychu/python-durable-preview-devcontainer:20200616-01",
+	"forwardPorts": [ 7071 ],
+
+	"settings":  {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	"extensions": [
+		"ms-azuretools.vscode-azurefunctions",
+		"ms-azuretools.vscode-azurestorage",
+		"ms-python.python"
+	]
+}
