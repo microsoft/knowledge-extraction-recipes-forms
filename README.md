@@ -95,7 +95,7 @@ in this repository using diverse approaches.
 | Pre-Processing | [Detect and get CheckBox value](Demos/RemoveBoxes.ipynb#Let's-see-if-we-can-find-the-checkboxes) | Illustrates how to detect and get a CheckBox value
 | Pre-Processing     | [Optical Mark Recognition](Pre_Processing/Optical_Mark_Recognition/README.md) | Illustrates some techniques to determine if a checkbox exists and how to extract it
 | Training | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
-| Training | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recogniser model correlation
+| Training | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recognizer model correlation
 | Training | [Dataset representativeness](Training/Representativeness/README.md) | Illustrates how test how to test the train and test datasets for representativeness
 | Training | [Named Entity Recognition](Training/README.md#named-entity-recognition) | Illustrates how NER can be trained used to identify and extract entities on a form
 | Training | [Auto-labelling and training set optimisation](Training/README.md#the-autolabelling-process) | Illustrates how forms can be automatically labelled for the supervised version of Form Recognizer
@@ -160,10 +160,10 @@ complexity and scale easily including:
 
 ### Form Recognizer Service
 
-[Form Recogniser](https://azure.microsoft.com/en-gb/services/cognitive-services/form-recognizer/) applies advanced
+[Form Recognizer](https://azure.microsoft.com/en-gb/services/cognitive-services/form-recognizer/) applies advanced
 machine learning to accurately extract text, key/value pairs and tables from documents.
 
-The [Form Recogniser](https://azure.microsoft.com/en-gb/services/cognitive-services/form-recognizer/) has two modes
+The [Form Recognizer](https://azure.microsoft.com/en-gb/services/cognitive-services/form-recognizer/) has two modes
 of operation:
 
 * [**Custom Model**](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract):
