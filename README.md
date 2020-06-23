@@ -278,6 +278,7 @@ Please refer to the following fantastic references for additional material relev
 * [Custom NLP models - Microsoft NLP Recipes](https://github.com/microsoft/nlp-recipes)
 * [Spacy Phrasematcher](https://github.com/explosion/spaCy/blob/master/examples/information_extraction/phrase_matcher.py)
 * [RegEx debugger and code snippets](https://www.debuggex.com/)
+* [Recognizers-Text](https://github.com/microsoft/Recognizers-Text) (entity recognition for numbers, units, and date/time; in multiple languages)
 
 ### Addresses
 
