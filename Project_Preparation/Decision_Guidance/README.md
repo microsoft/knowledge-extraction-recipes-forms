@@ -44,14 +44,14 @@ If this approach is not viable or if the language to be extracted is not support
 #### The following section describes the languages supported by the various OCR versions
 
 This is important as some of the Azure services and 3rd party products support different languages. For example, the
-current state of the art  [Read API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#read-api) only supports English at the time of writing.
+current state of the art [Read API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#read-api) only supports English, Spanish, German, French, Italian, Portuguese, and Dutch at the time of writing.
 
-The previous version of this service, namely the [OCR API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#ocr-optical-character-recognition-api) supports far more languages [OCR API languages supported](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/language-support#text-recognition)
+The previous version of this service, namely the [OCR API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#ocr-optical-character-recognition-api) supports far more languages [OCR API languages supported](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/language-support#text-recognition), but uses an older recognition model. It supports single images only, not PDFs, and returns an immediate response.
 
 If a language is required that is not supported by the [OCR API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#ocr-optical-character-recognition-api), a third party product such as [Tesseract OCR](https://github.com/tesseract-ocr/tesseract/wiki) could be considered.  
 
 * Language: If the language is English, Spanish, German, French, Italian, Portuguese, and Dutch, the current state of the art service to use is the [Read API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#read-api). For languages other than those within tier 1 use the [OCR API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#ocr-optical-character-recognition-api).
-* Handwriting: If the material contains handwriting and/or print, the [Read API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#read-api) can operate in mixed modes but for English only.
+* Handwriting: If the material contains handwriting and/or print, the [Read API](https://docs.microsoft.com/en-gb/azure/cognitive-services/computer-vision/concept-recognizing-text#read-api) can operate in mixed modes.
 * Few different forms with consistent structure: If there a small number of form types to be processed then the [Form Recognizer](https://azure.microsoft.com/en-gb/services/cognitive-services/form-recognizer/) could be a good fit. Alternatively, if high amounts of variation exist in the form types expected, a custom field extraction approach would be a more suitable approach. *Note*, if a high amount of variation exists, analysis of the form type distrubtion would be a good exercise to undertake in case a small number of form types represent a singificant proportion of forms to be processed.
 
 ### Decision point 2: Form Recognizer service
