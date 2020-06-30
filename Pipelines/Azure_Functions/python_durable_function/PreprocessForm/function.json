@@ -10,7 +10,7 @@
       "name": "inputBlob",
       "type": "blob",
       "dataType": "binary",
-      "path": "{path}",
+      "path": "forms/test6.pdf",
       "connection": "pythonfrpipeline_STORAGE",
       "direction": "in"
     },

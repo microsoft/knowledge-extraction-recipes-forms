@@ -15,15 +15,19 @@ import cv2
 # pylint: disable=unsubscriptable-object
 def main(path: str, inputBlob: func.InputStream, outputBlob: func.Out[func.InputStream]) -> str:
 
+
+
+    outputBlob.set(inputBlob)
+    form = inputBlob.read()
+
+    logging.warning(inputBlob)
+
+
     logging.warning(
         f"Orchestrator handled \n"
         f"Name: {inputBlob.name}\n"
         f"Blob Size: {inputBlob.length} bytes"
     )
-
-    outputBlob.set(inputBlob)
-    form = inputBlob.read()
-
     # # Check filetype of blob, should be validated in an earlier step normally
     file_type = filetype.guess(form)
 
