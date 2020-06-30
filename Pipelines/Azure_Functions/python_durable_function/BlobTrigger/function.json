@@ -5,7 +5,7 @@
       "name": "myblob",
       "type": "blobTrigger",
       "direction": "in",
-      "path": "forms/input/{name}",
+      "path": "input/{name}",
       "connection": "pythonfrpipeline_STORAGE"
     },
     {

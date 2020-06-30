@@ -1,0 +1,25 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "path",
+      "type": "activityTrigger",
+      "direction": "in"
+    },
+    {
+      "name": "inputBlob",
+      "type": "blob",
+      "dataType": "binary",
+      "path": "forms/test6.pdf",
+      "connection": "pythonfrpipeline_STORAGE",
+      "direction": "in"
+    },
+    {
+      "name": "outputBlob",
+      "type": "blob",
+      "path": "{path}-PROCESSED",
+      "connection": "pythonfrpipeline_STORAGE",
+      "direction": "out"
+    }
+  ]
+}

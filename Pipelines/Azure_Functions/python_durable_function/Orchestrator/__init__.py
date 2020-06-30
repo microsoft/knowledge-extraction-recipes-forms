@@ -11,21 +11,34 @@ import azure.durable_functions as df
 def orchestrator_function(context: df.DurableOrchestrationContext):
 
     inputBlob = context.get_input()
-    logging.warning("Orchestrator input: %s" , inputBlob)
+    logging.warning("Orchestrator input: %s", inputBlob)
+
+    originalPath = inputBlob.get("path")
 
     # Process image using OpenCV
-    cleaned_form = yield context.call_activity("PreprocessFormWorkaround", inputBlob["path"])
-
+    originalPath, processedPath = yield context.call_activity(
+        "PreProcessForm", inputBlob["path"]
+    )
+    logging.warning("PreProcessForm done %s %s", originalPath, processedPath)
 
     # Classify model
-        # TODO
-        # Custom Vision vs Text?
+    # TODO
+    # Custom Vision / Text Classification / Model Compose?
 
-    # Call Form Recognizer
-    # form_recognizer_call = yield context.call_activity("CallFormRecognizer", "")
+    # Generate SAS token
+    sas_token_url = yield context.call_activity("GenerateSasToken", processedPath)
+    logging.warning("GenerateSasToken done %s", sas_token_url)
 
-    # # TODO see if we can utilize call_http for 202 retry
+    # Call Form Recognizer with SAS token url
+    result = yield context.call_activity("CallFormRecognizer", sas_token_url)
+    logging.warning("CallFormRecognizer done %s", result)
 
+    # # Retrieve Form Recognizer response
+    # form_recognizer_response = yield context.call_activity(
+    #     "RetrieveFormRecognizerResponse", ""
+    # )
+
+    # Call Form Recognizer via Durable Functions Framework
     # response = yield context.call_http(
     #     "POST",
     #     uri,
@@ -33,22 +46,18 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     #     {"Ocp-Apim-Subscription-Key": key}
     # )
 
-    # print(type(response))
-    # print(response)
-
-
-
-    # # Retrieve Form Recognizer response
-    # form_recognizer_response = yield context.call_activity(
-    #     "RetrieveFormRecognizerResponse", ""
-    # )
-
     # Post processing and entity extraction
-    # postprocessed_result = yield context.call_activity("PostprocessForm", "")
+    postprocessed_result = yield context.call_activity("PostProcessText", result)
 
-    logging.warning([cleaned_form])
+    # Write result to Blob Storage
+    resultPath = yield context.call_activity(
+        "SaveResultToBlobStorage",
+        {"result": postprocessed_result, "path": originalPath},
+    )
 
-    return [cleaned_form]
+    logging.warning("DONE")
+
+    return resultPath
 
 
 main = df.Orchestrator.create(orchestrator_function)

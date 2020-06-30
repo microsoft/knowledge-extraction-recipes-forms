@@ -2,7 +2,7 @@
   "scriptFile": "__init__.py",
   "bindings": [
     {
-      "name": "name",
+      "name": "sasTokenUrl",
       "type": "activityTrigger",
       "direction": "in"
     }
