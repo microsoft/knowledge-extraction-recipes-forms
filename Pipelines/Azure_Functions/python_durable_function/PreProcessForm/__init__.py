@@ -18,7 +18,7 @@ import cv2
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from . import clean_image
 
-# pylint: disable=unsubscriptable-object
+
 def main(path: str):
 
     # Get blob name and container from path
@@ -57,6 +57,7 @@ def main(path: str):
         image = cv2.imdecode(form, 1)
         normalized = clean_image.clean(image)
         finalBlob = cv2.imencode(blob, normalized)[1].tostring()
+
     except IOError:
         logging.error("OpenCV operation failed for: %s", path)
         return
@@ -64,7 +65,6 @@ def main(path: str):
     blob_container_client = blob_service_client.get_container_client("input-cleaned")
     blob_container_client.upload_blob(blob, finalBlob)
     newBlobPath = "input-cleaned/" + blob
-
 
     # Uncomment the following line if you want to have the origal blob removed after processing
     # blob_container_client.delete_blob(blob)
