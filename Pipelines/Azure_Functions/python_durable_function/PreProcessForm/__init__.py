@@ -30,7 +30,7 @@ def main(path: str):
     container = path.split("/")[0]
     blob = "/".join(path.split("/")[1:])
 
-    logging.warning(
+    logging.info(
         f"Orchestrator handled \n" f"Blob: {blob}\n" f"Container: {container}"
     )
 
@@ -46,6 +46,7 @@ def main(path: str):
     blob_file = download_stream.readall()
 
     # Detect filetype, see if conversion is required
+    # Could be retrieved from blob metadata, but that is not always accurate
     file_type = filetype.guess(blob_file)
 
     supported = ["image/jpeg", "image/bmp", "image/png", "image/tiff"]
@@ -88,5 +89,5 @@ def main(path: str):
     # Uncomment the following line if you want to have the origal blob removed after processing
     # blob_container_client.delete_blob(blob)
 
-    return path, newBlobPath
+    return newBlobPath
 

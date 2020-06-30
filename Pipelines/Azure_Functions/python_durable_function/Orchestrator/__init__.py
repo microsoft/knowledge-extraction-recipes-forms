@@ -14,34 +14,37 @@ import azure.durable_functions as df
 def orchestrator_function(context: df.DurableOrchestrationContext):
 
     inputBlob = context.get_input()
-    logging.warning("Orchestrator input: %s", inputBlob)
+    blob_path = inputBlob.get("path")
+    logging.info("Orchestrator input: %s", inputBlob)
 
-    originalPath = inputBlob.get("path")
-
-    # Process image using OpenCV
-    originalPath, processedPath = yield context.call_activity(
-        "PreProcessForm", inputBlob["path"]
+    # Process incoming form using OpenCV
+    blob_path_after_processing = yield context.call_activity(
+        "PreProcessForm", blob_path
     )
-    logging.warning("PreProcessForm done %s %s", originalPath, processedPath)
+    logging.info(
+        "PreProcessForm activity finished with %s ", blob_path_after_processing
+    )
 
     # Classify model
     # TODO
     # Custom Vision / Text Classification / Model Compose?
 
     # Generate SAS token
-    sas_token_url = yield context.call_activity("GenerateSasToken", processedPath)
-    logging.warning("GenerateSasToken done %s", sas_token_url)
+    sas_token_url = yield context.call_activity(
+        "GenerateSasToken", blob_path_after_processing
+    )
+    logging.info("GenerateSasToken activity finished with %s", sas_token_url)
 
     # Call Form Recognizer with SAS token url
     result = yield context.call_activity("CallFormRecognizer", sas_token_url)
-    logging.warning("CallFormRecognizer done %s", result)
+    logging.info("CallFormRecognizer activity finished with %s", result)
 
     # # Retrieve Form Recognizer response
     # form_recognizer_response = yield context.call_activity(
     #     "RetrieveFormRecognizerResponse", ""
     # )
 
-    # Call Form Recognizer via Durable Functions Framework
+    # TODO Call Form Recognizer via Durable Functions Framework
     # response = yield context.call_http(
     #     "POST",
     #     uri,
@@ -49,18 +52,20 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     #     {"Ocp-Apim-Subscription-Key": key}
     # )
 
-    # Post processing and entity extraction
-    postprocessed_result = yield context.call_activity("PostProcessText", result)
-
-    # Write result to Blob Storage
-    resultPath = yield context.call_activity(
-        "SaveResultToBlobStorage",
-        {"result": postprocessed_result, "path": originalPath},
+    # Post Processing and Entity Extraction
+    result_after_post_processing = yield context.call_activity(
+        "PostProcessText", result
     )
 
-    logging.warning("DONE")
+    # Write result to Blob Storage
+    result_blob_path = yield context.call_activity(
+        "SaveResultToBlobStorage",
+        {"result": result_after_post_processing, "path": blob_path},
+    )
 
-    return resultPath
+    logging.info("SaveResultToBlobStorage activity finished with %s", result_blob_path)
+
+    return result_blob_path
 
 
 main = df.Orchestrator.create(orchestrator_function)
