@@ -15,7 +15,12 @@ import filetype
 import numpy as np
 import cv2
 
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.storage.blob import (
+    BlobServiceClient,
+    BlobClient,
+    ContainerClient,
+    ContentSettings,
+)
 from . import clean_image
 
 
@@ -46,10 +51,18 @@ def main(path: str):
     supported = ["image/jpeg", "image/bmp", "image/png", "image/tiff"]
     supported_after_conversion = ["application/pdf"]
 
-    if file_type.mime in supported_after_conversion:
+    if (
+        file_type.mime not in supported
+        and file_type.mime not in supported_after_conversion
+    ):
         logging.warning("Unsupported file detected: %s %s", path, file_type.mime)
+        return
 
-    logging.warning("Supported file detected: %s %s", path, file_type.mime)
+    if file_type.mime in supported_after_conversion:
+        # TODO implement PDF to tiff function
+        return
+
+    logging.info("Supported file detected: %s %s", path, file_type.mime)
 
     # Clean image using OpenCV
     try:
@@ -62,9 +75,15 @@ def main(path: str):
         logging.error("OpenCV operation failed for: %s", path)
         return
 
-    blob_container_client = blob_service_client.get_container_client("input-cleaned")
+    output_container = "input-cleaned"
+
+    blob_container_client = blob_service_client.get_container_client(output_container)
     blob_container_client.upload_blob(blob, finalBlob)
-    newBlobPath = "input-cleaned/" + blob
+    blob_container_client.upload_blob(
+        blob, finalBlob, content_settings=ContentSettings(content_type=file_type.mime)
+    )
+
+    newBlobPath = output_container + "/" + blob
 
     # Uncomment the following line if you want to have the origal blob removed after processing
     # blob_container_client.delete_blob(blob)

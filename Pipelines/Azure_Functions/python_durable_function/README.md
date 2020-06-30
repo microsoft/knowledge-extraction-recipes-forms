@@ -14,7 +14,10 @@ This example has the following functionality built-in, but could easily be exten
 - Post processing to clean output
 
 ## How to develop
-[todo, explain Dev Containers in VCode]
+The easiest way of development is to use Dev Containers in VSCode. This will guarantee that you have the latest Azure Function core tools and related dependencies. 
+
+
+Add the following 
 
 ```json
     "StorageAccount": ""
