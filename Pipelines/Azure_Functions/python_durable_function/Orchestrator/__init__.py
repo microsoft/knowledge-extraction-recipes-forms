@@ -25,9 +25,8 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
         "PreProcessForm activity finished with %s ", blob_path_after_processing
     )
 
-    # Classify model
-    # TODO
-    # Custom Vision / Text Classification / Model Compose?
+    # Classify model via Custom Vision / Text Classification / Model Compose?
+    # TODO not implemented yet
 
     # Generate SAS token
     sas_token_url = yield context.call_activity(
