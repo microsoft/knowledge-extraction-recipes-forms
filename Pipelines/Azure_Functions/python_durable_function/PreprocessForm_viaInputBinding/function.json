@@ -11,14 +11,14 @@
       "type": "blob",
       "dataType": "binary",
       "path": "forms/test6.pdf",
-      "connection": "pythonfrpipeline_STORAGE",
+      "connection": "StorageAccount",
       "direction": "in"
     },
     {
       "name": "outputBlob",
       "type": "blob",
       "path": "{path}-PROCESSED",
-      "connection": "pythonfrpipeline_STORAGE",
+      "connection": "StorageAccount",
       "direction": "out"
     }
   ]

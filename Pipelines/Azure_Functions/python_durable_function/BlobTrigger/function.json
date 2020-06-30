@@ -6,7 +6,7 @@
       "type": "blobTrigger",
       "direction": "in",
       "path": "input/{name}",
-      "connection": "pythonfrpipeline_STORAGE"
+      "connection": "StorageAccount"
     },
     {
       "name": "starter",

@@ -16,5 +16,12 @@ This example has the following functionality built-in, but could easily be exten
 ## How to develop
 [todo, explain Dev Containers in VCode]
 
+```json
+    "StorageAccount": ""
+    "FormRecognizer_Endpoint": ""
+    "FormRecognizer_SubscriptionKey": ""
+    "FormRecognizer_ModelId": ""
+```
+
 ## How to deploy
 [todo, point to VSCode deploy docs]

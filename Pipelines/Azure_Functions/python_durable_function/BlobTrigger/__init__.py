@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 # This function is a Blob Trigger action for Durable Functions.
 
 import logging
