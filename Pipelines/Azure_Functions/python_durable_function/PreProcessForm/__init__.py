@@ -5,11 +5,8 @@
 # triggered by an orchestrator function.
 
 import logging
-
 import os
 import io
-
-import azure.functions as func
 
 import filetype
 import numpy as np
@@ -21,6 +18,7 @@ from azure.storage.blob import (
     ContainerClient,
     ContentSettings,
 )
+
 from . import clean_image
 
 
@@ -79,7 +77,6 @@ def main(path: str):
     output_container = "input-cleaned"
 
     blob_container_client = blob_service_client.get_container_client(output_container)
-    blob_container_client.upload_blob(blob, finalBlob)
     blob_container_client.upload_blob(
         blob, finalBlob, content_settings=ContentSettings(content_type=file_type.mime)
     )

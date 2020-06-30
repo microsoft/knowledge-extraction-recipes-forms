@@ -11,8 +11,9 @@ import json
 
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import FormRecognizerClient, RecognizedForm
+from typing import List
 
-def main(sasTokenUrl: str) -> RecognizedForm:
+def main(sasTokenUrl: str) -> List[RecognizedForm]:
 
     form_url = sasTokenUrl
 
@@ -27,29 +28,6 @@ def main(sasTokenUrl: str) -> RecognizedForm:
 
     # TODO Remove poller, move to seperate Activity Function 
     result = poller.result()
+    recognized_form_json = json.dumps(result, default=lambda x: x.__dict__)
 
-    # TODO Make RecognizedForm JSON serializable 
-
-    temp_result = []
-
-    # Normalize text etc.
-    for recognized_form in result:
-        print("Form type ID: {}".format(recognized_form.form_type))
-        for label, field in recognized_form.fields.items():
-
-            temp_result.append({
-                "label": label, 
-                "value": field.value,
-                "confidence": field.confidence
-            })
-
-            print(
-                "Field '{}' has value '{}' with a confidence score of {}".format(
-                    label, field.value, field.confidence
-                )
-            )
-        
-        return temp_result
-
-
-
+    return recognized_form_json
