@@ -2,9 +2,9 @@
 
 Pipelines represent our ability to scale, orchestrate and schedule our processes via underlying infrastructure. Azure offers a number of different options in this space. This Playbook will provide some basic options as there are a number of more detailed repositories available to help here, namely:
 
-* [MLOps](https://github.com/microsoft/MLOps)
-* [MLOpsPython](https://github.com/Microsoft/MLOpsPython)
-* [Microsoft AI Samples, Reference Architectures & Best Practices](https://github.com/microsoft/AI)
+- [MLOps](https://github.com/microsoft/MLOps)
+- [MLOpsPython](https://github.com/Microsoft/MLOpsPython)
+- [Microsoft AI Samples, Reference Architectures & Best Practices](https://github.com/microsoft/AI)
 
 ## Azure Cognitive Search
 
@@ -30,3 +30,9 @@ Have a look at the sample pipeline accelerator for [Azure Machine Learning](Azur
 Connect your business-critical apps and services with [Azure Logic Apps](https://docs.microsoft.com/en-us/azure/logic-apps/), automating your workflows without writing a single line of code.
 
 Have a look at the sample pipeline accelerator for [Azure Logic Apps with Form Recognizer](Azure_Logic_Apps/README.md)
+
+## Azure Functions
+
+[Azure Functions](https://azure.microsoft.com/en-us/services/functions/) is an event driven, compute-on-demand experience that extends the existing Azure application platform with capabilities to implement code triggered by events occurring in Azure or third party service as well as on-premises systems.
+
+Have a look at the sample pipeline accelerator for [Azure Functions](Azure_Functions/README.md).
