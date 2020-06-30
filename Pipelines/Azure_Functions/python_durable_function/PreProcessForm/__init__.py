@@ -39,12 +39,12 @@ def main(path: str):
     blob_container_client = blob_service_client.get_container_client(container)
     blob_client = blob_container_client.get_blob_client(blob)
 
-    # TODO Use /tmp directory for bigger files, to save memory
+    # TODO Use /tmp directory for bigger files, to save memory in Azure Function
     download_stream = blob_client.download_blob()
     blob_file = download_stream.readall()
 
-    # Detect filetype, see if conversion is required
-    # Could be retrieved from blob metadata, but that is not always accurate
+    # Detect filetype, to understand if conversion is required
+    # Could be retrieved from blob metadata, but is not always accurate
     file_type = filetype.guess(blob_file)
 
     supported = ["image/jpeg", "image/bmp", "image/png", "image/tiff"]
@@ -54,26 +54,28 @@ def main(path: str):
         file_type.mime not in supported
         and file_type.mime not in supported_after_conversion
     ):
-        logging.warning("Unsupported file detected: %s %s", path, file_type.mime)
+        logging.warning("File with unsupported MIME type: %s %s", path, file_type.mime)
         return
 
     if file_type.mime in supported_after_conversion:
-        # TODO implement PDF to tiff function
+        # TODO Implement PDF to TIFF conversion
+        logging.warning("File with unsupported MIME type: %s %s", path, file_type.mime)
         return
 
-    logging.info("Supported file detected: %s %s", path, file_type.mime)
-
-    # Clean image using OpenCV
+    # Encode and decode buffer to OpenCV filetype
     try:
         form = np.fromstring(blob_file, np.uint8)
         image = cv2.imdecode(form, 1)
-        normalized = clean_image.clean(image)
-        finalBlob = cv2.imencode(blob, normalized)[1].tostring()
 
-    except IOError:
-        logging.error("OpenCV operation failed for: %s", path)
+        normalized = clean_image.clean(image)
+
+        finalBlob = cv2.imencode(f"blob.{file_type.extension}", normalized)[1].tostring()
+
+    except Exception:
+        logging.error("OpenCV operation failed for: %s %s", path, file_type.mime)
         return
 
+    # Write processed file to blob storage
     output_container = "input-cleaned"
 
     blob_container_client = blob_service_client.get_container_client(output_container)

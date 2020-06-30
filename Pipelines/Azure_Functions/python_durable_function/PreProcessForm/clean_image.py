@@ -6,8 +6,10 @@ import cv2
 def clean(image):
     input_image = image
 
-    # Do your OpenCV transformations here
+    # Do your OpenCV transformations here, for example the removal of boxes
+    # https://github.com/microsoft/knowledge-extraction-recipes-forms/blob/master/Demos/RemoveBoxes.ipynb
     monochrome = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
+
 
 
     output_image = monochrome

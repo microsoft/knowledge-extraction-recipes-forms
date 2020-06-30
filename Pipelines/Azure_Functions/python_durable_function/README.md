@@ -6,18 +6,20 @@ This example pipeline utilises the function chaining functionality from Durable 
 
 ## Features
 
-This example has the following functionality built-in, but could easily be extended by adding your own functions.
+This example has the following functionality built-in, but could easily be extended by adding your own Activity functions.
 
 - Triggered by new files on a blob storage
 - Remove character boxes using OpenCV
 - Call Form Recognizer service via a temporary SAS token
 - Post processing to clean output
 
-## How to develop
-The easiest way of development is to use Dev Containers in VSCode. This will guarantee that you have the latest Azure Function core tools and related dependencies. 
+## How to develop and test locally
+The easiest way of development is to use Dev Containers in VSCode. This will guarantee that you have the latest Azure Function core tools and related dependencies. When you open the project the first time, it will ask you to create a virtual environment for Python. 
 
+- Create a blob storage with 3 containers, name them `input`, `input-cleaned` and `output`. 
+- Create a Form Recognizer instance and train a model
 
-Add the following 
+Add the following details to your `local.settings.json`. 
 
 ```json
     "StorageAccount": ""

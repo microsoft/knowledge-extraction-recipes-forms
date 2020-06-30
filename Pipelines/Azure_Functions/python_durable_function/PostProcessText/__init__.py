@@ -14,17 +14,6 @@ def main(result) -> str:
 
     result = json.loads(result)
 
-    # Normalize text etc.
-
-    for recognized_form in result:
-        print("Form type ID: {}".format(recognized_form.get("form_type")))
-        for label, field in recognized_form.get("fields").items():
-            print(
-                "Field '{}' has value '{}' with a confidence score of {}".format(
-                    label, field.get("value"), field.get("confidence")
-                )
-            )
-
     # TODO Utilize typed RecognizedForm object
     # for recognized_form in result:
     #     recognized_form = RecognizedForm(
@@ -42,13 +31,28 @@ def main(result) -> str:
     #             )
     #         )
 
-    # Remove double spaces
 
-    # Loop through
+    # Normalize text etc.
 
-    # Field specific tweaks
+    for recognized_form in result:
+        print("Form type ID: {}".format(recognized_form.get("form_type")))
+        for label, field in recognized_form.get("fields").items():
+            print(
+                "Field '{}' has value '{}' with a confidence score of {}".format(
+                    label, field.get("value"), field.get("confidence")
+                )
+            )
 
-    # Utilize custom dictionary
+
+        # Remove double spaces
+    
+        # Loop through
+
+        # Field specific tweaks
+
+        # Utilize custom dictionary
+
+
     processed_result = result
 
     return processed_result
