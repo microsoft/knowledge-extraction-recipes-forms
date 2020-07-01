@@ -13,12 +13,12 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
 Use Form Recognizer with Azure Functions to orchestrate a flow for scoring images.
 
-### Prerequisites
-
-- Azure Subscription - [Create one for free](https://azure.microsoft.com/free)
-
-## Example pipelines using Azure Functions
+### Example pipelines using Azure Functions
 
 - [`python_durable_functions`](python_durable_functions/README.md) - an end-to-end workflow including OpenCV image processing and post-processing on Azure Functions for Python
 
 Back to the [pipelines overview](../README.md)
+
+### Example architecture
+
+[![Durable Functions Architecture](media/durable_functions_architecture.png)](media/durable_functions_architecture.png)
