@@ -6,87 +6,95 @@
 
 import logging
 import os
-import io
 
 import filetype
 import numpy as np
 import cv2
 
-from azure.storage.blob import (
-    BlobServiceClient,
-    BlobClient,
-    ContainerClient,
-    ContentSettings,
-)
+from azure.storage.blob.aio import BlobServiceClient
+
+from azure.storage.blob import ContentSettings
+
 
 from . import clean_image
 
 
-def main(path: str):
+async def main(path: str):
 
     # Get blob name and container from path
     container = path.split("/")[0]
     blob = "/".join(path.split("/")[1:])
 
-    logging.info(
-        f"Orchestrator handled \n" f"Blob: {blob}\n" f"Container: {container}"
-    )
+    logging.info(f"Orchestrator handled \n" f"Blob: {blob}\n" f"Container: {container}")
 
     # Download blob from blob storage
     blob_service_client = BlobServiceClient.from_connection_string(
         os.environ["StorageAccount"]
     )
-    blob_container_client = blob_service_client.get_container_client(container)
-    blob_client = blob_container_client.get_blob_client(blob)
 
-    # TODO Use /tmp directory for bigger files, to save memory in Azure Function
-    download_stream = blob_client.download_blob()
-    blob_file = download_stream.readall()
+    async with blob_service_client:
 
-    # Detect filetype, to understand if conversion is required
-    # Could be retrieved from blob metadata, but is not always accurate
-    file_type = filetype.guess(blob_file)
+        blob_container_client = blob_service_client.get_container_client(container)
+        blob_client = blob_container_client.get_blob_client(blob)
 
-    supported = ["image/jpeg", "image/bmp", "image/png", "image/tiff"]
-    supported_after_conversion = ["application/pdf"]
+        # TODO Use /tmp directory for bigger files, to save memory in Azure Function
+        download_stream = await blob_client.download_blob()
+        blob_file = await download_stream.readall()
 
-    if (
-        file_type.mime not in supported
-        and file_type.mime not in supported_after_conversion
-    ):
-        logging.warning("File with unsupported MIME type: %s %s", path, file_type.mime)
-        return
+        # Detect filetype, to understand if conversion is required
+        # Could be retrieved from blob metadata, but is not always accurate
+        file_type = filetype.guess(blob_file)
 
-    if file_type.mime in supported_after_conversion:
-        # TODO Implement PDF to TIFF conversion
-        logging.warning("File with unsupported MIME type: %s %s", path, file_type.mime)
-        return
+        supported = ["image/jpeg", "image/bmp", "image/png", "image/tiff"]
+        supported_after_conversion = ["application/pdf"]
 
-    # Encode and decode buffer to OpenCV filetype
-    try:
-        form = np.fromstring(blob_file, np.uint8)
-        image = cv2.imdecode(form, 1)
+        if (
+            file_type.mime not in supported
+            and file_type.mime not in supported_after_conversion
+        ):
+            logging.warning(
+                "File with unsupported MIME type: %s %s", path, file_type.mime
+            )
+            return
 
-        normalized = clean_image.clean(image)
+        if file_type.mime in supported_after_conversion:
+            # TODO Implement PDF to TIFF conversion
+            logging.warning(
+                "File with unsupported MIME type: %s %s", path, file_type.mime
+            )
+            return
 
-        finalBlob = cv2.imencode(f"blob.{file_type.extension}", normalized)[1].tostring()
+        # Encode and decode buffer to OpenCV filetype
+        try:
+            form = np.fromstring(blob_file, np.uint8)
+            image = cv2.imdecode(form, 1)
 
-    except Exception:
-        logging.error("OpenCV operation failed for: %s %s", path, file_type.mime)
-        return
+            normalized = clean_image.clean(image)
 
-    # Write processed file to blob storage
-    output_container = "input-cleaned"
+            finalBlob = cv2.imencode(f"blob.{file_type.extension}", normalized)[
+                1
+            ].tostring()
 
-    blob_container_client = blob_service_client.get_container_client(output_container)
-    blob_container_client.upload_blob(
-        blob, finalBlob, content_settings=ContentSettings(content_type=file_type.mime)
-    )
+        except Exception:
+            logging.error("OpenCV operation failed for: %s %s", path, file_type.mime)
+            return
 
-    newBlobPath = output_container + "/" + blob
+        # Write processed file to blob storage
+        output_container = "input-cleaned"
 
-    # Uncomment the following line if you want to have the origal blob removed after processing
-    # blob_container_client.delete_blob(blob)
+        blob_container_client = blob_service_client.get_container_client(
+            output_container
+        )
+        await blob_container_client.upload_blob(
+            blob,
+            finalBlob,
+            content_settings=ContentSettings(content_type=file_type.mime),
+        )
 
-    return newBlobPath
+        newBlobPath = output_container + "/" + blob
+
+        # Uncomment the following line if you want to have the origal blob removed after processing
+        # blob_container_client.delete_blob(blob)
+
+        return newBlobPath
 
