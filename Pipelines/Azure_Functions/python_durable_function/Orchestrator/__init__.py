@@ -4,6 +4,8 @@
 # This function is not intended to be invoked directly. Instead it will be
 # triggered by an Blob Trigger function.
 
+# https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-code-constraints
+
 import logging
 import json
 
@@ -17,6 +19,9 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     blob_path = inputBlob.get("path")
     logging.info("Orchestrator input: %s", inputBlob)
 
+    # Classify model via Custom Vision / Text Classification / Model Compose?
+    # TODO not implemented yet
+
     # Process incoming form using OpenCV
     blob_path_after_processing = yield context.call_activity(
         "PreProcessForm", blob_path
@@ -24,9 +29,6 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     logging.info(
         "PreProcessForm activity finished with %s ", blob_path_after_processing
     )
-
-    # Classify model via Custom Vision / Text Classification / Model Compose?
-    # TODO not implemented yet
 
     # Generate SAS token
     sas_token_url = yield context.call_activity(
