@@ -8,10 +8,11 @@ import os
 import logging
 import json
 
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
+from azure.storage.blob.aio import BlobServiceClient
+from azure.storage.blob import ContentSettings
 
 
-def main(forminfo) -> str:
+async def main(forminfo) -> str:
 
     result = forminfo.get("result")
     path = forminfo.get("path")
@@ -25,8 +26,14 @@ def main(forminfo) -> str:
         os.environ["StorageAccount"]
     )
 
-    filename = blob + ".json"
-    blob_container_client = blob_service_client.get_container_client("output")
-    blob_container_client.upload_blob(filename, json.dumps(result), content_settings=ContentSettings(content_type='application/json'))
+    async with blob_service_client:
+        filename = blob + ".json"
+        blob_container_client = blob_service_client.get_container_client("output")
+
+        await blob_container_client.upload_blob(
+            filename,
+            json.dumps(result),
+            content_settings=ContentSettings(content_type="application/json"),
+        )
 
     return f"output/{blob}!"

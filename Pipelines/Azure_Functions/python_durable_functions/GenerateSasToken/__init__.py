@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from azure.core.credentials import AzureKeyCredential
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, ResourceTypes, AccountSasPermissions
 
-def main(path: str) -> str:
+async def main(path: str) -> str:
     # Get blob name and container from path
     container = path.split('/')[0]
     blob = "/".join(path.split('/')[1:])

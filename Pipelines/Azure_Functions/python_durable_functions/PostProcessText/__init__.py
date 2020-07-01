@@ -10,7 +10,7 @@ import json
 from azure.ai.formrecognizer import RecognizedForm
 
 
-def main(result) -> str:
+async def main(result) -> str:
 
     result = json.loads(result)
 

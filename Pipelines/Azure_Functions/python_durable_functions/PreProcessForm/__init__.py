@@ -12,9 +12,7 @@ import numpy as np
 import cv2
 
 from azure.storage.blob.aio import BlobServiceClient
-
 from azure.storage.blob import ContentSettings
-
 
 from . import clean_image
 
