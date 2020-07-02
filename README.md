@@ -118,6 +118,8 @@ The [Pipelines](Pipelines/README.md) section contains some example patterns and 
 | [Azure Kubernetes Service](Pipelines/Azure_Kubernetes_Service/README.md)| Sample pipeline using Azure Kubernetes Service
 | [Azure Machine Learning](Pipelines/Azure_Machine_Learning/README.md)| Sample pipeline using Azure Machine Learning
 | [Azure Logic Apps](Pipelines/Azure_Logic_Apps/README.md)| Sample pipeline using Azure Logic Apps
+| [Azure (Durable) Functions](Pipelines/Azure_Functions/README.md)| Sample pipeline using Azure (Durable) Functions
+
 
 ## Example Scenarios
 
@@ -250,6 +252,7 @@ used in the code. Introduction and/or reference of those will be provided in the
     <td align="center"><a href="https://github.com/tompaana"><img src="https://avatars3.githubusercontent.com/u/1629215?s=400&u=f074cf8e761ff00d283b096ea3fd1a72f9858aea&v=4" width="100px;" alt=""/><br /><sub><b>Tomi Paananen</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/martinkearn"><img src="https://avatars1.githubusercontent.com/u/2410726?s=400&u=7ba06b30390a50157cb2ff17b909dcaccba9336d&v=4" width="100px;" alt=""/><br /><sub><b>Martin Kearn</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/shanepeckham"><img src="https://avatars1.githubusercontent.com/u/9840775?s=400&u=eedd334991b280967060ba797c9fb5bb6d7ffc0a&v=4" width="100px;" alt=""/><br /><sub><b>Shane Peckham</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/imicknl"><img src="https://avatars0.githubusercontent.com/u/1424596?s=460&u=0ba2f6ebaf2c30cf9839284866a3f7c46cce9a73&v=4" width="100px;" alt=""/><br /><sub><b>Mick Vleeshouwer</b></sub></a><br /></td>
    
 </table>
 
