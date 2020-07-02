@@ -21,6 +21,10 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
 
     # Classify model via Custom Vision / Text Classification / Model Compose?
     # TODO not implemented yet
+    # For a search and rank based solution see
+    # https://github.com/microsoft/knowledge-extraction-recipes-forms/tree/master/Analysis/Attribute_Search_Classification
+    # For a clustering based solution see
+    # https://github.com/microsoft/knowledge-extraction-recipes-forms/tree/master/Analysis/Form_Layout_Clustering
 
     # Process incoming form using OpenCV
     blob_path_after_processing = yield context.call_activity(
