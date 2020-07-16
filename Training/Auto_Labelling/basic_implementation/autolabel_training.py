@@ -13,10 +13,8 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from azure.datalake.store import core, lib
-from azure.storage.blob import (
-    BlockBlobService,
-    ContainerPermissions
-)
+from azure.storage.blob.blockblobservice import BlockBlobService
+from azure.storage.blob.models import ContainerPermissions
 from dotenv import load_dotenv
 from requests import get, post
 
