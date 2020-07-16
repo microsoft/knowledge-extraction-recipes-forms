@@ -79,7 +79,7 @@ spec:
           - name: Kestrel__Endpoints__Http__Url
             value: "http://0.0.0.0:80"
           - name: CustomFormRecognizer__ComputerVisionEndpointUri
-            value: "http://localhost:5000/formrecognizer/v2.0-preview/readLayout/asyncAnalyze"
+            value: "http://localhost:5000/formrecognizer/v2.0/readLayout/asyncAnalyze"
         volumeMounts:
           - mountPath: /input
             name: input

@@ -31,7 +31,7 @@ def run(mini_batch):
         return results
     
     endpoint = args.fr_endpoint
-    post_url = endpoint + r"/formrecognizer/v2.0-preview/custom/models"
+    post_url = endpoint + r"/formrecognizer/v2.0/custom/models"
     source = sasuri
 
     includeSubFolders = False

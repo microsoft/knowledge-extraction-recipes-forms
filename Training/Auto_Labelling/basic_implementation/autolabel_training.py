@@ -251,7 +251,7 @@ def form_recognizerv2_train(region, subscription_key, training_data_blob_sas_url
         "Content-Type": "application/json",
         "Ocp-Apim-Subscription-Key": subscription_key,
     }
-    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/custom/models"
 
     print('url', url)
     print('subscription_key', subscription_key)
@@ -311,7 +311,7 @@ def call_ocr(file_path, file_name, language_code, region, subscription_key, cont
     analyze_result_response = None
 
     try:
-        url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/layout/analyze"
+        url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/layout/analyze"
         print(url)
         resp = post(url=url, data=file_content, headers=headers)
         operation_location = resp.headers['Operation-Location']

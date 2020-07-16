@@ -40,7 +40,7 @@ headers = {
     'Ocp-Apim-Subscription-Key': apim_key,
 }
 
-post_url = endpoint + "/formrecognizer/v2.0-preview/custom/models/%s/analyze" % model_id
+post_url = endpoint + "/formrecognizer/v2.0/custom/models/%s/analyze" % model_id
 params = {
     "includeTextDetails": True
 }

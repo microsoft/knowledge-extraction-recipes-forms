@@ -263,7 +263,7 @@ def get_prediction(region, subscription_key, blob_sas_url, model_id, predict_typ
         "Content-Type": "application/pdf",
         "Ocp-Apim-Subscription-Key": subscription_key,
     }
-    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models/{model_id}/analyze?includeTextDetails=True"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/custom/models/{model_id}/analyze?includeTextDetails=True"
     result = None
     try:
         f = get(blob_sas_url)
@@ -333,7 +333,7 @@ def form_recognizerv2_analyse(region, subscription_key, model_id, file_name, fil
     }
     print(f'Evaluating against model_id {model_id}')
 
-    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models/{model_id}/analyze?includeTextDetails=True"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/custom/models/{model_id}/analyze?includeTextDetails=True"
 
     print(f'Predict {file_name} {file_name_path}')
     try:
