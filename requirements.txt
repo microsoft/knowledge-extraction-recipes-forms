@@ -180,6 +180,7 @@ pyarrow==0.15.1
 pyasn1==0.4.8
 pycodestyle==2.5.0
 pycparser==2.19
+pypandoc==1.5
 pyflakes==2.1.1
 Pygments==2.5.2
 PyJWT==1.7.1
