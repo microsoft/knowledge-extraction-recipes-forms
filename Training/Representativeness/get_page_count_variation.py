@@ -78,7 +78,7 @@ def check_page_numbers_for_document(
 
         try:
             url = Config.ANALYZE_END_POINT + \
-                  '/formrecognizer/v2.0-preview/readLayout/analyze?language=' + language_code.lower() + \
+                  '/formrecognizer/v2.0/readLayout/analyze?language=' + language_code.lower() + \
                   '&mode=docMode'
             print('Calling OCR', file_path, file_name, url)
             files = {'file': (file_name, open(file_path, 'rb'), 'application/pdf', {'Expires': '0'})}

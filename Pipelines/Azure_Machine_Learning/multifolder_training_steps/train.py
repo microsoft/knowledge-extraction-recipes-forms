@@ -25,7 +25,7 @@ os.makedirs(args.output, exist_ok=True)
 subfolders = os.listdir(args.training_folder)
 
 endpoint = args.fr_endpoint
-post_url = endpoint + r"/formrecognizer/v2.0-preview/custom/models"
+post_url = endpoint + r"/formrecognizer/v2.0/custom/models"
 source = args.sas_uri
 
 includeSubFolders = False

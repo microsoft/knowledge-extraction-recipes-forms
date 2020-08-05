@@ -19,7 +19,7 @@ def train_model(region, subscription_key, training_data_blob_sas_url, doctype, u
         "Content-Type": "application/json",
         "Ocp-Apim-Subscription-Key": subscription_key,
     }
-    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/custom/models"
     prefix = f"{doctype}/train/"
     body = {
         "source": training_data_blob_sas_url,
@@ -66,7 +66,7 @@ def get_prediction(region, subscription_key, blob_sas_url, model_id, predict_typ
         "Content-Type": "application/pdf",
         "Ocp-Apim-Subscription-Key": subscription_key,
     }
-    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/custom/models/{model_id}/analyze?includeTextDetails=True"
+    url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/custom/models/{model_id}/analyze?includeTextDetails=True"
     result = None
     try:
         f = get(blob_sas_url)
@@ -158,7 +158,7 @@ def analyze_layout(region, subscription_key, file_content, file_name):
     analyze_result_response = None
 
     try:
-        url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0-preview/layout/analyze"
+        url = f"https://{region}.api.cognitive.microsoft.com/formrecognizer/v2.0/layout/analyze"
         resp = post(url=url, data=file_content, headers=headers)
         logging.info(resp)
         operation_location = resp.headers['Operation-Location']
