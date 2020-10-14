@@ -61,7 +61,7 @@ This sub-folder contains the code to run the different services (training, docum
 - Base Processor
 
 This class initializes the basic elements for all services: storage clients, app settings, as well as the list of fields we want to train supervised models to recognize.
-If you add an app setting or want to change the list of fields to extract, you should update this file. All other services classes extend this class, so you when you change something in BaseProcessor, it impacts other services as well.
+If you add an app setting or want to change the list of fields to extract, **you should update this file**. All other services classes extend this class, so you when you change something in BaseProcessor, it impacts other services as well.
 
 - Trigger Processor
 
@@ -90,7 +90,9 @@ This service lists the files in storage meant to be used for testing, gets predi
 
 ### CLI
 
-This sub-folder contains the code related to the CLI tool. For each service, there's a corresponding file allowing the use of the service from the CLI. 
+This sub-folder contains the code related to the CLI tool. For each service, there's a corresponding file allowing the use of the service from the CLI.
+
+**These files are provided as an example**. If you want to use them, you can move the files from the *cli* folder to the root of the autolabeling folder to avoid import issues.
 
 ### Tests
 
@@ -129,27 +131,17 @@ py -3.6 -m venv .venv
 .venv\\scripts\\activate
 ```
 
+**Note**: This code has been tested with **python version 3.6.8**.
 
-### Environment variables
+### Storage
 
-Create a .env file in the root folder to define environment variables:
+If you want to use the services in this folder and not just use pieces of code independently, know that the app assumes that your storage account contains:
 
-```
-QueueConnection="<STORAGE_ACCOUNT_CONNECTION_STRING>"
-STORAGE_ACCOUNT_NAME="<STORAGE_ACCOUNT_NAME>"
-STORAGE_ACCOUNT_URL="https://<STORAGE_ACCOUNT_NAME>.blob.core.windows.net"
-STORAGE_KEY="<STORAGE_ACCOUNT_KEY>"
-DATA_CONTAINER="data"
-SAS_TOKEN="<STORAGE_ACCOUNT_SAS_TOKEN>"
-STATUS_TABLE="status"
-MODELS_TABLE="models"
-FR_REGION="westeurope"
-FR_KEY="<FORM_RECOGNIZER_KEY>"
-GT_PATH="<GROUND_TRUTH_PATH"
-LOOKUP_FILE="./lookup_fields.json"
-ENVIRONMENT="dev"
-```
+* One queue named *processing*
+* One table named *status*
+* One table named *models*
 
+You are free to change these names, but make sure to update the environment variables or the code accordingly.
 
 ### Data
 
@@ -180,10 +172,14 @@ The train folder should contain at least 5 documents per document type.
 
 Whether you want to use the whole app or just the autolabelling code, you also need to provide ground truth data, that can either be in storage or in the local root folder. Make sure this ground truth data (in the form of an excel file) contains a line per document that you want to process, as well as columns matching what is described in *lookup_fields.json*.
 
+The app assumes by default that there is a column *FileID* in the ground truth with the file names corresponding to each row.
+For instance, if your file name is *abcde.pdf*, the *FileID* column in the ground truth should contain the value *abcde*. You can change this column name (file_header) in the code if need be.
+
 *lookup_fields.json* should follow these guidelines:
-- There should be a "types" and a "keys" attributes
-- *keys* should contain the keys defined in *BaseProcessor*, mapping to one or several columns (given as a list) in the ground truth
-- *types* should map each ground truth column used to a type (e.g. money, date, address... default is text)
+
+* There should be a "types" and a "keys" attributes
+* *keys* should contain the keys defined in *BaseProcessor*, mapping to one or several columns (given as a list) in the ground truth
+* *types* should map each ground truth column used to a type (e.g. money, date, address... default is text)
 
 Ex. file:
 
@@ -213,51 +209,33 @@ Ex. file:
             "Item name": ["Article1"],
             "Item price": ["Article1Price"]
         }
-    
 }
 ```
 
 If a field maps to several columns, the joint values in these columns will be treated as a unique field.
 If you add a field mapping to a column of a specific type that is not handled yet\*, you can add code to specifically handle that type of fields in the *formatting* file.
 
-\* Types of fields handled: money, date, address, postal code, state, regular text (default).
+\* Types of fields handled: money, date, address, postal code, state, regular text (default).*
 
+### Environment variables
 
-## Flow
+Create a .env file in the root folder to define environment variables:
 
-This flow describes how to onboard a new document type.
-
-### 1. Prepare Data
-
-You should have at least 5 files for training with corresponding ground truth data. Try with 5 files at first but if the accuracy is low, add more training files.
-
-
-### 2. Run the training pipeline
-
-Use the CLI tool or any other custom code to trigger the processing of the training documents, then when it's all done call the Train Model service.
-
-
-### 3. If necessary, review automatically generated labels
-
-After training a supervised model, you get the average accuracy and can use this to determine if this new model requires your attention or not. If the accuracy for the fields you're interested in is low, review the automoatically generated labels (using the [Labeling Tool](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool) or by looking at the *labels* files.)
-
-If the labels are correctly generated, add more files to the training set.
-If not, identify potential fixes: it could be due to ground truth data that does not match what's on the document, or to edge cases that require code changes.
-
-After you have done modifications, you should re-trigger the processing pipeline to generate labels again. You do not need to generate *OCR* files, so you can trigger the processing while setting the status of the files to "ocr-done".
-
-
-### 4. Evaluate
-
-When the training accuracy returned is good enough, you can evaluate the model by using a test set. Make sure you have corresponding ground truth for the test files. 
-
-If the evaluation metrics returned are low, review the *model_eval* file to identify mismatches. They could be due to ground truth errors, to OCR errors or to actual field extraction errors. If applicable, fix the ground truth, and if there are field extraction errors, add more files to the training set to improve the results. The more variety you have in your training set, the better the evaluation results will be, as this will prevent overfitting.
-
-
-### 5. Consume
-
-Once you're satisfied with the results, you can consider the new document type onboarded and use the Predict Doc service to get fields and automatically generated key-value pairs for a new document of the same type.
-
+```
+QueueConnection="<STORAGE_ACCOUNT_CONNECTION_STRING>"
+STORAGE_ACCOUNT_NAME="<STORAGE_ACCOUNT_NAME>"
+STORAGE_ACCOUNT_URL="https://<STORAGE_ACCOUNT_NAME>.blob.core.windows.net"
+STORAGE_KEY="<STORAGE_ACCOUNT_KEY>"
+DATA_CONTAINER="data"
+SAS_TOKEN="<STORAGE_ACCOUNT_SAS_TOKEN>"
+STATUS_TABLE="status"
+MODELS_TABLE="models"
+FR_REGION="westeurope"
+FR_KEY="<FORM_RECOGNIZER_KEY>"
+GT_PATH="<GROUND_TRUTH_PATH>"
+LOOKUP_FILE="./lookup_fields.json"
+ENVIRONMENT="dev"
+```
 
 ## Services
 
@@ -321,7 +299,6 @@ It requires a parameter **doctype**. This **doctype** parameter needs to match e
 
 It also requires a **source** parameter, which should be a blob SAS URL.
 
-
 The document type label is used to get the model IDs from the *models* table. If both unsupervised and supervised models exist, both predictions are ran to get results for the fields we're interested in (from the supervised model) as well as the automatically extracted key-value pairs (from the unsupervised model). The response body also contains the read (OCR) results.
 
 
@@ -336,6 +313,85 @@ It also accepts a **reuse** parameter, that can be set to True or False, dependi
 The test set is sent for prediction (same process as in the Predict Doc service, but only for the supervised model) and the returned values for the required fields are compared with the values in the ground truth.
 
 The response contains the metrics of the model: average accuracy and precision and breakdown by field, as well as number of unlabelled fields. An evaluation file is also saved to storage in the document type folder with the same information, plus the list of mismatches to be able to check what wasn't extracted correctly.
+
+## Flow
+
+This flow describes how to onboard a new document type.
+
+### 1. Prepare Data
+
+You should have at least 5 files for training with corresponding ground truth data. Try with 5 files at first but if the accuracy is low, add more training files.
+
+### 2. Prepare storage account (optional)
+
+If you want to use the default naming conventions and the code in this repo instead of custom code, make sure to prepare your storage account accordingly (see setup above).
+
+### 3. Run the training pipeline
+
+Use the CLI tool or any other custom code to trigger the processing of the training documents, then when it's all done call the Train Model service.
+
+If you want to use the CLI tool, you can run:
+
+```
+(venv) python .\trigger_processing.py
+```
+
+This will prompt you for the document type label (this should be the exact name of one of your data folders) and the status. If this is the first time your run this, set the status as *new*.
+
+You should have a message saying that the processing has started. This means that messages representing each file have been added to the processing queue.
+
+To actually process the messages, you can now run:
+
+```
+(venv) python .\process_docs.py
+```
+
+This creates the files needed for training. You can now launch the actual training:
+
+```
+(venv) python .\train_model.py
+```
+
+This will prompt you for the document type label, and will require a "yes" or "no" for supervised training and unsupervised training. It's up to you to decide if you want to also train in an unsupervised way (it will take longer), but if you want to use the supervised training feature which this code is all about you can answer "yes" for Supervised. 
+
+This step requires that all files for this document type are in status "done", so if you haven't done the previous steps successfully the training will not start.
+
+
+### 3. If necessary, review automatically generated labels
+
+After training a supervised model, you get the average accuracy and can use this to determine if this new model requires your attention or not. If the accuracy for the fields you're interested in is low, review the automoatically generated labels (using the [Labeling Tool](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool) or by looking at the *labels* files.)
+
+If the labels are correctly generated, add more files to the training set.
+If not, identify potential fixes: it could be due to ground truth data that does not match what's on the document, or to edge cases that require code changes.
+
+After you have done modifications, you should re-trigger the processing pipeline to generate labels again. You do not need to generate *OCR* files, so you can trigger the processing while setting the status of the files to "ocr-done".
+
+
+### 4. Evaluate
+
+When the training accuracy returned is good enough, you can evaluate the model by using a test set. Make sure you have corresponding ground truth for the test files. 
+
+If the evaluation metrics returned are low, review the *model_eval* file to identify mismatches. They could be due to ground truth errors, to OCR errors or to actual field extraction errors. If applicable, fix the ground truth, and if there are field extraction errors, add more files to the training set to improve the results. The more variety you have in your training set, the better the evaluation results will be, as this will prevent overfitting.
+
+If you're using the provided CLI tool, you can run:
+
+```
+(venv) python .\model_evaluation.py
+```
+
+This will prompt you for the document type label.
+
+### 5. Consume
+
+Once you're satisfied with the results, you can consider the new document type onboarded and use the Predict Doc service to get fields and automatically generated key-value pairs for a new document of the same type.
+
+If you're using the provided CLI tool, you can run:
+
+```
+(venv) python .\predict_doc.py
+```
+
+This will prompt you for the document type label and a Blob SAS URL to send to your model.
 
 
 ## Extend
