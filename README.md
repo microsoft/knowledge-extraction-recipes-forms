@@ -87,6 +87,8 @@ in this repository using diverse approaches.
 | Project preparation | [Decision Guidance](Project_Preparation/README.md) | Core decision points |
 | Analysis | [Understanding the data distribution](Analysis/Distribution/Distribution.ipynb) | Illustrates a simple way to understand the distribution of vendor to invoice frequency
 | Analysis | [Understanding form variation](Analysis/Form_Variation/README.md) | Illustrates how to analyse  whether variation in a single form type exists
+| Analysis | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
+| Analysis | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recognizer model correlation
 | Pre-Processing | [Image Channel Normalisation](Pre_Processing/Normalisation/preprocess_document.ipynb) | Illustrates interactive normalisation, binarization and greyscale conversion
 | Pre-Processing Remove Boxes  | [RemoveBoxes](Demos/RemoveBoxes.ipynb) | Illustrates interactively how to remove boxes that cause OCR errors and find the best image transformation
 | Pre-Processing | [Conversion](Training/Auto_Labelling/README.md#conversion) | Converting documents between various formats such as TIF to PDF, JPG to PDF etc
@@ -94,8 +96,6 @@ in this repository using diverse approaches.
 | Pre-Processing | [Projection](Pre_Processing/Projection/README.md) | Illustrates how to identify document skew and location of text lines
 | Pre-Processing | [Detect and get CheckBox value](Demos/RemoveBoxes.ipynb#Let's-see-if-we-can-find-the-checkboxes) | Illustrates how to detect and get a CheckBox value
 | Pre-Processing     | [Optical Mark Recognition](Pre_Processing/Optical_Mark_Recognition/README.md) | Illustrates some techniques to determine if a checkbox exists and how to extract it
-| Training | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
-| Training | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recognizer model correlation
 | Training | [Dataset representativeness](Training/Representativeness/README.md) | Illustrates how test how to test the train and test datasets for representativeness
 | Training | [Named Entity Recognition](Training/README.md#named-entity-recognition) | Illustrates how NER can be trained used to identify and extract entities on a form
 | Training | [Auto-labelling and training set optimisation](Training/README.md#the-autolabelling-process) | Illustrates how forms can be automatically labelled for the supervised version of Form Recognizer
