@@ -55,6 +55,8 @@ Have a look at the code accelerator [Search based classification](Attribute_Sear
 
 Alternatively have a look at the code accelerator [Form Layout Clustering](Form_Layout_Clustering/README.md) for a clustering approach based on text features.
 
+For a method to route unknown forms to the correct model at inference time, take a look at the code accelerator [Routing Forms](Routing_Forms/README.md).
+
 ### The data
 
 Needless to say having sufficient, representative and well distributed data with Ground Truth (an known data set against which you can compare your predicted results) is mandatory for any machine learning project. Options do exist if no Ground Truth is available but these will be limited.
