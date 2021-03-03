@@ -2,7 +2,7 @@
 
 This section serves to provide a generic checklist for the most important aspects of a successful project in this space.
 
-A good starting point is the [Tech Lead's Engineering Fundamentals Checklist](https://github.com/microsoft/code-with-engineering-playbook/blob/master/TECH-LEADS-CHECKLIST.md) from the [CSE code-with-engineering-playbook](https://github.com/microsoft/code-with-engineering-playbook)
+A good starting point is the [Engineering Fundamentals Checklist](https://github.com/microsoft/code-with-engineering-playbook/blob/master/ENG-FUNDAMENTALS-CHECKLIST.md) from the [CSE code-with-engineering-playbook](https://github.com/microsoft/code-with-engineering-playbook)
 
 ## The problem
 
