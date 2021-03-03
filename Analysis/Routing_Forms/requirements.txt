@@ -1,0 +1,17 @@
+certifi==2020.12.5
+chardet==4.0.0
+idna==2.10
+joblib==1.0.0
+numpy==1.19.5
+onnx==1.8.0
+onnxconverter-common==1.7.0
+onnxruntime==1.6.0
+protobuf==3.14.0
+requests==2.25.1
+scikit-learn==0.24.1
+scipy==1.6.0
+six==1.15.0
+skl2onnx==1.7.0
+threadpoolctl==2.1.0
+typing-extensions==3.7.4.3
+urllib3==1.26.2
