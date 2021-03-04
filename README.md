@@ -85,6 +85,7 @@ in this repository using diverse approaches.
 | -------- | ----------- | ------|
 | Project preparation | [Checklist](Project_Preparation/Checklist/README.md) | Steps to ensure success
 | Project preparation | [Decision Guidance](Project_Preparation/README.md) | Core decision points |
+| Project preparation | [Data Structure](Project_Preparation/README.md) | Recommended training data structure
 | Analysis | [Understanding the data distribution](Analysis/Distribution/Distribution.ipynb) | Illustrates a simple way to understand the distribution of vendor to invoice frequency
 | Analysis | [Understanding form variation](Analysis/Form_Variation/README.md) | Illustrates how to analyse  whether variation in a single form type exists
 | Analysis | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
