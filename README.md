@@ -89,6 +89,7 @@ in this repository using diverse approaches.
 | Analysis | [Understanding the data distribution](Analysis/Distribution/Distribution.ipynb) | Illustrates a simple way to understand the distribution of vendor to invoice frequency
 | Analysis | [Understanding form variation](Analysis/Form_Variation/README.md) | Illustrates how to analyse  whether variation in a single form type exists
 | Analysis | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
+| Analysis | [Form layout clustering based on text and text layout features](Analysis/Compact_Layout_Clustering/README.md) | Shows another approach which can be used to discover different layouts within a big dataset of images, taking words and positions of words on a page into account |
 | Analysis | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recognizer model correlation
 | Analysis | [Routing forms](Analysis/Routing_Forms/README.md) | Demonstrates how to use OCR results to find which Form Recognizer model to send an unknown form to
 | Pre-Processing | [Image Channel Normalisation](Pre_Processing/Normalisation/preprocess_document.ipynb) | Illustrates interactive normalisation, binarization and greyscale conversion
