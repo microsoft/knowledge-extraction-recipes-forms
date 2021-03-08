@@ -55,6 +55,8 @@ Have a look at the code accelerator [Search based classification](Attribute_Sear
 
 Alternatively have a look at the code accelerator [Form Layout Clustering](Form_Layout_Clustering/README.md) for a clustering approach based on text features.
 
+Or the code accelerator [Compact Layout Clustering](Compact_Layout_Clustering/README.md) for a clustering approach based on text and text position features for cases where the the positions of the words on the page matter meaningfully, e.g. on membership card designs. This utilizes the same encoding concept as the [Routing Forms](Routing_Forms/README.md) example.
+
 For a method to route unknown forms to the correct model at inference time, take a look at the code accelerator [Routing Forms](Routing_Forms/README.md).
 
 ### The data
