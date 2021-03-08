@@ -257,6 +257,10 @@ used in the code. Introduction and/or reference of those will be provided in the
     <td align="center"><a href="https://github.com/shanepeckham"><img src="https://avatars1.githubusercontent.com/u/9840775?s=400&u=eedd334991b280967060ba797c9fb5bb6d7ffc0a&v=4" width="100px;" alt=""/><br /><sub><b>Shane Peckham</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/imicknl"><img src="https://avatars0.githubusercontent.com/u/1424596?s=460&u=0ba2f6ebaf2c30cf9839284866a3f7c46cce9a73&v=4" width="100px;" alt=""/><br /><sub><b>Mick Vleeshouwer</b></sub></a><br /></td>
    <td align="center"><a href="https://github.com/jomalsan"><img src="https://avatars.githubusercontent.com/u/38705299?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Jon Malsan</b></sub></a><br /></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/evamok"><img src="https://avatars.githubusercontent.com/u/66468410?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Eva Mok</b></sub></a><br /></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
