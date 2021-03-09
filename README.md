@@ -85,9 +85,11 @@ in this repository using diverse approaches.
 | -------- | ----------- | ------|
 | Project preparation | [Checklist](Project_Preparation/Checklist/README.md) | Steps to ensure success
 | Project preparation | [Decision Guidance](Project_Preparation/README.md) | Core decision points |
+| Project preparation | [Data Structure](Project_Preparation/Data_Structure/README.md) | Recommended training data structure
 | Analysis | [Understanding the data distribution](Analysis/Distribution/Distribution.ipynb) | Illustrates a simple way to understand the distribution of vendor to invoice frequency
 | Analysis | [Understanding form variation](Analysis/Form_Variation/README.md) | Illustrates how to analyse  whether variation in a single form type exists
 | Analysis | [Form layout type labelling using clustering based on text features](Analysis/Form_Layout_Clustering/README.md) | Shows an approach which can be used to discover/label different layout types within a big dataset of forms images
+| Analysis | [Form layout clustering based on text and text layout features](Analysis/Compact_Layout_Clustering/README.md) | Shows another approach which can be used to discover different layouts within a big dataset of images, taking words and positions of words on a page into account |
 | Analysis | [Classifying forms](Analysis/Attribute_Search_Classification/README.md) | Illustrates how to use an attribute based search approach to classify forms for Form Recognizer model correlation
 | Analysis | [Routing forms](Analysis/Routing_Forms/README.md) | Demonstrates how to use OCR results to find which Form Recognizer model to send an unknown form to
 | Pre-Processing | [Image Channel Normalisation](Pre_Processing/Normalisation/preprocess_document.ipynb) | Illustrates interactive normalisation, binarization and greyscale conversion
@@ -255,6 +257,10 @@ used in the code. Introduction and/or reference of those will be provided in the
     <td align="center"><a href="https://github.com/shanepeckham"><img src="https://avatars1.githubusercontent.com/u/9840775?s=400&u=eedd334991b280967060ba797c9fb5bb6d7ffc0a&v=4" width="100px;" alt=""/><br /><sub><b>Shane Peckham</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/imicknl"><img src="https://avatars0.githubusercontent.com/u/1424596?s=460&u=0ba2f6ebaf2c30cf9839284866a3f7c46cce9a73&v=4" width="100px;" alt=""/><br /><sub><b>Mick Vleeshouwer</b></sub></a><br /></td>
    <td align="center"><a href="https://github.com/jomalsan"><img src="https://avatars.githubusercontent.com/u/38705299?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Jon Malsan</b></sub></a><br /></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/evamok"><img src="https://avatars.githubusercontent.com/u/66468410?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Eva Mok</b></sub></a><br /></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
