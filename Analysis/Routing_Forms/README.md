@@ -12,7 +12,9 @@ The main steps are:
 
 ## Running the Example
 
-`train.py` is an example command line script for training a routing model. Before it can be used, the following steps must be taken:
+`train.py` is an example command line script for training a routing model.
+The example uses the Read API of the Azure Computer Vision cognitive service as the OCR engine.
+To run the sample:
 
 1. Install the required packages `pip install -r requirements.txt`
 1. Copy `example.env` to a file next to it called `.env`. This is where the code gets the OCR endpoint and key from.
@@ -68,14 +70,17 @@ Details on how the example works.
 
 ### OCR
 
-As our OCR engine, we are using the [OCR api of the computer vision cognitive service](https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/56f91f2e778daf14a499f20d).
+The code has been developed to support different OCR providers.
+Currently we have implemented classes for two endpoints of the [Azure Computer Vision cognitive service](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/):
 
-The key notes for this OCR response as opposed to Form Recognizer's Analyze Layout are:
+* [Read API](https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/5d986960601faab4bf452005)
+* [OCR API](https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/56f91f2e778daf14a499f20d)
 
-* Bounding boxes are returned in 4 number notation: `[left_index, top_index, width, height]`
-* Every found word is returned with the text and the location
+As different OCR providers return the results in different formats, our wrapper classes unify the output of found words to `List[Word]`.
+This way no matter what OCR engine is used, our encoders can operate on the results.
 
-Please see the OCR api's documentation (linked above) for details on the response schema.
+The default OCR provider in the included example is the Read API.
+To try a different provider, you must edit the code of `train.py` and `apply.py` to use the new provider.
 
 ### Encoding
 
