@@ -6,25 +6,31 @@
 from collections import Counter
 import json
 import os
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 
 import requests
 
 from .Secrets import Secrets
+from .Word import Word
 
 def load_data(
         file_names: List[str],
-        secrets: Secrets
-    ) -> (List[Dict], List[str]):
+        ocr_provider,
+        raw=False
+    ) -> Union[List[Dict], List[List[Word]]]:
     """Loads ocr results for the input file names
+
+    If the raw parameter is True, it will return a list of dictionaries representing the OCR
+    results from each image. Otherwise it will extract the detected words form the OCR result and
+    for each image return a list of Word objects, which include the text and location.
 
     :param List[str] file_names: List of files to load as the training data
     :param Secrets secrets: A configuration object that holds secrets for calling blob
         storage and the OCR endpoint
 
-    :return List[Dict] ocr_results:List of parsed JSON responses from the OCR api. In python
-        this is a dictionary corresponding to the JSON structure
-
+    :return Union[List[Dict], List[Word]) ocr_results: If raw is True, list of parsed JSON
+        responses from the OCR api. Otherwise it returns a List of lists of Words, where the
+        first index is the image number and the second is the word within that image.
     Raises:
         Exception: If the desired image is not found locally and it is in running_locally mode
     """
@@ -34,104 +40,16 @@ def load_data(
         if not os.path.exists(file_name):
             raise Exception(f"Provided file name does not exist: {file_name}")
         
-        ocr_result = get_ocr_results(file_name, secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
+        ocr_result = ocr_provider.get_ocr_results(file_name)
+        if not raw:
+            ocr_result = ocr_provider.words_from_result(ocr_result)
 
         ocr_results.append(ocr_result)
     
     return ocr_results
 
-def get_ocr_results(
-        file_name: str,
-        subscription_key: str,
-        ocr_url: str,
-        proxies: Optional[Dict[str, str]] = None
-    ) -> Dict:
-    """Gets the OCR results for the given file
-
-    If a local copy of the OCR results are already present, the code will
-    load those and return quickly. Otherwise the image will be sent to the OCR 
-    API endpoint. In this case the results are written to disk for easy access
-    the next time.
-
-    :param str file_name: path to the file to run OCR on
-    :param str subscription_key: key for the computer vision instance
-    :param str ocr_url: url for the OCR enpoint with host only.
-        For example, 'https://{instance}.cognitiveservices.azure.com/'
-    :param Dict[str,str] proxies: Optional set of proxies to be used on the http
-        request. If none are needed, pass None
-
-    :returns Dict[]: Parsed JSON response from the OCR service
-
-    Raises:
-        HTTPError: If the OCR response is greater than 229
-    """
-
-    ocr_url = ocr_url + "/vision/v3.1/ocr"
-    result_path = f"{file_name}.json"
-
-    # If the results already exist then we return our cached version
-    if os.path.exists(result_path):
-        with open(result_path) as f:
-            return json.load(f)
-
-    # Set fixed headers and parameters
-    headers = {'Ocp-Apim-Subscription-Key': subscription_key, 'Content-Type': 'application/octet-stream'}
-    params = {'language': 'en', 'detectOrientation': 'true'}
-
-    # Makes sure the image is downloaded
-    image_data = open(file_name, "rb").read() # Here we need the real path to the file, will exist after the previous step
-
-    response = requests.post(ocr_url, headers=headers, params=params, data=image_data, proxies=proxies)
-    print(f"OCR time: {response.elapsed}")
-    
-    # Throws HTTPError for bad status
-    response.raise_for_status()
-
-    results = response.json()
-
-    # Dump cache file
-    with open(result_path, "w") as f:
-        json.dump(results, f)
-    
-    return results
-
-def words_from_results(ocr_result: Dict) -> List[Dict]:
-    """Returns the list of found words (bounding box and text)
-
-    Note: the dictionary for each word has two fields "text" and "boundingBox",
-    which represent the content and location of the extracted word respectively
-
-    :param Dict[] ocr_results: OCR results for an image
-    :returns List[Dict]:the words found in the OCR results
-    """
-
-    line_infos = [region["lines"] for region in ocr_result["regions"]]
-    word_infos = []
-
-    for line in line_infos:
-        for word_metadata in line:
-            for word_info in word_metadata["words"]:
-                word_infos.append(word_info)
-
-    return word_infos
-
-def bounding_boxes_from_words(word_infos: List[Dict]) -> List[List[int]]:
-    """Returns an array of arrays representing bounding boxes
-
-    :param List[Dict] word_infos: the words found in the OCR results
-    
-    :returns List[List[int]]:  a list of bounding boxes ofthe found words. Each 
-        entry has 4 elements aligning with [left, top, width, height]
-    """
-    
-    bounding_boxes = []
-    for word in word_infos:
-        bounding_boxes.append([int(num) for num in word["boundingBox"].split(",")])
-    
-    return bounding_boxes
-
 def layout_agnostic_vocabulary_vector(
-        results: List[Dict],
+        results: List[List[Word]],
         number_of_words: int
     ) -> List[str]:
     """Create a layout agnostic vocabulary vector
@@ -139,17 +57,15 @@ def layout_agnostic_vocabulary_vector(
     Finds the most popular words out of a bag comprised of all layouts
     Guarantees a length based on number_of_words
 
-    :param List[Dict] ocr_results: List of parsed JSON responses from the OCR api
+    :param List[List[Word]] ocr_results: List of List of words found in each image
     :param int number_of_words: length of the output vocabulary
 
     :returns List(str): list of words that make up the vocabulary
     """
     counter = Counter()
     for result in results:
-        word_infos = words_from_results(result)
-
-        for word in word_infos:
-            counter.update({word["text"]: 1})
+        for word in result:
+            counter.update({word.text: 1})
 
     # Create the vocabulary vector based on the most common words
     vocabulary_vector = []
@@ -159,7 +75,7 @@ def layout_agnostic_vocabulary_vector(
     return vocabulary_vector
 
 def layout_aware_vocabulary_vector(
-        results: List[Dict],
+        results: List[List[Word]],
         number_of_words: int,
         classification_targets: List[str]
     ) -> List[str]:
@@ -169,7 +85,7 @@ def layout_aware_vocabulary_vector(
     Each layout gets ceil(number_of_words/number_of_layouts) words, also repeat
     words will get removed
 
-    :param List[Dict] ocr_results: List of parsed JSON responses from the OCR api
+    :param List[List[Word]] ocr_results: List of List of words found in each image
     :param int number_of_words: length of the output vocabulary
     :param List[str] classification_targets: list of layout per set of OCR results
         to be used for grouping similar layouts
@@ -184,10 +100,8 @@ def layout_aware_vocabulary_vector(
         words[layout] = Counter()
     
     for result, classification_target in zip(results, classification_targets):
-        word_infos = words_from_results(result)
-
-        for word in word_infos:
-            words[classification_target].update({word["text"]:1})
+        for word in result:
+            words[classification_target].update({word.text:1})
 
     vocabulary_vector = []
     for _, value in words.items():

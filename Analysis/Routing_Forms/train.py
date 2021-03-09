@@ -22,6 +22,7 @@ from src.Secrets import Secrets
 import src.routing_helpers as rh
 from src.WordAndLayoutEncoder import WordAndLayoutEncoder
 from src.RoutingModel import RoutingModel
+from src.AzureComputerVisionOcrApi import AzureComputerVisionOcrApi
 
 def main(data_dir, model_name, number_of_words, shape):
     logging.basicConfig(
@@ -49,9 +50,11 @@ def main(data_dir, model_name, number_of_words, shape):
 
         log.info(f"Found {len(images)} images for the layout {layout}")
 
+    # Initialize our OCR provider
+    ocr_provider = AzureComputerVisionOcrApi(secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
     # Load the OCR Api response for each image
     log.info("Begin loading the OCR results...")
-    ocr_results = rh.load_data(file_names, secrets)
+    ocr_results = rh.load_data(file_names, ocr_provider)
     log.info("Successfully loaded the OCR results")
 
     # Generate the vocabulary vector
