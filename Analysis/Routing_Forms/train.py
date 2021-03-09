@@ -32,10 +32,6 @@ def main(data_dir, model_name, number_of_words, shape):
     
     secrets = Secrets.from_env()
 
-    # Convert shape from a string
-    shape = shape.strip('\'\"() ')
-    shape = [int(i) for i in shape.split(',')]
-
     # Load the training data from data_dir
     layouts = os.listdir(data_dir)
     layouts = [l for l in layouts if os.path.isdir(os.path.join(data_dir, l))]
@@ -127,8 +123,10 @@ if __name__ == "__main__":
                         type=int,
                         help="Number of words for the vocabulary vector")
     parser.add_argument("--shape",
-                        default="(50,50)",
-                        help="Shape for the layout encoding")
+                        default=(50, 50),
+                        type=int,
+                        help="Tuple denoting the dimension of the form layout, e.g. 50 50",
+                        nargs=2)
     args = parser.parse_args()
 
     main(args.data_dir, args.model_name, args.number_of_words, args.shape)

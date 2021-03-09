@@ -29,7 +29,7 @@ Now that the experiment is setup, we can run `train.py` as follows:
 python train.py {path_to_training_data} example_model
 
 # Run with custom parameters
-python train.py {path_to_training_data} example_model --number-of-words 100 --shape "(60,40)"
+python train.py {path_to_training_data} example_model --number-of-words 100 --shape 60 40
 ```
 
 Once you have a trained model, you can use `apply.py` to apply it to other images. This is done by:
