@@ -7,7 +7,7 @@ import argparse
 from datetime import datetime
 import logging
 
-from src.AzureComputerVisionOcrApi import AzureComputerVisionOcrApi
+from src.AzureComputerVisionReadApi import AzureComputerVisionReadApi
 from src.Secrets import Secrets
 import src.routing_helpers as rh
 from src.RoutingModel import RoutingModel
@@ -27,9 +27,8 @@ def main(model, image):
     log.info(f"Model can route the layouts: {routing_model.layouts}")
 
     # Get OCR results for image
-    ocr_provider = AzureComputerVisionOcrApi(secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
-    ocr_result = ocr_provider.get_ocr_results(image)
-    words = ocr_provider.words_from_result(ocr_result)
+    ocr_provider = AzureComputerVisionReadApi(secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
+    words = ocr_provider.get_ocr_results(image)
     log.info(f"Successfully called OCR for image: {image}")
 
     # Make the prediction

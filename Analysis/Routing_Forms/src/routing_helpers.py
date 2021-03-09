@@ -15,21 +15,15 @@ from .Word import Word
 
 def load_data(
         file_names: List[str],
-        ocr_provider,
-        raw=False
+        ocr_provider
     ) -> Union[List[Dict], List[List[Word]]]:
     """Loads ocr results for the input file names
-
-    If the raw parameter is True, it will return a list of dictionaries representing the OCR
-    results from each image. Otherwise it will extract the detected words form the OCR result and
-    for each image return a list of Word objects, which include the text and location.
 
     :param List[str] file_names: List of files to load as the training data
     :param Secrets secrets: A configuration object that holds secrets for calling blob
         storage and the OCR endpoint
 
-    :return Union[List[Dict], List[Word]) ocr_results: If raw is True, list of parsed JSON
-        responses from the OCR api. Otherwise it returns a List of lists of Words, where the
+    :return Union[List[Dict], List[Word]) ocr_results: Returns a List of lists of Words, where the
         first index is the image number and the second is the word within that image.
     Raises:
         Exception: If the desired image is not found locally and it is in running_locally mode
@@ -41,9 +35,6 @@ def load_data(
             raise Exception(f"Provided file name does not exist: {file_name}")
         
         ocr_result = ocr_provider.get_ocr_results(file_name)
-        if not raw:
-            ocr_result = ocr_provider.words_from_result(ocr_result)
-
         ocr_results.append(ocr_result)
     
     return ocr_results

@@ -1,17 +1,22 @@
 import json
 import os
+import time
 from typing import Dict, List, Optional
 
 import requests
 from .Word import Word
 
-class AzureComputerVisionOcrApi:
-    """Support class for Azure Computer Vision OCR API
+# Control the timing for querying for Read API results
+TIMEOUT = 30
+SLEEP = 1
 
-    Details on the API can be found at: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/56f91f2e778daf14a499f20d
+class AzureComputerVisionReadApi:
+    """Support class for Azure Computer Vision Read API
+
+    Details on the API can be found at: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/5d986960601faab4bf452005
     """
-    CACHE_FILE_PATTERN = "{}.acv.ocr.json"
-    ENDPOINT = "{}/vision/v3.1/ocr"
+    CACHE_FILE_PATTERN = "{}.acv.read.json"
+    ENDPOINT = "{}/vision/v3.1/read/analyze"
 
     def __init__(
             self,
@@ -19,7 +24,7 @@ class AzureComputerVisionOcrApi:
             ocr_url: str,
             proxies: Optional[Dict[str, str]] = None
         ):
-        """ Initialize a new instance of AzureComputerVisionOcrApi
+        """ Initialize a new instance of AzureComputerVisionReadApi
 
         :param str subscription_key: key for the computer vision instance
         :param str ocr_url: url for the OCR endpoint with host only.
@@ -75,24 +80,43 @@ class AzureComputerVisionOcrApi:
 
         # Set fixed headers and parameters
         headers = {'Ocp-Apim-Subscription-Key': self.subscription_key, 'Content-Type': 'application/octet-stream'}
-        params = {'language': 'en', 'detectOrientation': 'true'}
+        params = {'language': 'en'}
 
         # Open the image file
         image_data = open(file_name, "rb").read()
 
         response = requests.post(ocr_url, headers=headers, params=params, data=image_data, proxies=self.proxies)
-        print(f"OCR time: {response.elapsed}")
-        
+        result_location = response.headers['Operation-Location']
+
         # Throws HTTPError for bad status
         response.raise_for_status()
 
-        results = response.json()
+        tic = time.time()
+        while time.time() - tic < TIMEOUT:
+            time.sleep(SLEEP)
+            headers = {'Ocp-Apim-Subscription-Key': self.subscription_key}
+
+            result = requests.get(result_location, headers=headers, proxies=self.proxies)
+            result.raise_for_status()
+
+            parsed_result = result.json()
+
+            if parsed_result['status'] == 'succeeded':
+                break
+            elif parsed_result['status'] == 'failed':
+                raise Exception(f"Read API call failed: {json.dumps(parsed_result)}")
+            
+            parsed_result = None
+            # Other statuses are "notStarted" and "running" in which case we go to the next iteration
+
+        if parsed_result is None:
+            raise Exception(f"Timeout of {TIMEOUT}s was exceeded waiting for Read API result")
 
         # Dump cache file
         with open(result_path, "w") as f:
-            json.dump(results, f)
+            json.dump(parsed_result, f)
         
-        return results
+        return parsed_result
 
     def words_from_result(self, ocr_result: Dict) -> List[Word]:
         """Returns the list of found words (bounding box and text)
@@ -104,20 +128,23 @@ class AzureComputerVisionOcrApi:
         :returns List[Word]: the words found in the OCR results
         """
 
-        line_infos = [region["lines"] for region in ocr_result["regions"]]
+        analyze_result = ocr_result['analyzeResult']
         words = []
 
-        for line in line_infos:
-            for word_metadata in line:
-                for word_info in word_metadata["words"]:
-                    # Each entry has 4 elements aligning with [left, top, width, height]
-                    bounding_box = [int(num) for num in word_info["boundingBox"].split(",")]
-                    left = bounding_box[0]
-                    top = bounding_box[1]
-                    right = left + bounding_box[2]
-                    bottom = top + bounding_box[3]
+        for read_result in analyze_result['readResults']: # Loop over pages
+            for line in read_result['lines']:
+                for word in line["words"]:
+                    # Bounding box is returned in 8 number format
+                    # "The eight numbers represent the four points, clockwise from the top-left corner
+                    # relative to the text orientation. For image, the (x, y) coordinates are measured
+                    # in pixels. For PDF, the (x, y) coordinates are measured in inches."
+                    bb = word['boundingBox']
+                    left = min(bb[::2])
+                    top = min(bb[1::2])
+                    right = max(bb[::2])
+                    bottom = max(bb[1::2])
 
-                    word = Word(word_info["text"], left, right, top, bottom)
-                    words.append(word)
+                    word_object = Word(word["text"], left, right, top, bottom)
+                    words.append(word_object)
 
         return words
