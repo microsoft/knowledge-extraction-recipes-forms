@@ -25,22 +25,22 @@ In order to run the example in this section, you would need the following:
 
 ```bash
 python clustering.py \
-    --data_dir {path-to-image-directory} \
-    --env_file {path-to-env-file} \
-    --layout_shape {dimension-of-image} \
-    --vocabulary_size {size-of-vocabulary-for-word-encoding} \
-    --stopwords_file {path-to-stopwords-file}
+    --data-dir {path-to-image-directory} \
+    --env-file {path-to-env-file} \
+    --layout-shape {dimension-of-image} \
+    --vocabulary-size {size-of-vocabulary-for-word-encoding} \
+    --stopwords-file {path-to-stopwords-file}
 ```
 
 e.g.
 
 ```bash
 python clustering.py \
-    --data_dir ../sample-data \
-    --env_file ../../../.env \
-    --layout_shape 50 79 \
-    --vocabulary_size 50 \
-    --stopwords_file ../stopwords.txt
+    --data-dir ../sample-data \
+    --env-file ../../../.env \
+    --layout-shape 50 79 \
+    --vocabulary-size 50 \
+    --stopwords-file ../stopwords.txt
 ```
 
 ## 2. Approach in a nutshell

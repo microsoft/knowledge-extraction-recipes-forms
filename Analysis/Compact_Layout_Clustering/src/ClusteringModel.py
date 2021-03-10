@@ -19,8 +19,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.cluster import DBSCAN, KMeans
 
 sys.path.append("../../")
-import Routing_Forms.src.routing_helpers as rh
-from Routing_Forms.src.WordAndLayoutEncoder import WordAndLayoutEncoder 
+from Routing_Forms.src.WordAndLayoutEncoder import WordAndLayoutEncoder
 
 class ClusteringModel:
     """
@@ -38,6 +37,7 @@ class ClusteringModel:
             self,
             layout_shape: (int, int),
             vocabulary_size: int,
+            ocr_provider: object, 
             n_pca_components: int = 200,
             vocabulary: List[str] = None,
             stopwords: List[str] = None,
@@ -48,6 +48,7 @@ class ClusteringModel:
 
         :param layout_shape: The dimensions for the layout encoding. (50, 79) works well for credit cards sized images.
         :param vocabulary_size: The size of the vocabulary for the word encoding. 2000-3000 works well for a large number of unrecognized cards.
+        :param ocr_provider: An instance of an OCR provider class used to get the words from the image
         :param n_pca_components: The number of desired components for PCA on the word encoding 
         and the layout encoding. The actual number of components is limited by the number of rows of data.
         :param vocabulary: A pre-defined vocabulary if available
@@ -56,6 +57,7 @@ class ClusteringModel:
         """
         self.layout_shape = layout_shape
         self.vocabulary_size = vocabulary_size
+        self.ocr_provider = ocr_provider
         self.n_pca_components = n_pca_components
         self.stopwords = stopwords
         if vocabulary is not None:
@@ -86,14 +88,12 @@ class ClusteringModel:
         for index, row in data.iterrows():
             try:
                 filename = data.loc[index, image_name_column]
-                with open(f"{filename}.json", "r") as f:
-                    ocr_results = json.load(f)
 
-                word_infos = rh.words_from_results(ocr_results)
+                ocr_results = self.ocr_provider.get_ocr_results(filename)
 
-                for word in word_infos:
-                    if not self.stopwords or (word["text"].lower() not in self.stopwords):
-                        counter.update({word["text"]: 1})
+                for word in ocr_results:
+                    if not self.stopwords or (word.text.lower() not in self.stopwords):
+                        counter.update({word.text: 1})
 
                 count += 1
                 if count % 5000 == 0:
@@ -133,10 +133,9 @@ class ClusteringModel:
         for index, row in data.iterrows():
             try:
                 filename = data.loc[index, image_name_column]
-                with open(os.path.join(f"{filename}.json"), "r") as f:
-                    ocr_results = json.load(f)
+                ocr_results = self.ocr_provider.get_ocr_results(filename)
 
-                if len(ocr_results["regions"]) == 0:
+                if len(ocr_results) == 0:
                     empty_ocr_count += 1
                 else:
                     mask[counter] = 1
@@ -202,7 +201,7 @@ class ClusteringModel:
         self.n_pca_components = min(self.n_pca_components, encoding.shape[0])
 
         transformer = ColumnTransformer(
-         [("word_pca", PCA(n_components=self.n_pca_components), list(range(0, self.vocabulary_size)) ),
+        [("word_pca", PCA(n_components=self.n_pca_components), list(range(0, self.vocabulary_size)) ),
          ("layout_pca", PCA(n_components=self.n_pca_components), list(range(self.vocabulary_size, self.vocabulary_size + self.layout_shape[0] * self.layout_shape[1])))])
         dbscan = DBSCAN(eps=epsilon, min_samples=min_samples, metric="euclidean", leaf_size=40)
 
