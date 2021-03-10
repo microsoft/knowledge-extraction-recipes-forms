@@ -4,13 +4,14 @@ import time
 from typing import Dict, List, Optional
 
 import requests
+from .OcrProvider import OcrProvider
 from .Word import Word
 
 # Control the timing for querying for Read API results
 TIMEOUT = 30
 SLEEP = 1
 
-class AzureComputerVisionReadApi:
+class AzureComputerVisionReadApi(OcrProvider):
     """Support class for Azure Computer Vision Read API
 
     Details on the API can be found at: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/5d986960601faab4bf452005
@@ -36,20 +37,6 @@ class AzureComputerVisionReadApi:
         self.subscription_key = subscription_key
         self.ocr_url = ocr_url
         self.proxies = proxies
-
-    def get_ocr_results(
-            self,
-            file_name: str
-        ) -> List[Word]:
-        """Gets the parsed word list for the OCR results
-
-        :param str file_name: path to the file to run OCR on
-        :returns List[Word]: the words found in the OCR results
-        """
-        raw_results = self.get_raw_ocr_results(file_name)
-        words = self.words_from_result(raw_results)
-
-        return words
 
     def get_raw_ocr_results(
             self, 

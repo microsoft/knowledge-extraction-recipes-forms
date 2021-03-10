@@ -3,9 +3,10 @@ import os
 from typing import Dict, List, Optional
 
 import requests
+from .OcrProvider import OcrProvider
 from .Word import Word
 
-class AzureComputerVisionOcrApi:
+class AzureComputerVisionOcrApi(OcrProvider):
     """Support class for Azure Computer Vision OCR API
 
     Details on the API can be found at: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-1-ga/operations/56f91f2e778daf14a499f20d
@@ -31,20 +32,6 @@ class AzureComputerVisionOcrApi:
         self.subscription_key = subscription_key
         self.ocr_url = ocr_url
         self.proxies = proxies
-
-    def get_ocr_results(
-            self,
-            file_name: str
-        ) -> List[Word]:
-        """Gets the parsed word list for the OCR results
-
-        :param str file_name: path to the file to run OCR on
-        :returns List[Word]: the words found in the OCR results
-        """
-        raw_results = self.get_raw_ocr_results(file_name)
-        words = self.words_from_result(raw_results)
-
-        return words
 
     def get_raw_ocr_results(
             self, 
