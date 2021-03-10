@@ -9,7 +9,6 @@ import logging
 
 from src.AzureComputerVisionReadApi import AzureComputerVisionReadApi
 from src.Secrets import Secrets
-import src.routing_helpers as rh
 from src.RoutingModel import RoutingModel
 
 def main(model, image):
