@@ -123,6 +123,10 @@ The [Pipelines](Pipelines/README.md) section contains some example patterns and 
 | [Azure Logic Apps](Pipelines/Azure_Logic_Apps/README.md)| Sample pipeline using Azure Logic Apps
 | [Azure (Durable) Functions](Pipelines/Azure_Functions/README.md)| Sample pipeline using Azure (Durable) Functions
 
+## Tips and Best Practices for Form Recognizer
+
+For tips and best practices for managing Form Recognizer models via MLOps and deployment pipelines, view [MLOps Tips and Tricks for Form Recognizer](FormRecognizer/MLOpsTips.md).
+
 ## Example Scenarios
 
 This section contains some documented common scenarios
@@ -202,8 +206,6 @@ The requirements for the prebuilt receipt model are slightly different.
 * PDF dimensions must be at most 17 x 17 inches, corresponding to Legal or A3 paper sizes and smaller.
 * For PDF and TIFF, only the first 200 pages are processed (with a free tier subscription, only the first two pages
 are processed).
-
-For tips and known issues with managing Form Recognizer models via MLOps and deployment pipelines, view [MLOps Tips and Tricks for Form Recognizer](FormRecognizer/MLOpsTips.md).
 
 ### Azure Machine Learning service
 

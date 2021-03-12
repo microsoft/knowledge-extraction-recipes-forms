@@ -217,6 +217,11 @@ You need to get the mapping files into python dicts as well as get your FR keys,
 Currently, the script does not delete models from target that were removed in the source mapping file, but there is a `#TODO` where that logic should be added.
 
 ```python
+#!/usr/bin/python
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import FormTrainingClient, \
     FormRecognizerApiVersion, CustomFormModelStatus
