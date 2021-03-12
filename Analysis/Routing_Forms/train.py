@@ -22,6 +22,7 @@ from src.Secrets import Secrets
 import src.routing_helpers as rh
 from src.WordAndLayoutEncoder import WordAndLayoutEncoder
 from src.RoutingModel import RoutingModel
+from src.AzureComputerVisionReadApi import AzureComputerVisionReadApi
 
 def main(data_dir, model_name, number_of_words, shape):
     logging.basicConfig(
@@ -31,10 +32,6 @@ def main(data_dir, model_name, number_of_words, shape):
     log: logging.Logger = logging.getLogger(__name__)
     
     secrets = Secrets.from_env()
-
-    # Convert shape from a string
-    shape = shape.strip('\'\"() ')
-    shape = [int(i) for i in shape.split(',')]
 
     # Load the training data from data_dir
     layouts = os.listdir(data_dir)
@@ -53,9 +50,11 @@ def main(data_dir, model_name, number_of_words, shape):
 
         log.info(f"Found {len(images)} images for the layout {layout}")
 
+    # Initialize our OCR provider
+    ocr_provider = AzureComputerVisionReadApi(secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
     # Load the OCR Api response for each image
     log.info("Begin loading the OCR results...")
-    ocr_results = rh.load_data(file_names, secrets)
+    ocr_results = rh.load_data(file_names, ocr_provider)
     log.info("Successfully loaded the OCR results")
 
     # Generate the vocabulary vector
@@ -127,8 +126,10 @@ if __name__ == "__main__":
                         type=int,
                         help="Number of words for the vocabulary vector")
     parser.add_argument("--shape",
-                        default="(50,50)",
-                        help="Shape for the layout encoding")
+                        default=(50, 50),
+                        type=int,
+                        help="Tuple denoting the dimension of the form layout, e.g. 50 50",
+                        nargs=2)
     args = parser.parse_args()
 
     main(args.data_dir, args.model_name, args.number_of_words, args.shape)

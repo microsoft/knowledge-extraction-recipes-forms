@@ -9,7 +9,7 @@ from math import floor
 from typing import List, Dict, Any, Optional, Tuple, Union
 import numpy as np
 
-from .routing_helpers import words_from_results, bounding_boxes_from_words
+from .Word import Word
 
 class WordAndLayoutEncoder:
     """Encapsulation of word and layout based encoding logic
@@ -33,65 +33,67 @@ class WordAndLayoutEncoder:
         self.vocabulary_vector = vocabulary_vector
         self.layout_shape = layout_shape
 
-    def encode_ocr_results(self, ocr_results: Dict) -> np.ndarray:
+    def encode_ocr_results(
+            self,
+            ocr_results: List[Word]
+        ) -> np.ndarray:
         """Encodes the OCR results into a vector that can be classified
 
-        :param Dict[] ocr_results: OCR results for an image
+        :param List[Word] ocr_results: List of Words found in the image
         :returns np.ndarray encoding: encoded representation of the OCR results
         """
-
-        word_infos = words_from_results(ocr_results)
-        word_encoding = self.evaluate_word_vector(word_infos)
-
-        bounding_boxes = bounding_boxes_from_words(word_infos)
-        layout_encoding = self.encode_bounding_boxes(bounding_boxes).flatten()
+        word_encoding = self.encode_words(ocr_results)
+        layout_encoding = self.encode_locations(ocr_results).flatten()
 
         return np.concatenate((word_encoding, layout_encoding), axis=0)
 
-    def evaluate_word_vector(
+    def encode_words(
             self,
-            word_infos: List[Dict]
+            ocr_results: List[Word]
         ) -> np.ndarray:
         """Returns a vector the same size as self.vocabulary_vector with a 1 if the
         word is present and a 0 otherwise
 
-        :param List[Dict] word_infos: the words found in the OCR results
+        :param List[Word] ocr_results: List of Words found in the image
         
         :returns np.ndarray: binary word count encoding of the input words against the word vector
         """
 
         score = np.zeros(len(self.vocabulary_vector))
 
-        for word_info in word_infos:
-            if word_info["text"] in self.vocabulary_vector:
-                index = self.vocabulary_vector.index(word_info["text"])
+        for word in ocr_results:
+            if word.text in self.vocabulary_vector:
+                index = self.vocabulary_vector.index(word.text)
                 score[index] = 1
         return score
     
-    def encode_bounding_boxes(
+    def encode_locations(
             self,
-            boxes: List[List[int]]
+            ocr_results: List[Word]
         ) -> np.ndarray:
         """Encodes bounding box information into array of new_size
 
-        :param List[List[int]] boxes: a list of bounding boxes of the found words.
-            Each entry has 4 elements aligning with [left, top, width, height]
+        Note: the Word object represents the bounding box with fields for
+        top, left, bottom and right boundaries. This uses a rectangular assumption
+        and that the bounding boxes are roughly parallel to the image axes
+
+        :param List[Word] ocr_results: List of Words found in the image
         
         :returns np.ndarray encoding: location encoding for the OCR results
         """
 
         # Initialize counters to find the crop box
-        top = 100000
-        bottom = 0
-        left = 100000
-        right = 0
+        top = ocr_results[0].top
+        bottom = ocr_results[0].bottom
+        left = ocr_results[0].left
+        right = ocr_results[0].right
 
-        for box in boxes:
+        for word in ocr_results:
             # Finding the crop box
-            top = min(box[1], top)
-            bottom = max(box[1]+box[3], bottom)
-            left = min(box[0], left)
-            right = max(box[0]+box[2], right)
+            top = min(word.top, top)
+            bottom = max(word.bottom, bottom)
+            left = min(word.left, left)
+            right = max(word.right, right)
 
         # Now that we have the external crop box that holds all of the bounding
         # boxes we can scale that crop to self.layout_shape and embed the locations
@@ -102,11 +104,11 @@ class WordAndLayoutEncoder:
         horizontal_scaler = (self.layout_shape[1] - 1) / (right - left)
         vertical_scaler = (self.layout_shape[0] - 1) / (bottom - top)
 
-        for box in boxes:
-            scaled_top = (box[1] - top) * vertical_scaler
-            scaled_left = (box[0] - left) * horizontal_scaler
-            scaled_bottom = (box[1] + box[3] - top) * vertical_scaler
-            scaled_right = (box[0] + box[2] - left) * horizontal_scaler
+        for word in ocr_results:
+            scaled_top = (word.top - top) * vertical_scaler
+            scaled_left = (word.left - left) * horizontal_scaler
+            scaled_bottom = (word.bottom - top) * vertical_scaler
+            scaled_right = (word.right - left) * horizontal_scaler
 
             # Indices for the boxes that we are going to affect
             top_index = floor(scaled_top)

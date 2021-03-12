@@ -12,6 +12,7 @@ import numpy as np
 from ClusteringModel import ClusteringModel
 
 sys.path.append("../../")
+from Routing_Forms.src.AzureComputerVisionOcrApi import AzureComputerVisionOcrApi
 from Routing_Forms.src.Secrets import Secrets
 import Routing_Forms.src.routing_helpers as rh
 
@@ -34,6 +35,7 @@ def main(env_file, data_dir, layout_shape, vocabulary_size, stopwords_file = Non
 
     # Load secrets for the Azure OCR services from the env file
     secrets = Secrets.from_env(env_file)
+    ocr_provider = AzureComputerVisionOcrApi(secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
 
     # Read stopwords from the file if given (for excluding words from the encoding vocabulary)
     if stopwords_file is not None:
@@ -43,13 +45,11 @@ def main(env_file, data_dir, layout_shape, vocabulary_size, stopwords_file = Non
 
     # Grep all the JPG images in the data directory and store the file references in a Pandas DataFrame
     images = [os.path.join(data_dir, f) for f in os.listdir(data_dir) if f.endswith(".jpg")]
-    for i in images:
-        rh.get_ocr_results(i, secrets.OCR_SUBSCRIPTION_KEY, secrets.OCR_ENDPOINT)
 
     image_data = pd.DataFrame(images, columns=["filename"])
 
     # Instantiate a Clustering model with the supplied parameters
-    cm = ClusteringModel(layout_shape, vocabulary_size, n_pca_components=N_PCA_COMPONENTS, stopwords=stopwords)
+    cm = ClusteringModel(layout_shape, vocabulary_size, ocr_provider, n_pca_components=N_PCA_COMPONENTS, stopwords=stopwords)
 
     # Run Clustering on the image data
     (clustered_data, encoding, vocabulary) = cm.find_clusters(image_data, "filename", min_samples=MIN_SAMPLES, epsilon=EPSILON)
@@ -63,11 +63,11 @@ def main(env_file, data_dir, layout_shape, vocabulary_size, stopwords_file = Non
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Cluster images by layouts")
-    parser.add_argument("--env_file", help="Environment variables file")
-    parser.add_argument("--data_dir", help="Path to directory with images")
-    parser.add_argument("--layout_shape", type=int, help="Tuple denoting the dimension of the form layout, e.g. 50 79", nargs=2)
-    parser.add_argument("--vocabulary_size", type=int, help="Size of the vocabulary to use for word encoding, e.g. 100")
-    parser.add_argument("--stopwords_file", help="An optional stopwords file for words to exclude from encoding vocabulary", default=None)
+    parser.add_argument("--env-file", help="Environment variables file")
+    parser.add_argument("--data-dir", help="Path to directory with images")
+    parser.add_argument("--layout-shape", type=int, help="Tuple denoting the dimension of the form layout, e.g. 50 79", nargs=2)
+    parser.add_argument("--vocabulary-size", type=int, help="Size of the vocabulary to use for word encoding, e.g. 100")
+    parser.add_argument("--stopwords-file", help="An optional stopwords file for words to exclude from encoding vocabulary", default=None)
 
     args = parser.parse_args()
     main(args.env_file, args.data_dir, tuple(args.layout_shape), args.vocabulary_size, args.stopwords_file)
