@@ -123,6 +123,9 @@ The [Pipelines](Pipelines/README.md) section contains some example patterns and 
 | [Azure Logic Apps](Pipelines/Azure_Logic_Apps/README.md)| Sample pipeline using Azure Logic Apps
 | [Azure (Durable) Functions](Pipelines/Azure_Functions/README.md)| Sample pipeline using Azure (Durable) Functions
 
+## Tips and Best Practices for Form Recognizer
+
+For tips and best practices for managing Form Recognizer models via MLOps and deployment pipelines, view [MLOps Tips and Tricks for Form Recognizer](FormRecognizer/MLOpsTips.md).
 
 ## Example Scenarios
 
@@ -260,13 +263,14 @@ used in the code. Introduction and/or reference of those will be provided in the
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/evamok"><img src="https://avatars.githubusercontent.com/u/66468410?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Eva Mok</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/mover333"><img src="https://avatars.githubusercontent.com/u/55155635?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Mitchell Overfield</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/alkofahi"><img src="https://avatars.githubusercontent.com/u/58956796?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Jafar Al-Kofahi</b></sub></a><br /></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
 
 ## Contributing
 
