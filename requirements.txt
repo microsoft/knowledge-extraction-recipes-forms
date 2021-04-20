@@ -174,7 +174,7 @@ price-parser==0.3.1
 prometheus-client==0.7.1
 prompt-toolkit==3.0.3
 ptyprocess==0.6.0
-py==1.8.0
+py==1.10.0
 py4j==0.10.7
 pyarrow==0.15.1
 pyasn1==0.4.8
