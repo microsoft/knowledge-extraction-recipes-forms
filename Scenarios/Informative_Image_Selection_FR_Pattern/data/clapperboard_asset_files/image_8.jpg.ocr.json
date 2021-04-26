@@ -1,0 +1,386 @@
+{
+    "status": "succeeded",
+    "createdDateTime": "2021-03-01T19:19:48Z",
+    "lastUpdatedDateTime": "2021-03-01T19:19:48Z",
+    "analyzeResult": {
+        "version": "2.0.0",
+        "readResults": [
+            {
+                "page": 1,
+                "angle": -37.0237,
+                "width": 800,
+                "height": 533,
+                "unit": "pixel",
+                "language": "en",
+                "lines": [
+                    {
+                        "boundingBox": [
+                            33,
+                            292,
+                            348,
+                            66,
+                            364,
+                            92,
+                            51,
+                            316
+                        ],
+                        "text": "PROD. NO. DYING 2 KNOW",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    34,
+                                    293,
+                                    130,
+                                    226,
+                                    146,
+                                    251,
+                                    50,
+                                    316
+                                ],
+                                "text": "PROD.",
+                                "confidence": 0.942
+                            },
+                            {
+                                "boundingBox": [
+                                    134,
+                                    223,
+                                    191,
+                                    183,
+                                    207,
+                                    208,
+                                    151,
+                                    247
+                                ],
+                                "text": "NO.",
+                                "confidence": 0.727
+                            },
+                            {
+                                "boundingBox": [
+                                    211,
+                                    169,
+                                    268,
+                                    127,
+                                    284,
+                                    152,
+                                    226,
+                                    194
+                                ],
+                                "text": "DYING",
+                                "confidence": 0.272
+                            },
+                            {
+                                "boundingBox": [
+                                    277,
+                                    120,
+                                    292,
+                                    109,
+                                    308,
+                                    134,
+                                    293,
+                                    145
+                                ],
+                                "text": "2",
+                                "confidence": 0.871
+                            },
+                            {
+                                "boundingBox": [
+                                    300,
+                                    103,
+                                    347,
+                                    67,
+                                    363,
+                                    93,
+                                    315,
+                                    129
+                                ],
+                                "text": "KNOW",
+                                "confidence": 0.727
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            95,
+                            309,
+                            193,
+                            239,
+                            210,
+                            261,
+                            110,
+                            333
+                        ],
+                        "text": "SCENE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    96,
+                                    308,
+                                    193,
+                                    240,
+                                    209,
+                                    264,
+                                    112,
+                                    333
+                                ],
+                                "text": "SCENE",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            258,
+                            196,
+                            330,
+                            145,
+                            346,
+                            168,
+                            273,
+                            219
+                        ],
+                        "text": "TAKE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    269,
+                                    188,
+                                    329,
+                                    146,
+                                    345,
+                                    170,
+                                    285,
+                                    211
+                                ],
+                                "text": "TAKE",
+                                "confidence": 0.952
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            413,
+                            90,
+                            472,
+                            49,
+                            486,
+                            72,
+                            427,
+                            111
+                        ],
+                        "text": "ROLL",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    413,
+                                    89,
+                                    472,
+                                    49,
+                                    487,
+                                    71,
+                                    428,
+                                    111
+                                ],
+                                "text": "ROLL",
+                                "confidence": 0.958
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            175,
+                            428,
+                            234,
+                            384,
+                            249,
+                            404,
+                            190,
+                            449
+                        ],
+                        "text": "DATE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    177,
+                                    428,
+                                    233,
+                                    386,
+                                    247,
+                                    406,
+                                    190,
+                                    448
+                                ],
+                                "text": "DATE",
+                                "confidence": 0.916
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            463,
+                            214,
+                            544,
+                            150,
+                            562,
+                            172,
+                            481,
+                            236
+                        ],
+                        "text": "SOUND",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    464,
+                                    214,
+                                    543,
+                                    152,
+                                    560,
+                                    174,
+                                    482,
+                                    237
+                                ],
+                                "text": "SOUND",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            218,
+                            475,
+                            340,
+                            379,
+                            354,
+                            397,
+                            231,
+                            494
+                        ],
+                        "text": "PROD. CO.",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    220,
+                                    474,
+                                    299,
+                                    412,
+                                    312,
+                                    431,
+                                    234,
+                                    493
+                                ],
+                                "text": "PROD.",
+                                "confidence": 0.905
+                            },
+                            {
+                                "boundingBox": [
+                                    303,
+                                    409,
+                                    340,
+                                    380,
+                                    354,
+                                    398,
+                                    317,
+                                    427
+                                ],
+                                "text": "CO.",
+                                "confidence": 0.958
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            383,
+                            355,
+                            443,
+                            303,
+                            460,
+                            324,
+                            401,
+                            377
+                        ],
+                        "text": "SHOT",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    384,
+                                    354,
+                                    441,
+                                    304,
+                                    459,
+                                    325,
+                                    402,
+                                    375
+                                ],
+                                "text": "SHOT",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            274,
+                            509,
+                            384,
+                            422,
+                            399,
+                            441,
+                            289,
+                            528
+                        ],
+                        "text": "DIRECTOR",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    274,
+                                    510,
+                                    381,
+                                    425,
+                                    395,
+                                    446,
+                                    289,
+                                    528
+                                ],
+                                "text": "DIRECTOR",
+                                "confidence": 0.252
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            376,
+                            502,
+                            458,
+                            434,
+                            473,
+                            452,
+                            391,
+                            521
+                        ],
+                        "text": "RAMAN",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    378,
+                                    501,
+                                    456,
+                                    437,
+                                    470,
+                                    457,
+                                    393,
+                                    520
+                                ],
+                                "text": "RAMAN",
+                                "confidence": 0.959
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "pageResults": [
+            {
+                "page": 1,
+                "tables": []
+            }
+        ]
+    }
+}

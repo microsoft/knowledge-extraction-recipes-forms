@@ -1,0 +1,34 @@
+{
+    "fields": [
+        {
+            "fieldKey": "roll",
+            "fieldType": "string",
+            "fieldFormat": "no-whitespaces"
+        },
+        {
+            "fieldKey": "scene",
+            "fieldType": "string",
+            "fieldFormat": "no-whitespaces"
+        },
+        {
+            "fieldKey": "take",
+            "fieldType": "integer",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": "title",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": "director",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        },
+        {
+            "fieldKey": "camera",
+            "fieldType": "string",
+            "fieldFormat": "not-specified"
+        }
+    ]
+}

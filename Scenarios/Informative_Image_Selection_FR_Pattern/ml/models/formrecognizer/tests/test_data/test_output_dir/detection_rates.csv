@@ -1,0 +1,4 @@
+video,scene_detection_rate,take_detection_rate
+video1,0.3333333333333333,0.0
+video2,0.25,0.0
+video3,0.75,0.75
