@@ -2,7 +2,7 @@
 
 ## Introduction ##
 
-There are instances in which customers may want to make use of the Form Recognizer to extract metadata from items like clapperboards, receipts and more. However, in some of these scenarios, a lot of redundant data points may end up being fed into the Form Recognizer service, which will essentially increase costs incurred by utilzing the service as well as increase the amount of time spent on computing results. Here are two example scenarios:
+There are instances in which customers may want to make use of the Form Recognizer to extract metadata from items like clapperboards, receipts and more. However, in some of these scenarios, a lot of redundant data points may end up being fed into the Form Recognizer service. This redundant data may increase costs and time spent on computing results from the Form Recognizer service. Here are two example scenarios:
 
 ### Scenario 1: Filming a movie scene with multiple instances of a clapperboard ###
 
@@ -22,13 +22,13 @@ Assuming a set of image frames are extracted from the raw video footage, one may
 - The still clapperboard image, where the clapperboard is held in front of the camera frame
 - The blurry clapperboard image, where the clapperboard is being taken out of the camera frame
 
-Logically, for this single scene or action event, it would make sense to feed in all of the images to the Form Recognizer for knowledge extraction purposes. However, given that multiple instances of clapperboard images that contain very similar data are being fed into the Form Recognizer service, there is the high likelihood that a bunch of duplicate results will be produced. We can also infer that extremely blurry images will offer very little meaninguful information (if any at all) given that the OCR technology will have difficulties predicting text. At this point, it will feel like redundant data points are being fed into the service. Furthermore, this solution may not scale efficiently; a single movie scene could contain hundreds of action events with thousands of clapperboard images (assuming we have 3-5 clapperboard images for each action event). This becomes more challenging when the solution is to be applied to hundreds, if not thousands of movies or video files.
+Logically, for this single scene or action event, it would make sense to feed in all of the images to the Form Recognizer for knowledge extraction purposes. However, given that multiple instances of clapperboard images that contain very similar data are being fed into the Form Recognizer service, there is the high likelihood that a bunch of duplicate results will be produced. We can also infer that extremely blurry images will offer very little meaningful information (if any at all) given that the OCR technology will have difficulties predicting text. At this point, it will feel like redundant data points are being fed into the service. Furthermore, this solution may not scale efficiently; a single movie scene could contain hundreds of action events with thousands of clapperboard images (assuming we have 3-5 clapperboard images for each action event). This becomes more challenging when the solution is to be applied to hundreds, if not thousands of movies or video files.
 
-In situations such as this, it may be meaningful to select the most "informative" image that contains the most metadata that can be extracted by the Form Recognizer service for each action event. By utilzing this approach we ensure that only one clapperboard image is selected for each action event, thus, reducing the time and cost spent on performing predictions and computing results.
+In situations such as this, it may be meaningful to select the most "informative" image that contains the most metadata that can be extracted by the Form Recognizer service for each action event. By utilizing this approach we ensure that only one clapperboard image is selected for each action event, thus, reducing the time and cost spent on performing predictions and computing results.
 
 ## Proposed Solution ##
 
-The proposed solution involves utilizing an OCR service (Read API) and a character-level frequncy scoring function to idenfity and select the most "informative" image in an action event. The idea is that the image with the most predictable text will have the highest character count. Thus, the image with the highest character count will be identified as the most “informative”.  From here, the selected set of most "informative" images will be fed into the Form Recognizer service.
+The proposed solution involves utilizing an OCR service (Read API) and a character-level frequency scoring function to identify and select the most "informative" image in an action event. The idea is that the image with the most predictable text will have the highest character count. Thus, the image with the highest character count will be identified as the most “informative”.  From here, the selected set of most "informative" images will be fed into the Form Recognizer service.
 
 Given that the Read API computes results much faster than the Form Recognizer service and costs much less to run (costs for computing 1000 images with the Read API is $2.50 vs $50 for the custom Form Recognizer service), it's a very useful tool that can be used to perform this preprocessing step. Furthermore, given that the Form Recognizer utilizes the same OCR technology that the Read API makes use of under the hood, it is reasonable to assume the most "informative" image selected for each action event will yield the best results for the Form Recognizer knowledge extraction step.
 
@@ -38,7 +38,7 @@ Given that the Read API computes results much faster than the Form Recognizer se
 
 Initially, we make use of a Training Pipeline to train a custom Form Recognizer model to detect and extract metadata from clapperboard images, as the default service may not perform well on this type of data. The Training pipeline consists of the following steps:
 
-- A Train step - Train a Custom From Recognizer model
+- A Train Step - Train a Custom From Recognizer model
 - An Evaluation Step - Evaluate model performance on a test dataset
 - A Register Step - Register the Trained model to the Azure Machine Learning workspace
 
@@ -70,7 +70,7 @@ With these results, the model is telling us that it couldn't predict anything fo
 
 By viewing the results, we can tell that:
 
-- "Roll" elements are alphanumeric. They start wit a letter and end with a digit.
+- "Roll" elements are alphanumeric. They start with a letter and end with a digit.
 - "Scene" elements are alphanumeric. They start with a digit and end with a letter.
 - "Take" elements are simply numerical values.
 
@@ -78,7 +78,7 @@ With these rules, we can generate a rule-based method that "checks" if an elemen
 
 Check if an element is empty (no prediction was made by the model for the associated class).
 If an element is empty, check for other non-empty fields to see if something that looks similar to the element was identifed.
-If the element is identied in another non-empty field, swap the element over to its corresponding field.
+If the element is identified in another non-empty field, swap the element over to its corresponding field.
 
 We only perform checks and swaps on empty fields as we still want to rely on the predictions made by the model as much as possible. With the postprocessing step, the following table should be generated:
 

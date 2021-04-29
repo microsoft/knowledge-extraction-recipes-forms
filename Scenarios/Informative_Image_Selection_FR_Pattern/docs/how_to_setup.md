@@ -20,13 +20,13 @@ In order to train a custom Form Recognizer service, the following assets are nee
 - A `labels.json` file
 - An `ocr.json` file
 
-Currently, a set of asset files used to train the Custom Form Recognizer service can be found under the `data/clapperboard_asset_files` directory. This directory contains the training images as well as the label and OCR files generated for each image using the sample labeling tool. There are also just the plain set of clapperboard images used for training in the `images/train/clapperboard` directory in the event that you wish to define a different set of labels. Feel free to use a completely different dataset! Just make sure the asset files required for training on that new dataset are provisioned using the sample labeling tool and uploaded to a blob storage container.
+Currently, a set of asset files used to train the Custom Form Recognizer service can be found under the [data/clapperboard_asset_files](../data/clapperboard_asset_files) directory. This directory contains the training images as well as the label and OCR files generated for each image using the sample labeling tool. There are also just the plain set of clapperboard images used for training in the [images/train/clapperboard](../data/images/train/clapperboard) directory in the event that you wish to define a different set of labels. Feel free to use a completely different dataset! Just make sure the asset files required for training on that new dataset are provisioned using the sample labeling tool and uploaded to a blob storage container.
 
 Once the dataset has been uploaded to a blob storage service, a SAS URI will be required to train the Form Recognizer model (this is so that the model can access the dataset that has been created). A storage SAS URI can be created through the Azure portal or through Azure Storage Explorer. For more information regarding the sample labeling tool and how SAS URI's are required to train a Form Recognizer service, refer to [this link.](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/label-tool?tabs=v2-1)
 
 ## Step 2: Setup an Azure Machine Learning Workspace ##
 
-Make sure to set up an Azure Machine Learning subscription through the Azure portal. Once this subscription has been set up you should be able to launch the Azure Machine Learning workspace. Before you launch the AML workspace, make sure to download the `config.json` file from the Azure portal. Store the `config.json` file in the `demo` directory where the notebooks are located. This `config.json` file will be used for authentication purposes when you attempt to connect to the AML workspace.
+Make sure to set up an Azure Machine Learning subscription through the Azure portal. Once this subscription has been set up you should be able to launch the Azure Machine Learning workspace. Before you launch the AML workspace, make sure to download the `config.json` file from the Azure portal. Store the `config.json` file in the [demo](../demo) directory where the notebooks are located. This `config.json` file will be used for authentication purposes when you attempt to connect to the AML workspace.
 
 Now that an AML subscription has been created, we still need to do two things:
 
@@ -66,13 +66,13 @@ In order to successfully run any experiments, both services need to be provision
 
 ## Step 4: Add Secrets as Environment Variables ##
 
-Now that everything is in place, we simply need to set up our environment variables in order to run the sample notebooks. In the `demo` directory the following notebooks are available:
+Now that everything is in place, we simply need to set up our environment variables in order to run the sample notebooks. In the [demo](../demo) directory the following notebooks are available:
 
 - Form Recognizer Training - Run the Form Recognizer Training pipeline
 - Form Recognizer Scoring - Run the Form Recognizer Scoring pipeline
 
 In order to run these notebooks, we need a `.env` file and a `config.json` (downloaded from step #2) file.
-A `config.example.json` file is provided in the notebook directory. An actual `config.json` file can be downloaded directly from the Azure portal when you access the Azure Machine learning service. A `.env.example` file is also provided. With this template file, all the keys for the secrets necessary for running the notebooks are defined; they just need to be filled in with their appropriate values. Once the values have been filled in, rename the `.env.example` to a `.env` file and you should be able to run the notebooks without any issues. Here are the definitions for each of the required secrets:
+A [config.example.json](../demo/config.example.json) file is provided in the notebook directory. An actual `config.json` file can be downloaded directly from the Azure portal when you access the Azure Machine learning service. A [.env.example](../demo/.env.example) file is also provided. With this template file, all the keys for the secrets necessary for running the notebooks are defined; they just need to be filled in with their appropriate values. Once the values have been filled in, rename the [.env.example](../demo/.env.example) to a `.env` file and you should be able to run the notebooks without any issues. Here are the definitions for each of the required secrets:
 
 - AML_CLUSTER_CPU_SKU: SKU for the cluster VMs should be provided here (Virtual Machine size)
 - AML_CLUSTER_NAME: a name of the cluster (16 symbols max)

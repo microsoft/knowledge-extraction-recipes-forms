@@ -141,6 +141,7 @@ This section contains some documented common scenarios
 | [Document Extraction detailed example using JFK Files](Scenarios/Document_Extraction_JFK_Files) | Sample extraction for Tables using Form Recognizer
 | [Dealing with multiple languages](Scenarios/Multiple_Languages/README.md) | Illustrates a few approaches with dealing with multiple languages
 | [Custom extraction from Japanese forms](Scenarios/Custom_Extraction_Japanese/README.md) | Illustrates a an approach to custom extraction from Japanese forms
+| [Informative Image Selection using OCR with Form Recognizer Extraction](Scenarios/Informative_Image_Selection_FR_Pattern/README.md) | Illustrates an approach to selecting the most "informative" image from a group of similar images before extracting data with the Form Recognizer
 
 ## Azure Services used in this repository
 
@@ -265,6 +266,7 @@ used in the code. Introduction and/or reference of those will be provided in the
     <td align="center"><a href="https://github.com/evamok"><img src="https://avatars.githubusercontent.com/u/66468410?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Eva Mok</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/mover333"><img src="https://avatars.githubusercontent.com/u/55155635?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Mitchell Overfield</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/alkofahi"><img src="https://avatars.githubusercontent.com/u/58956796?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Jafar Al-Kofahi</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/dafatade"><img src="https://avatars.githubusercontent.com/u/82416258?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Fatade</b></sub></a><br /></td>
   </tr>
 </table>
 
