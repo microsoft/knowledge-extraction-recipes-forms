@@ -1,0 +1,515 @@
+{
+    "status": "succeeded",
+    "createdDateTime": "2021-03-01T19:19:44Z",
+    "lastUpdatedDateTime": "2021-03-01T19:19:45Z",
+    "analyzeResult": {
+        "version": "2.0.0",
+        "readResults": [
+            {
+                "page": 1,
+                "angle": 5.5166,
+                "width": 598,
+                "height": 800,
+                "unit": "pixel",
+                "language": "en",
+                "lines": [
+                    {
+                        "boundingBox": [
+                            44,
+                            282,
+                            469,
+                            324,
+                            466,
+                            355,
+                            42,
+                            315
+                        ],
+                        "text": "FRIDAY NIGHT+SATURDAY MORN",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    48,
+                                    283,
+                                    143,
+                                    293,
+                                    140,
+                                    325,
+                                    45,
+                                    315
+                                ],
+                                "text": "FRIDAY",
+                                "confidence": 0.939
+                            },
+                            {
+                                "boundingBox": [
+                                    149,
+                                    293,
+                                    381,
+                                    317,
+                                    378,
+                                    347,
+                                    147,
+                                    326
+                                ],
+                                "text": "NIGHT+SATURDAY",
+                                "confidence": 0.487
+                            },
+                            {
+                                "boundingBox": [
+                                    388,
+                                    317,
+                                    464,
+                                    325,
+                                    461,
+                                    354,
+                                    385,
+                                    348
+                                ],
+                                "text": "MORN",
+                                "confidence": 0.491
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            31,
+                            328,
+                            73,
+                            333,
+                            71,
+                            349,
+                            29,
+                            343
+                        ],
+                        "text": "DIR.",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    32,
+                                    328,
+                                    72,
+                                    333,
+                                    70,
+                                    349,
+                                    29,
+                                    343
+                                ],
+                                "text": "DIR.",
+                                "confidence": 0.44
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            80,
+                            333,
+                            234,
+                            347,
+                            231,
+                            378,
+                            77,
+                            364
+                        ],
+                        "text": "N. ROLLAND",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    81,
+                                    334,
+                                    107,
+                                    336,
+                                    103,
+                                    367,
+                                    77,
+                                    365
+                                ],
+                                "text": "N.",
+                                "confidence": 0.919
+                            },
+                            {
+                                "boundingBox": [
+                                    113,
+                                    337,
+                                    235,
+                                    348,
+                                    232,
+                                    379,
+                                    109,
+                                    368
+                                ],
+                                "text": "ROLLAND",
+                                "confidence": 0.957
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            262,
+                            350,
+                            319,
+                            355,
+                            317,
+                            374,
+                            261,
+                            367
+                        ],
+                        "text": "CAM:",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    264,
+                                    350,
+                                    319,
+                                    356,
+                                    318,
+                                    374,
+                                    263,
+                                    368
+                                ],
+                                "text": "CAM:",
+                                "confidence": 0.955
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            328,
+                            353,
+                            448,
+                            365,
+                            444,
+                            399,
+                            326,
+                            388
+                        ],
+                        "text": "S.COOK",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    330,
+                                    354,
+                                    442,
+                                    365,
+                                    439,
+                                    399,
+                                    327,
+                                    388
+                                ],
+                                "text": "S.COOK",
+                                "confidence": 0.84
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            26,
+                            368,
+                            87,
+                            371,
+                            86,
+                            389,
+                            25,
+                            386
+                        ],
+                        "text": "ROLL #",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    27,
+                                    368,
+                                    68,
+                                    370,
+                                    67,
+                                    389,
+                                    26,
+                                    387
+                                ],
+                                "text": "ROLL",
+                                "confidence": 0.849
+                            },
+                            {
+                                "boundingBox": [
+                                    72,
+                                    370,
+                                    84,
+                                    371,
+                                    83,
+                                    390,
+                                    71,
+                                    389
+                                ],
+                                "text": "#",
+                                "confidence": 0.832
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            181,
+                            384,
+                            247,
+                            390,
+                            245,
+                            407,
+                            179,
+                            401
+                        ],
+                        "text": "SLATE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    182,
+                                    385,
+                                    246,
+                                    390,
+                                    245,
+                                    408,
+                                    180,
+                                    402
+                                ],
+                                "text": "SLATE",
+                                "confidence": 0.882
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            335,
+                            399,
+                            394,
+                            404,
+                            393,
+                            422,
+                            333,
+                            417
+                        ],
+                        "text": "TAKE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    338,
+                                    400,
+                                    394,
+                                    404,
+                                    392,
+                                    422,
+                                    336,
+                                    418
+                                ],
+                                "text": "TAKE",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            73,
+                            405,
+                            424,
+                            424,
+                            416,
+                            519,
+                            66,
+                            488
+                        ],
+                        "text": "2 5E 2",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    73,
+                                    405,
+                                    123,
+                                    405,
+                                    116,
+                                    492,
+                                    66,
+                                    486
+                                ],
+                                "text": "2",
+                                "confidence": 0.894
+                            },
+                            {
+                                "boundingBox": [
+                                    192,
+                                    406,
+                                    303,
+                                    414,
+                                    294,
+                                    510,
+                                    184,
+                                    500
+                                ],
+                                "text": "5E",
+                                "confidence": 0.845
+                            },
+                            {
+                                "boundingBox": [
+                                    371,
+                                    424,
+                                    421,
+                                    432,
+                                    411,
+                                    519,
+                                    362,
+                                    516
+                                ],
+                                "text": "2",
+                                "confidence": 0.86
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            389,
+                            540,
+                            474,
+                            551,
+                            473,
+                            563,
+                            388,
+                            552
+                        ],
+                        "text": "PANAVISION",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    393,
+                                    541,
+                                    473,
+                                    552,
+                                    471,
+                                    563,
+                                    391,
+                                    553
+                                ],
+                                "text": "PANAVISION",
+                                "confidence": 0.727
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            7,
+                            520,
+                            62,
+                            527,
+                            60,
+                            543,
+                            6,
+                            536
+                        ],
+                        "text": "DATE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    8,
+                                    520,
+                                    58,
+                                    527,
+                                    57,
+                                    543,
+                                    6,
+                                    537
+                                ],
+                                "text": "DATE",
+                                "confidence": 0.762
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            74,
+                            532,
+                            196,
+                            544,
+                            192,
+                            587,
+                            69,
+                            575
+                        ],
+                        "text": "15/5/ 11",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    73,
+                                    532,
+                                    154,
+                                    540,
+                                    150,
+                                    583,
+                                    69,
+                                    575
+                                ],
+                                "text": "15/5/",
+                                "confidence": 0.321
+                            },
+                            {
+                                "boundingBox": [
+                                    163,
+                                    541,
+                                    193,
+                                    544,
+                                    189,
+                                    586,
+                                    159,
+                                    583
+                                ],
+                                "text": "11",
+                                "confidence": 0.852
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            251,
+                            557,
+                            467,
+                            574,
+                            464,
+                            611,
+                            248,
+                            593
+                        ],
+                        "text": "NIGHT INT",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    253,
+                                    558,
+                                    370,
+                                    567,
+                                    366,
+                                    604,
+                                    250,
+                                    591
+                                ],
+                                "text": "NIGHT",
+                                "confidence": 0.959
+                            },
+                            {
+                                "boundingBox": [
+                                    383,
+                                    568,
+                                    461,
+                                    574,
+                                    457,
+                                    611,
+                                    379,
+                                    605
+                                ],
+                                "text": "INT",
+                                "confidence": 0.945
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "pageResults": [
+            {
+                "page": 1,
+                "tables": []
+            }
+        ]
+    }
+}

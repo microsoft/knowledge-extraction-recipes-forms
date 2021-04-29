@@ -1,0 +1,738 @@
+{
+    "status": "succeeded",
+    "createdDateTime": "2021-03-01T19:19:39Z",
+    "lastUpdatedDateTime": "2021-03-01T19:19:39Z",
+    "analyzeResult": {
+        "version": "2.0.0",
+        "readResults": [
+            {
+                "page": 1,
+                "angle": -3.5396,
+                "width": 800,
+                "height": 600,
+                "unit": "pixel",
+                "language": "en",
+                "lines": [
+                    {
+                        "boundingBox": [
+                            1,
+                            189,
+                            27,
+                            187,
+                            27,
+                            202,
+                            2,
+                            204
+                        ],
+                        "text": "GE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    3,
+                                    189,
+                                    25,
+                                    187,
+                                    26,
+                                    202,
+                                    4,
+                                    204
+                                ],
+                                "text": "GE",
+                                "confidence": 0.762
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            198,
+                            198,
+                            253,
+                            195,
+                            254,
+                            212,
+                            199,
+                            216
+                        ],
+                        "text": "PROD",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    200,
+                                    198,
+                                    249,
+                                    195,
+                                    250,
+                                    213,
+                                    201,
+                                    216
+                                ],
+                                "text": "PROD",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            267,
+                            178,
+                            458,
+                            163,
+                            461,
+                            205,
+                            269,
+                            220
+                        ],
+                        "text": "\"THE SHINING",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    268,
+                                    178,
+                                    323,
+                                    176,
+                                    326,
+                                    216,
+                                    270,
+                                    221
+                                ],
+                                "text": "\"THE",
+                                "confidence": 0.849
+                            },
+                            {
+                                "boundingBox": [
+                                    332,
+                                    175,
+                                    455,
+                                    163,
+                                    460,
+                                    206,
+                                    335,
+                                    215
+                                ],
+                                "text": "SHINING",
+                                "confidence": 0.958
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            195,
+                            226,
+                            260,
+                            223,
+                            260,
+                            236,
+                            196,
+                            239
+                        ],
+                        "text": "DIRECTOR",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    196,
+                                    226,
+                                    260,
+                                    223,
+                                    260,
+                                    236,
+                                    196,
+                                    239
+                                ],
+                                "text": "DIRECTOR",
+                                "confidence": 0.934
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            419,
+                            210,
+                            516,
+                            204,
+                            517,
+                            219,
+                            420,
+                            225
+                        ],
+                        "text": "CAMERAMAN.",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    420,
+                                    210,
+                                    515,
+                                    205,
+                                    516,
+                                    218,
+                                    421,
+                                    226
+                                ],
+                                "text": "CAMERAMAN.",
+                                "confidence": 0.906
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            3,
+                            248,
+                            46,
+                            246,
+                            46,
+                            262,
+                            3,
+                            264
+                        ],
+                        "text": "COTT",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    4,
+                                    248,
+                                    45,
+                                    246,
+                                    46,
+                                    262,
+                                    5,
+                                    264
+                                ],
+                                "text": "COTT",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            187,
+                            242,
+                            617,
+                            217,
+                            619,
+                            257,
+                            188,
+                            280
+                        ],
+                        "text": "STANLEY KUBRICK JOHNALCOTT",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    191,
+                                    245,
+                                    291,
+                                    239,
+                                    293,
+                                    276,
+                                    192,
+                                    280
+                                ],
+                                "text": "STANLEY",
+                                "confidence": 0.909
+                            },
+                            {
+                                "boundingBox": [
+                                    298,
+                                    238,
+                                    415,
+                                    231,
+                                    416,
+                                    270,
+                                    300,
+                                    276
+                                ],
+                                "text": "KUBRICK",
+                                "confidence": 0.909
+                            },
+                            {
+                                "boundingBox": [
+                                    426,
+                                    230,
+                                    617,
+                                    218,
+                                    619,
+                                    258,
+                                    428,
+                                    269
+                                ],
+                                "text": "JOHNALCOTT",
+                                "confidence": 0.856
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            193,
+                            290,
+                            257,
+                            289,
+                            257,
+                            308,
+                            193,
+                            309
+                        ],
+                        "text": "SLATE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    195,
+                                    290,
+                                    254,
+                                    290,
+                                    255,
+                                    309,
+                                    195,
+                                    310
+                                ],
+                                "text": "SLATE",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            0,
+                            329,
+                            45,
+                            305,
+                            55,
+                            324,
+                            1,
+                            348
+                        ],
+                        "text": "ER + DAD",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    0,
+                                    329,
+                                    7,
+                                    323,
+                                    16,
+                                    342,
+                                    3,
+                                    349
+                                ],
+                                "text": "ER",
+                                "confidence": 0.694
+                            },
+                            {
+                                "boundingBox": [
+                                    11,
+                                    321,
+                                    16,
+                                    318,
+                                    26,
+                                    338,
+                                    20,
+                                    340
+                                ],
+                                "text": "+",
+                                "confidence": 0.865
+                            },
+                            {
+                                "boundingBox": [
+                                    20,
+                                    316,
+                                    44,
+                                    305,
+                                    54,
+                                    324,
+                                    30,
+                                    336
+                                ],
+                                "text": "DAD",
+                                "confidence": 0.849
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            447,
+                            280,
+                            510,
+                            277,
+                            510,
+                            298,
+                            448,
+                            301
+                        ],
+                        "text": "TAKE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    452,
+                                    280,
+                                    510,
+                                    277,
+                                    511,
+                                    298,
+                                    453,
+                                    301
+                                ],
+                                "text": "TAKE",
+                                "confidence": 0.952
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            8,
+                            351,
+                            48,
+                            335,
+                            57,
+                            354,
+                            16,
+                            368
+                        ],
+                        "text": "ALL MY",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    10,
+                                    349,
+                                    25,
+                                    343,
+                                    32,
+                                    362,
+                                    17,
+                                    368
+                                ],
+                                "text": "ALL",
+                                "confidence": 0.95
+                            },
+                            {
+                                "boundingBox": [
+                                    29,
+                                    342,
+                                    48,
+                                    335,
+                                    55,
+                                    354,
+                                    36,
+                                    361
+                                ],
+                                "text": "MY",
+                                "confidence": 0.111
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            0,
+                            373,
+                            32,
+                            358,
+                            41,
+                            375,
+                            6,
+                            392
+                        ],
+                        "text": "LOVE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    0,
+                                    374,
+                                    31,
+                                    358,
+                                    39,
+                                    376,
+                                    6,
+                                    392
+                                ],
+                                "text": "LOVE",
+                                "confidence": 0.727
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            0,
+                            399,
+                            48,
+                            376,
+                            57,
+                            397,
+                            7,
+                            420
+                        ],
+                        "text": "TANLEY",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    0,
+                                    400,
+                                    46,
+                                    376,
+                                    56,
+                                    397,
+                                    6,
+                                    420
+                                ],
+                                "text": "TANLEY",
+                                "confidence": 0.762
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            236,
+                            327,
+                            319,
+                            332,
+                            314,
+                            393,
+                            231,
+                            389
+                        ],
+                        "text": "875",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    234,
+                                    327,
+                                    317,
+                                    331,
+                                    313,
+                                    393,
+                                    231,
+                                    388
+                                ],
+                                "text": "875",
+                                "confidence": 0.841
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            195,
+                            440,
+                            489,
+                            451,
+                            487,
+                            501,
+                            193,
+                            492
+                        ],
+                        "text": "6. OCTOBER 1979",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    196,
+                                    440,
+                                    221,
+                                    441,
+                                    219,
+                                    493,
+                                    193,
+                                    491
+                                ],
+                                "text": "6.",
+                                "confidence": 0.727
+                            },
+                            {
+                                "boundingBox": [
+                                    231,
+                                    442,
+                                    389,
+                                    448,
+                                    388,
+                                    500,
+                                    229,
+                                    494
+                                ],
+                                "text": "OCTOBER",
+                                "confidence": 0.638
+                            },
+                            {
+                                "boundingBox": [
+                                    409,
+                                    449,
+                                    488,
+                                    452,
+                                    487,
+                                    501,
+                                    408,
+                                    501
+                                ],
+                                "text": "1979",
+                                "confidence": 0.714
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "pageResults": [
+            {
+                "page": 1,
+                "tables": [
+                    {
+                        "rows": 4,
+                        "columns": 2,
+                        "cells": [
+                            {
+                                "rowIndex": 0,
+                                "columnIndex": 0,
+                                "text": "GE",
+                                "boundingBox": [
+                                    0,
+                                    163,
+                                    191,
+                                    163,
+                                    191,
+                                    223,
+                                    0,
+                                    223
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/0/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 0,
+                                "columnIndex": 1,
+                                "text": "PROD \"THE SHINING DIRECTOR CAMERAMAN.",
+                                "boundingBox": [
+                                    191,
+                                    163,
+                                    619,
+                                    163,
+                                    619,
+                                    223,
+                                    191,
+                                    223
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/1/words/0",
+                                    "#/readResults/0/lines/2/words/0",
+                                    "#/readResults/0/lines/2/words/1",
+                                    "#/readResults/0/lines/3/words/0",
+                                    "#/readResults/0/lines/4/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 1,
+                                "columnIndex": 0,
+                                "text": "COTT",
+                                "boundingBox": [
+                                    0,
+                                    223,
+                                    191,
+                                    223,
+                                    191,
+                                    276,
+                                    0,
+                                    276
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/5/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 1,
+                                "columnIndex": 1,
+                                "text": "STANLEY KUBRICK JOHNALCOTT",
+                                "boundingBox": [
+                                    191,
+                                    223,
+                                    619,
+                                    223,
+                                    619,
+                                    276,
+                                    191,
+                                    276
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/6/words/0",
+                                    "#/readResults/0/lines/6/words/1",
+                                    "#/readResults/0/lines/6/words/2"
+                                ]
+                            },
+                            {
+                                "rowIndex": 2,
+                                "columnIndex": 0,
+                                "text": "DAD",
+                                "boundingBox": [
+                                    0,
+                                    276,
+                                    191,
+                                    276,
+                                    191,
+                                    324,
+                                    0,
+                                    324
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/8/words/2"
+                                ]
+                            },
+                            {
+                                "rowIndex": 2,
+                                "columnIndex": 1,
+                                "text": "SLATE TAKE",
+                                "boundingBox": [
+                                    191,
+                                    276,
+                                    619,
+                                    276,
+                                    619,
+                                    324,
+                                    191,
+                                    324
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/7/words/0",
+                                    "#/readResults/0/lines/9/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 3,
+                                "columnIndex": 0,
+                                "text": "ER + ALL MY LOVE TANLEY",
+                                "boundingBox": [
+                                    0,
+                                    324,
+                                    191,
+                                    324,
+                                    191,
+                                    420,
+                                    0,
+                                    420
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/8/words/0",
+                                    "#/readResults/0/lines/8/words/1",
+                                    "#/readResults/0/lines/10/words/0",
+                                    "#/readResults/0/lines/10/words/1",
+                                    "#/readResults/0/lines/11/words/0",
+                                    "#/readResults/0/lines/12/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 3,
+                                "columnIndex": 1,
+                                "text": "875 6. OCTOBER",
+                                "boundingBox": [
+                                    191,
+                                    324,
+                                    619,
+                                    324,
+                                    619,
+                                    420,
+                                    191,
+                                    420
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/13/words/0",
+                                    "#/readResults/0/lines/14/words/0",
+                                    "#/readResults/0/lines/14/words/1"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

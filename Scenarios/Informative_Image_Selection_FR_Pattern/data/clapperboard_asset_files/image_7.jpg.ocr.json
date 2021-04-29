@@ -1,0 +1,699 @@
+{
+    "status": "succeeded",
+    "createdDateTime": "2021-03-01T19:19:47Z",
+    "lastUpdatedDateTime": "2021-03-01T19:19:47Z",
+    "analyzeResult": {
+        "version": "2.0.0",
+        "readResults": [
+            {
+                "page": 1,
+                "angle": 0,
+                "width": 280,
+                "height": 300,
+                "unit": "pixel",
+                "language": "en",
+                "lines": [
+                    {
+                        "boundingBox": [
+                            25,
+                            101,
+                            110,
+                            101,
+                            110,
+                            114,
+                            25,
+                            114
+                        ],
+                        "text": "PRODUCTION",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    26,
+                                    101,
+                                    107,
+                                    101,
+                                    107,
+                                    114,
+                                    26,
+                                    115
+                                ],
+                                "text": "PRODUCTION",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            45,
+                            115,
+                            198,
+                            114,
+                            198,
+                            137,
+                            45,
+                            139
+                        ],
+                        "text": "Jelly Of - The Movie",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    48,
+                                    116,
+                                    70,
+                                    116,
+                                    70,
+                                    140,
+                                    48,
+                                    140
+                                ],
+                                "text": "Jelly",
+                                "confidence": 0.57
+                            },
+                            {
+                                "boundingBox": [
+                                    75,
+                                    116,
+                                    100,
+                                    116,
+                                    100,
+                                    139,
+                                    75,
+                                    140
+                                ],
+                                "text": "Of",
+                                "confidence": 0.422
+                            },
+                            {
+                                "boundingBox": [
+                                    104,
+                                    116,
+                                    117,
+                                    116,
+                                    117,
+                                    139,
+                                    104,
+                                    139
+                                ],
+                                "text": "-",
+                                "confidence": 0.799
+                            },
+                            {
+                                "boundingBox": [
+                                    121,
+                                    116,
+                                    146,
+                                    116,
+                                    147,
+                                    138,
+                                    122,
+                                    139
+                                ],
+                                "text": "The",
+                                "confidence": 0.958
+                            },
+                            {
+                                "boundingBox": [
+                                    151,
+                                    116,
+                                    196,
+                                    114,
+                                    197,
+                                    136,
+                                    151,
+                                    138
+                                ],
+                                "text": "Movie",
+                                "confidence": 0.942
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            24,
+                            146,
+                            92,
+                            147,
+                            92,
+                            160,
+                            24,
+                            159
+                        ],
+                        "text": "DIRECTOR",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    26,
+                                    147,
+                                    88,
+                                    147,
+                                    88,
+                                    160,
+                                    26,
+                                    160
+                                ],
+                                "text": "DIRECTOR",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            168,
+                            146,
+                            203,
+                            146,
+                            203,
+                            159,
+                            168,
+                            159
+                        ],
+                        "text": "DATE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    168,
+                                    146,
+                                    202,
+                                    146,
+                                    202,
+                                    159,
+                                    168,
+                                    159
+                                ],
+                                "text": "DATE",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            29,
+                            162,
+                            142,
+                            162,
+                            142,
+                            188,
+                            29,
+                            189
+                        ],
+                        "text": "Andy Roberts",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    32,
+                                    163,
+                                    70,
+                                    164,
+                                    70,
+                                    188,
+                                    32,
+                                    190
+                                ],
+                                "text": "Andy",
+                                "confidence": 0.816
+                            },
+                            {
+                                "boundingBox": [
+                                    75,
+                                    164,
+                                    141,
+                                    163,
+                                    141,
+                                    187,
+                                    76,
+                                    188
+                                ],
+                                "text": "Roberts",
+                                "confidence": 0.448
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            173,
+                            163,
+                            230,
+                            162,
+                            230,
+                            184,
+                            174,
+                            186
+                        ],
+                        "text": "2003",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    178,
+                                    163,
+                                    228,
+                                    162,
+                                    229,
+                                    185,
+                                    178,
+                                    186
+                                ],
+                                "text": "2003",
+                                "confidence": 0.843
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            24,
+                            193,
+                            70,
+                            193,
+                            70,
+                            206,
+                            24,
+                            206
+                        ],
+                        "text": "SCENE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    26,
+                                    194,
+                                    68,
+                                    194,
+                                    68,
+                                    206,
+                                    26,
+                                    207
+                                ],
+                                "text": "SCENE",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            169,
+                            193,
+                            203,
+                            194,
+                            203,
+                            206,
+                            168,
+                            206
+                        ],
+                        "text": "TAKE",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    170,
+                                    193,
+                                    202,
+                                    193,
+                                    202,
+                                    206,
+                                    170,
+                                    205
+                                ],
+                                "text": "TAKE",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            27,
+                            211,
+                            115,
+                            211,
+                            115,
+                            236,
+                            27,
+                            236
+                        ],
+                        "text": "Logging in",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    28,
+                                    212,
+                                    93,
+                                    211,
+                                    93,
+                                    236,
+                                    28,
+                                    237
+                                ],
+                                "text": "Logging",
+                                "confidence": 0.744
+                            },
+                            {
+                                "boundingBox": [
+                                    98,
+                                    212,
+                                    115,
+                                    212,
+                                    115,
+                                    237,
+                                    98,
+                                    237
+                                ],
+                                "text": "in",
+                                "confidence": 0.885
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            182,
+                            212,
+                            210,
+                            213,
+                            210,
+                            232,
+                            182,
+                            231
+                        ],
+                        "text": "42",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    183,
+                                    212,
+                                    209,
+                                    213,
+                                    209,
+                                    232,
+                                    182,
+                                    231
+                                ],
+                                "text": "42",
+                                "confidence": 0.762
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            25,
+                            243,
+                            81,
+                            242,
+                            81,
+                            255,
+                            25,
+                            256
+                        ],
+                        "text": "CAMERA",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    26,
+                                    243,
+                                    79,
+                                    243,
+                                    79,
+                                    256,
+                                    26,
+                                    256
+                                ],
+                                "text": "CAMERA",
+                                "confidence": 0.959
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            53,
+                            254,
+                            183,
+                            252,
+                            184,
+                            275,
+                            53,
+                            276
+                        ],
+                        "text": "macromedia flash",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    56,
+                                    259,
+                                    141,
+                                    253,
+                                    141,
+                                    275,
+                                    55,
+                                    274
+                                ],
+                                "text": "macromedia",
+                                "confidence": 0.349
+                            },
+                            {
+                                "boundingBox": [
+                                    149,
+                                    253,
+                                    181,
+                                    252,
+                                    180,
+                                    276,
+                                    149,
+                                    275
+                                ],
+                                "text": "flash",
+                                "confidence": 0.252
+                            }
+                        ]
+                    },
+                    {
+                        "boundingBox": [
+                            231,
+                            288,
+                            276,
+                            289,
+                            276,
+                            299,
+                            231,
+                            298
+                        ],
+                        "text": "fodey.com",
+                        "words": [
+                            {
+                                "boundingBox": [
+                                    232,
+                                    288,
+                                    276,
+                                    290,
+                                    276,
+                                    299,
+                                    232,
+                                    299
+                                ],
+                                "text": "fodey.com",
+                                "confidence": 0.905
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "pageResults": [
+            {
+                "page": 1,
+                "tables": [
+                    {
+                        "rows": 6,
+                        "columns": 2,
+                        "cells": [
+                            {
+                                "rowIndex": 0,
+                                "columnIndex": 0,
+                                "columnSpan": 2,
+                                "text": "PRODUCTION Jelly Of - The Movie",
+                                "boundingBox": [
+                                    22,
+                                    62,
+                                    252,
+                                    62,
+                                    252,
+                                    143,
+                                    22,
+                                    143
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/0/words/0",
+                                    "#/readResults/0/lines/1/words/0",
+                                    "#/readResults/0/lines/1/words/1",
+                                    "#/readResults/0/lines/1/words/2",
+                                    "#/readResults/0/lines/1/words/3",
+                                    "#/readResults/0/lines/1/words/4"
+                                ]
+                            },
+                            {
+                                "rowIndex": 1,
+                                "columnIndex": 0,
+                                "text": "DIRECTOR",
+                                "boundingBox": [
+                                    22,
+                                    143,
+                                    166,
+                                    143,
+                                    166,
+                                    161,
+                                    22,
+                                    161
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/2/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 1,
+                                "columnIndex": 1,
+                                "text": "DATE",
+                                "boundingBox": [
+                                    166,
+                                    143,
+                                    252,
+                                    143,
+                                    252,
+                                    161,
+                                    166,
+                                    161
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/3/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 2,
+                                "columnIndex": 0,
+                                "text": "Andy Roberts",
+                                "boundingBox": [
+                                    22,
+                                    161,
+                                    166,
+                                    161,
+                                    166,
+                                    188,
+                                    22,
+                                    188
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/4/words/0",
+                                    "#/readResults/0/lines/4/words/1"
+                                ]
+                            },
+                            {
+                                "rowIndex": 2,
+                                "columnIndex": 1,
+                                "text": "2003",
+                                "boundingBox": [
+                                    166,
+                                    161,
+                                    252,
+                                    161,
+                                    252,
+                                    188,
+                                    166,
+                                    188
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/5/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 3,
+                                "columnIndex": 0,
+                                "text": "SCENE",
+                                "boundingBox": [
+                                    22,
+                                    188,
+                                    166,
+                                    188,
+                                    166,
+                                    209,
+                                    22,
+                                    209
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/6/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 3,
+                                "columnIndex": 1,
+                                "text": "TAKE",
+                                "boundingBox": [
+                                    166,
+                                    188,
+                                    252,
+                                    188,
+                                    252,
+                                    209,
+                                    166,
+                                    209
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/7/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 4,
+                                "columnIndex": 0,
+                                "text": "Logging in",
+                                "boundingBox": [
+                                    22,
+                                    209,
+                                    166,
+                                    209,
+                                    166,
+                                    238,
+                                    22,
+                                    238
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/8/words/0",
+                                    "#/readResults/0/lines/8/words/1"
+                                ]
+                            },
+                            {
+                                "rowIndex": 4,
+                                "columnIndex": 1,
+                                "text": "42",
+                                "boundingBox": [
+                                    166,
+                                    209,
+                                    252,
+                                    209,
+                                    252,
+                                    238,
+                                    166,
+                                    238
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/9/words/0"
+                                ]
+                            },
+                            {
+                                "rowIndex": 5,
+                                "columnIndex": 0,
+                                "columnSpan": 2,
+                                "text": "CAMERA macromedia flash",
+                                "boundingBox": [
+                                    22,
+                                    238,
+                                    252,
+                                    238,
+                                    252,
+                                    282,
+                                    22,
+                                    282
+                                ],
+                                "elements": [
+                                    "#/readResults/0/lines/10/words/0",
+                                    "#/readResults/0/lines/11/words/0",
+                                    "#/readResults/0/lines/11/words/1"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
