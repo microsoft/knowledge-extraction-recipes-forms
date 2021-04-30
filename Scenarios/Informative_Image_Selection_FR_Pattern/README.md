@@ -58,8 +58,8 @@ As mentioned above, the goal of the clapperboard selection step is to identify t
 
 Another potentially useful step, is the postprocessing step. The goal of this step is to improve the results of the Form Recognizer step by utilizing a rules-based approach. As mentioned before, the Form Recognizer relies on the OCR service to predict and extract text from images before key-value pair generation. In some instances, we may work with low resolution images. With these images, pixel quality is fairly poor. In addition to this low pixel quality, the service may resize images under the hood before making predictions. This may result in smaller text and as a result, the OCR service may generate bounding boxes around multiple text elements. Thus, rather than identifying for example 3 text elements as seperate entities, the service may identify them as one single entity. This problem may be better explained with a table:
 
-Filename | Roll | Scene | Take | Title |
---- | --- | --- | --- | --- | --- | ---  
+Filename | Roll | Scene | Take | Title
+--- | --- | --- | --- | ---  
 Image1.jpeg| AA01 | 607B | 3 | Knowledge Extraction Recipes |
 Image2.jpeg| AA03 32C 7 |  |  | Knowledge Extraction Recipes |
 Image3.jpeg|  | BB09 21D | 9 | Knowledge Extraction Recipes |  
@@ -82,8 +82,8 @@ If the element is identified in another non-empty field, swap the element over t
 
 We only perform checks and swaps on empty fields as we still want to rely on the predictions made by the model as much as possible. With the postprocessing step, the following table should be generated:
 
-Filename | Roll | Scene | Take | Title |
---- | --- | --- | --- | --- | --- | ---  
+Filename | Roll | Scene | Take | Title
+--- | --- | --- | --- | ---  
 Image1.jpeg| AA01 | 607B | 3 | Knowledge Extraction Recipes |
 Image2.jpeg| AA03 | 32C | 7 | Knowledge Extraction Recipes |
 Image3.jpeg| BB09 |  21D | 9 | Knowledge Extraction Recipes |
