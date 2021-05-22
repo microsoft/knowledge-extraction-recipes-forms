@@ -10,5 +10,11 @@ There are several components and dependencies that comprise the solution and nee
 <h3>SharePoint Configuration</h3>
 1.  Create the Invoice content type in the SharePoint admin center or at the site collection level using the following schema.
 
+<br/>
+
 
  ![SharePoint Schema](/PowerApps/Invoice%20Automation/images/1-InvoicesContentType.png)
+
+2. Create the InvoiceLineItems content type in the SharePoint admin center or at the site collection level.
+
+![SharePoint InvoiceLinesSchema](/)
