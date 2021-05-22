@@ -8,12 +8,7 @@ For an overview of the solution please refer to this [blog article]("https://pow
 There are several components and dependencies that comprise the solution and need to be configured to successfully deploy it in your environnement.
 
 <h3>SharePoint Configuration</h3>
-<ol>
-    <li>
-        Create the Invoice content type in the SharePoint admin center or at the site collection level using the following schema.       
-   
-    </li>
-    
-</ol>
+1.  Create the Invoice content type in the SharePoint admin center or at the site collection level using the following schema.
+
 
  ![SharePoint Schema](/PowerApps/Invoice%20Automation/images/1-InvoicesContentType.png)
