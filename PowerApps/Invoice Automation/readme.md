@@ -50,20 +50,24 @@ Deploy the Azure Function
         <li>The azure function can be deployed using the below PowerShell Script.
 
         $location = "East US"
-		$resourceGroupName = "InvoiceAutomation"
-		$storageAccountName = "invoicenautomationrg"
-		$functionName = "InvoiceLineItems"
-		$sourceZipPath = "<PathToZipFile>\InvoiceLineItems.zip"
-		
-		Install-Module Az.Websites -AllowClobber
-		Import-Module Az.Websites
-		Connect-AzAccount
-		
-		New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -Location $location -SkuName "Standard_LRS"
-		
-		New-AzFunctionApp -Name $functionName -StorageAccountName $storageAccountName -Location $location -ResourceGroupName $resourceGroupName -FunctionsVersion 2 -Runtime DotNet
-		$app = Get-AzWebApp -ResourceGroupName $resourceGroupName -Name $functionName
-		Publish-AzWebapp -ResourceGroupName $resourceGroupName -Name $functionName -ArchivePath $sourceZipPath
+        $resourceGroupName = "InvoiceAutomation"
+        $storageAccountName = "invoicenautomationrg"
+        $functionName = "InvoiceLineItems"
+        $sourceZipPath = "<SourceZipPath>\InvoiceLineItems.zip"
+
+        #Install-Module AzureRM -AllowClobber
+        #Import-Module AzureRM
+
+        #Then issue command:
+
+
+        Connect-AzAccount
+
+        New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -Location $location -SkuName "Standard_LRS"
+        New-AzFunctionApp -Name $functionName -StorageAccountName $storageAccountName -Location $location -ResourceGroupName $resourceGroupName -FunctionsVersion 2 -Runtime DotNet
+
+        Publish-AzWebapp -ResourceGroupName $resourceGroupName -Name $functionName -ArchivePath $sourceZipPath
+
 </li>
 </ol>
 </li>
