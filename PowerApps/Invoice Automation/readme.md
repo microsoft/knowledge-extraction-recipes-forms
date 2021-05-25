@@ -1,13 +1,18 @@
-<h1>Invoice Automation using the Power Platform</h1>
+# Invoice Automation using the Power Platform
+
+## Overview
 
 Invoice processing is something that every company does, but many are still doing it manually and is very labor intensive.  Not anymore!  This starter kit is intended to use the new "Process and save information from invoices" flow in Power Automate to automatically capture invoice information, save it to a SharePoint document library.  We’ll then use Cognitive Services to extract the invoice line-item information and save it to a SharePoint List.  Finally, Power Apps will allow you to review and complete the processing so it can be integrated with the accounting LOB application.
 
+
 For an overview of the solution please refer to this [blog article]("https://powerusers.microsoft.com/t5/Power-Automate-Community-Blog/Invoice-Automation-using-the-Power-Platform/ba-p/875628) for details.
 
-<h2>Installation Process</h2>
+## Installation Process
+
 There are several components and dependencies that comprise the solution and need to be configured to successfully deploy it in your environnement.
 
-<h3>SharePoint Configuration</h3>
+## SharePoint Configuration
+
 <ol>
 <li>
 Create the Invoice content type in the SharePoint admin center or at the site collection level using the following schema.
@@ -23,7 +28,8 @@ Create the Invoice content type in the SharePoint admin center or at the site co
 <li>Create the Invoices library and InvoiceLineItems list in a site collection and assign the content types to the respected library/list.</li>
 </ol>
 
-<h3>Azure Configuration</h3>
+## Azure Configuration
+
 <ol>
 <li>Create the Azure Forms Recognition Service
     <ol>
@@ -31,8 +37,6 @@ Create the Invoice content type in the SharePoint admin center or at the site co
         <li>Create a new resource group called "InvoiceAutomation"</li>
         <li>In the new resource group, Add a resource and search for "Form Recognizer"</li>
 
-
-        
 ![Create Form Recognizer Resource](images/3-CreateFormRecognizerResource.png)
         <li>Create the new resource</li>
 ![Create resource](images/4-CreateResource.png)
@@ -62,13 +66,13 @@ Deploy the Azure Function
 
         Publish-AzWebapp -ResourceGroupName $resourceGroupName -Name $functionName -ArchivePath $sourceZipPath
 
-
 </li>
 </ol>
 </li>
 </ol>
 
-<h3>Power Platform Deployment</h3>
+## Power Platform Deployment
+
 <ol>
     <li>Import the solution to PowerApps</li>
     <ol>
@@ -82,7 +86,7 @@ Deploy the Azure Function
     <li>Create a new connection to the SharePoint site collection/list for the Invoices and Invoice Line Items list.</li>
     <li>Navigate to the imported solution "Invoice Processing" and edit each of the Environment variables to your environment:</li>
         <ul>
-            <li>FormsRecognizerURL - In the Azure resource group that was created, choose the InvoiceAutomationFormsRecognizer CognitiveServices type we created above.  In the overview section, copy the Endpoint and use that as the value in the environment variable. (Example:  https://invoiceautomationformrecognizer.cognitiveservices.azure.com/</li>
+            <li>FormsRecognizerURL - In the Azure resource group that was created, choose the InvoiceAutomationFormsRecognizer CognitiveServices type we created above.  In the overview section, copy the Endpoint and use that as the value in the environment variable. (Example:  <https://invoiceautomationformrecognizer.cognitiveservices.azure.com/></li>
 ![Forms Recognizer Environment Variable](images/7-FormsRecognizerURL.png)
 <P><br>
 
@@ -90,16 +94,18 @@ Deploy the Azure Function
 </p>
             <li>Ocp-Apim-Subscription-Key - in the Keys and Endpoints blade copy one of the keys and use it in this environment variable. (Example:  e3b066e2ee454c2ebb198005...)</li>
 
-![Ocp-Apim](images/8-OcpApim.png)          
-            <li>InvoiceLineItemsAzureFunction- The URL from the function app that was created in Azure.  (Example:  https://invoicelineitems.azurewebsites.net/)</li>
+![Ocp-Apim](images/8-OcpApim.png)
+            <li>InvoiceLineItemsAzureFunction- The URL from the function app that was created in Azure.  (Example:  <https://invoicelineitems.azurewebsites.net/>)</li>
 
 ![Line items Azure Function](images/9-InvoiceLineItemsAzureFunction.png)  
-            <li>InvoiceSiteCollection - the site collection in your tenant where the Invoices library was created (format:  /sites/<SiteCollection>)</li>          
+            <li>InvoiceSiteCollection - the site collection in your tenant where the Invoices library was created (format:  /sites/<SiteCollection>)</li>
             <li>SiteCollection - update the connection with the site collection the invoices library was created in.</li>
         </ul>
     </ol>
 </ol>
-<h3>Test the solution</h3>
+
+## Test the solution
+
 Once all the assets have been deployed and the configurations have been applied to your environment you can test the solution by first uploading a document into the Invoices document library and monitoring the Power Automate workflow.  Errors may need to be remediated depending on your environment configuration.
 
 Once this has ran successfully, open the PowerApp and view the document that has been uploaded.
