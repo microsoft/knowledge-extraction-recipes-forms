@@ -111,6 +111,14 @@ in this repository using diverse approaches.
 | Extraction     | [Table Extraction](Scenarios/Table_Extraction_FR/README.md) | Illustrates extracting tables with Form Recognizer
 | Evaluation     | [Scoring](Evaluation/README.md) | Illustrates how to evaluate and score with Form Recognizer
 
+## PowerApps ✨
+
+***NEW*** (▀̿Ĺ̯▀̿ ̿)
+
+| Stage | Scenario | Description |
+| -------- | ----------- | ------|
+| Invoice Automation | [PowerApps](PowerApps/InvoiceAutomation/README.md) | Invoice Automation using the Power Platform
+
 ## Example Pipelines
 
 The [Pipelines](Pipelines/README.md) section contains some example patterns and pipelines for Knowledge Extraction using Azure Services.
@@ -267,7 +275,6 @@ used in the code. Introduction and/or reference of those will be provided in the
     <td align="center"><a href="https://github.com/mover333"><img src="https://avatars.githubusercontent.com/u/55155635?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Mitchell Overfield</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/alkofahi"><img src="https://avatars.githubusercontent.com/u/58956796?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Jafar Al-Kofahi</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/dafatade"><img src="https://avatars.githubusercontent.com/u/82416258?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Fatade</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/spucelik"><img src="https://avatars.githubusercontent.com/u/25673985" width="100px;" alt=""/><br /><sub><b>Steve Pucelik </b></sub></a><br /></td>
   </tr>
 </table>
 
