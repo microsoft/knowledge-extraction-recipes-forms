@@ -147,7 +147,7 @@ Create the Invoice content type in the SharePoint admin center or at the site co
 
 ![SharePoint Schema](../Invoice%20Automation/images/1-InvoicesContentType.png)
 
-Create the InvoiceLineItems content type in the SharePoint admin center or at the site collection level.
+Create the InvoiceLineItems content type in the SharePoint admin center or at the site collection level. 
 
 ![SharePoint InvoiceLinesSchema](../Invoice%20Automation/images/2-InvoiceLinesContentType.png)
 
