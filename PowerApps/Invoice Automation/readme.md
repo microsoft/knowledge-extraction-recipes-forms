@@ -7,7 +7,6 @@ Invoice processing is something that every company does, but many are still doin
 For an overview of the solution please refer to this [blog article]("https://powerusers.microsoft.com/t5/Power-Automate-Community-Blog/Invoice-Automation-using-the-Power-Platform/ba-p/875628) for details.
 
 ## Installation Process
-
 There are several components and dependencies that comprise the solution and need to be configured to successfully deploy it in your environnement.
 
 ## SharePoint Configuration
