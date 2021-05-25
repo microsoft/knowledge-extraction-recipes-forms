@@ -111,6 +111,14 @@ in this repository using diverse approaches.
 | Extraction     | [Table Extraction](Scenarios/Table_Extraction_FR/README.md) | Illustrates extracting tables with Form Recognizer
 | Evaluation     | [Scoring](Evaluation/README.md) | Illustrates how to evaluate and score with Form Recognizer
 
+## PowerApps ✨
+
+***NEW*** (▀̿Ĺ̯▀̿ ̿)
+
+| Stage | Scenario | Description |
+| -------- | ----------- | ------|
+| Invoice Automation | [PowerApps](PowerApps/InvoiceAutomation/README.md) | Invoice Automation using the Power Platform
+
 ## Example Pipelines
 
 The [Pipelines](Pipelines/README.md) section contains some example patterns and pipelines for Knowledge Extraction using Azure Services.
