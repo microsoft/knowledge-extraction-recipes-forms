@@ -14,11 +14,11 @@ There are several components and dependencies that comprise the solution and nee
 
 Create the Invoice content type in the SharePoint admin center or at the site collection level using the following schema.
 
-![SharePoint Schema](images/1-InvoicesContentType.png)
+![SharePoint Schema](../Invoice%20Automation/images/1-InvoicesContentType.png)
 
 Create the InvoiceLineItems content type in the SharePoint admin center or at the site collection level.
 
-![SharePoint InvoiceLinesSchema](images/2-InvoiceLinesContentType.png)
+![SharePoint InvoiceLinesSchema](../images/2-InvoiceLinesContentType.png)
 
 Publish these content type and in the site collection with the Invoices library and InvoiceLineItems list have been configured.
 Create the Invoices library and InvoiceLineItems list in a site collection and assign the content types to the respected library/list.
@@ -31,21 +31,21 @@ Create the Azure Forms Recognition Service
 * Create a new resource group called "InvoiceAutomation"
 * In the new resource group, Add a resource and search for "Form Recognizer"
 
-![Create Form Recognizer Resource](images/3-CreateFormRecognizerResource.png)
+![Create Form Recognizer Resource](../images/3-CreateFormRecognizerResource.png)
 
 * Create the new resource
 
-![Create resource](images/4-CreateResource.png)
+![Create resource](../images/4-CreateResource.png)
 
 * Provide a name for the instance and pricing tier then click Review + create.
 
-![ResourceName](images/5-ProvideResoureceName.png)
+![ResourceName](../images/5-ProvideResoureceName.png)
 
 * Once the resource has been created, navigate to Keys and Endpoint.  
 * Copy the Endpoint and one of the Keys.  
 * We'll need them later
 
-![Copy Resourece Information](images/5-ProvideResoureceName.png)
+![Copy Resourece Information](../images/5-ProvideResoureceName.png)
 
 ### Deploy the Azure Function
 
@@ -74,31 +74,30 @@ Publish-AzWebapp -ResourceGroupName $resourceGroupName -Name $functionName -Arch
 
 Navigate to Power Apps, select Solutions and the environment you want the solution uploaded to.
 
-![PowerApps Solution](images/6-PowerAppsSolution.png)
+![PowerApps Solution](../Invoice%20Automation/images/6-PowerAppsSolution.png)
 
 * Browse to the location where the InvoiceProcessing solution has been saved to and import the solution.
 * Once the Invoice solution has been uploaded configure the environment variables
 * Create a new connection to the SharePoint site collection/list for the Invoices and Invoice Line Items list.
 * Navigate to the imported solution "Invoice Processing" and edit each of the Environment variables to your environment
 
-```bash
 FormsRecognizerURL - In the Azure resource group that was created, choose the InvoiceAutomationFormsRecognizer CognitiveServices type we created above.  In the overview section, copy the Endpoint and use that as the value in the environment variable. (Example:  <https://invoiceautomationformrecognizer.cognitiveservices.azure.com/>
-```
 
-![Forms Recognizer Environment Variable](images/7-FormsRecognizerURL.png)
+![Forms Recognizer Environment Variable](../Invoice%20Automation/images/7-FormsRecognizerURL.png)
 
-![Forms Recognizer Environment Variable](images/7-FormsRecognizerURL2.png)
+![Forms Recognizer Environment Variable](../Invoice%20Automation/images/7-FormsRecognizerURL.png)
 
-```bash
+
 Ocp-Apim-Subscription-Key - in the Keys and Endpoints blade copy one of the keys and use it in this environment variable. (Example:  e3b066e2ee454c2ebb198005...)
 
-![Ocp-Apim](images/8-OcpApim.png)
-            <li>InvoiceLineItemsAzureFunction- The URL from the function app that was created in Azure.  (Example:  <https://invoicelineitems.azurewebsites.net/>)</li>
+![Ocp-Apim](../Invoice%20Automation/images/8-OcpApim.png)
 
-![Line items Azure Function](images/9-InvoiceLineItemsAzureFunction.png)  
-            <li>InvoiceSiteCollection - the site collection in your tenant where the Invoices library was created (format:  /sites/<SiteCollection>)</li>
-            <li>SiteCollection - update the connection with the site collection the invoices library was created in.
-```
+*  InvoiceLineItemsAzureFunction- The URL from the function app that was created in Azure.  (Example:  <https://invoicelineitems.azurewebsites.net/>)
+
+![Line items Azure Function](../Invoice%20Automation/images/9-InvoiceLineItemsAzureFunction.png)  
+
+* InvoiceSiteCollection - the site collection in your tenant where the Invoices library was created (format:  /sites/<SiteCollection>)
+*  SiteCollection - update the connection with the site collection the invoices library was created in.
 
 ## Test the solution
 
