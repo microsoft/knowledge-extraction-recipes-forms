@@ -103,4 +103,4 @@ Ocp-Apim-Subscription-Key - in the Keys and Endpoints blade copy one of the keys
 
 Once all the assets have been deployed and the configurations have been applied to your environment you can test the solution by first uploading a document into the Invoices document library and monitoring the Power Automate workflow.  Errors may need to be remediated depending on your environment configuration.
 
-Once this has ran successfully, open the PowerApp and view the document that has been uploaded.
+Once this has ran successfully, open the PowerApp and view the document that has been uploaded.  
