@@ -63,8 +63,6 @@ We refer to a form issuer as being the unique source of a form, for example, the
 
 ## End to end demos ✨
 
-***NEW*** (▀̿Ĺ̯▀̿ ̿)
-
 | Stage | Scenario | Description |
 | -------- | ----------- | ------|
 | AutoLabelling and Prediction | [AutoLabelling](Demos/AutoLabelDemo.ipynb) | Chains AutoLabelling, Training and Prediction on sample invoices
@@ -117,7 +115,7 @@ in this repository using diverse approaches.
 
 | Stage | Scenario | Description |
 | -------- | ----------- | ------|
-| Invoice Automation | [PowerApps](PowerApps/InvoiceAutomation/README.md) | Invoice Automation using the Power Platform
+| Invoice Automation | [PowerApps](PowerApps/Invoice%20Automation/README.md) | Invoice Automation using the Power Platform
 
 ## Example Pipelines
 
