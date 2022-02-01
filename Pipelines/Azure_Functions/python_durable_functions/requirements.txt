@@ -17,7 +17,7 @@ install==1.3.3
 isodate==0.6.0
 msrest==0.6.17
 multidict==4.7.6
-numpy==1.19.0
+numpy==1.21.0
 oauthlib==3.1.0
 opencv-python==4.2.0.34
 orderedmultidict==1.0.1
