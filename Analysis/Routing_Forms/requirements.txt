@@ -2,7 +2,7 @@ certifi==2020.12.5
 chardet==4.0.0
 idna==2.10
 joblib==1.0.0
-numpy==1.21.0
+numpy==1.22.0
 onnx==1.8.0
 onnxconverter-common==1.7.0
 onnxruntime==1.6.0
