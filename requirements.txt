@@ -147,7 +147,7 @@ matplotlib==3.1.1
 marshmallow==3.3.0
 marshmallow-enum==1.5.1
 mccabe==0.6.1
-mistune==0.8.4
+mistune==2.0.3
 moment==0.8.2
 more-itertools==8.2.0
 msrest==0.6.10
