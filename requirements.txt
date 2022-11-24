@@ -168,7 +168,7 @@ parso==0.6.1
 pathspec==0.7.0
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==9.0.1
+Pillow==9.3.0
 pluggy==0.13.1
 price-parser==0.3.1
 prometheus-client==0.7.1
