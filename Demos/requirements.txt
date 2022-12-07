@@ -140,7 +140,7 @@ jsonschema==3.2.0
 jupyter==1.0.0
 jupyter-client==5.3.4
 jupyter-console==6.1.0
-jupyter-core==4.6.1
+jupyter-core==4.11.2
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 matplotlib==3.1.1
