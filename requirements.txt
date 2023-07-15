@@ -107,7 +107,7 @@ chardet==3.0.4
 cloudpickle==1.2.2
 contextlib2==0.6.0.post1
 coverage==4.5.4
-cryptography==41.0.0
+cryptography==41.0.2
 dataclasses-json==0.3.6
 dateparser==0.7.2
 decorator==4.4.1
