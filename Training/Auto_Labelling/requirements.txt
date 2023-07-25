@@ -8,7 +8,7 @@ azure-cosmosdb-table==1.0.6
 azure-nspkg==3.0.2
 azure-storage-blob==12.1.0
 azure-storage-queue==12.1.0
-certifi==2022.12.7
+certifi==2023.7.22
 cffi==1.13.2
 chardet==3.0.4
 Click==7.0
