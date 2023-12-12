@@ -183,7 +183,7 @@ of operation:
 
 * [**Custom Model**](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract):
 This mode can be trained to recognise specific form types based on your own example data set
-* [**Prebuilt Receipt Model**](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/curl-receipts): This model is pre-trained (requires no training from you) to reocgnise and extract key data points from receipts
+* [**Prebuilt Receipt Model**](https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/quickstarts/curl-receipts): This model is pre-trained (requires no training from you) to recognize and extract key data points from receipts
 (i.e. till receipts, resturant bills, general retail receipts etc)
 
 The Custom Model requires the following for training:
