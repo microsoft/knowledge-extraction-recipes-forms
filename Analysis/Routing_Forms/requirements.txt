@@ -9,7 +9,7 @@ onnxruntime==1.6.0
 protobuf==3.18.3
 python-dotenv==0.15.0
 requests==2.31.0
-scikit-learn==0.24.1
+scikit-learn==1.0.1
 scipy==1.6.0
 six==1.15.0
 skl2onnx==1.7.0
