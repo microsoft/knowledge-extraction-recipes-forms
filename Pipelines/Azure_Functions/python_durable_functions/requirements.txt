@@ -9,7 +9,7 @@ azure-storage-blob==12.3.2
 certifi==2022.12.7
 cffi==1.14.0
 chardet==3.0.4
-cryptography==41.0.6
+cryptography==42.0.0
 filetype==1.0.7
 furl==2.1.0
 idna==2.9
