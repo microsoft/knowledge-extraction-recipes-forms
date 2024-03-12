@@ -6,7 +6,7 @@ azure-core==1.6.0
 azure-functions==1.2.1
 azure-functions-durable==1.0.0b6
 azure-storage-blob==12.3.2
-certifi==2022.12.7
+certifi==2023.7.22
 cffi==1.14.0
 chardet==3.0.4
 cryptography==42.0.4
