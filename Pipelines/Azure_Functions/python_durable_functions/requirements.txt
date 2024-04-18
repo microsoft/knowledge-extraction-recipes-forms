@@ -1,4 +1,4 @@
-aiohttp==3.7.4
+aiohttp==3.9.4
 async-timeout==3.0.1
 attrs==19.3.0
 azure-ai-formrecognizer==1.0.0b3
