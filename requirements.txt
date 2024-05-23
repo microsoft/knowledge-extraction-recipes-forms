@@ -82,7 +82,7 @@ azure-storage==0.36.0
 azure-storage-blob==1.5.0
 azure-storage-common==1.4.2
 azure-storage-file==1.4.0
-azure-storage-queue==1.4.0
+azure-storage-queue==12.4.0
 azureml-automl-core==1.0.83.1
 azureml-contrib-pipeline-steps==1.0.83
 azureml-core==1.0.83
