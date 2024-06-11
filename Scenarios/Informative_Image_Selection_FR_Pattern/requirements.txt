@@ -1,7 +1,7 @@
 argparse==1.4.0
 azureml-sdk==1.18.0
 azure-storage-blob==12.5.0
-azure-identity==1.4.1
+azure-identity==1.16.1
 azure-mgmt-resource==10.2.0
 azure-mgmt-network==16.0.0
 azure-mgmt-compute==17.0.0
