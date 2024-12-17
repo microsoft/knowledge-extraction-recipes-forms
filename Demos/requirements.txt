@@ -221,7 +221,7 @@ typed-ast==1.4.0
 typing-extensions==3.7.4.1
 typing-inspect==0.5.0
 tzlocal==2.0.0
-urllib3==1.26.5
+urllib3==1.26.18
 virtualenv==16.7.8
 wcwidth==0.1.8
 webencodings==0.5.1
